@@ -1,16 +1,22 @@
 ﻿# =============================================================================
-# AI-Driven Predictive Patient Digital Twin for Healthcare
+# AI-Driven Predictive Patient Digital Twin for ICU Healthcare
 # Central Configuration File  (configs/settings.yaml)
+# Phase 0 v1.1
 # =============================================================================
-# All paths are relative to the project root unless prefixed with ${env:...}
+# All paths are relative to the project root.
 # Do NOT hardcode absolute paths here.
+# Settings marked [TBD] will be confirmed by the student team after Phase 1 EDA.
 
 project:
   name: "AI-Driven Predictive Patient Digital Twin"
-  version: "0.1.0-phase0"
+  version: "0.1.1-phase0"
   description: "Research-grade ICU patient Digital Twin with multi-horizon deterioration prediction"
   clinical_focus: "ICU patient physiological deterioration / early deterioration prediction"
+  phase: 0
 
+# ---------------------------------------------------------------------------
+# Data Paths
+# ---------------------------------------------------------------------------
 paths:
   data:
     raw:
@@ -21,19 +27,36 @@ paths:
     interim:           "data/interim"
     processed:         "data/processed"
     features:          "data/features"
-    synthetic:         "data/synthetic"
+    synthetic:         "data/synthetic"   # dev/test ONLY -- not for research claims
   models:
     checkpoints:       "models/checkpoints"
     registry:          "models/registry"
   logs:                "logs"
 
+# ---------------------------------------------------------------------------
+# Preprocessing
+# NOTE: temporal_resolution_minutes is TBD.
+# It will be set after Phase 1 dataset profiling and student team approval.
+# Different datasets (MIMIC-IV, VitalDB) have very different sampling rates.
+# ---------------------------------------------------------------------------
+preprocessing:
+  temporal_resolution_minutes: null    # TBD after Phase 1 EDA
+  # Candidate values after profiling: 1, 5, 15, 60 (minutes)
+  imputation_method: "forward_fill"    # TBD -- may change after dataset analysis
+
+# ---------------------------------------------------------------------------
+# Simulation / Replay Engine
+# ---------------------------------------------------------------------------
 simulation:
-  mode: "synthetic"
-  sliding_window_size: 24
+  mode: "synthetic"         # "synthetic" | "mimic_replay" | "vitaldb_replay"
+  sliding_window_size: 24   # timesteps in model input window (TBD in Phase 5)
   playback_delay_sec: 1.0
   buffer_max_length: 500
   replay_loop: true
 
+# ---------------------------------------------------------------------------
+# Vital Signs
+# ---------------------------------------------------------------------------
 vitals:
   keys:
     - heart_rate
@@ -42,47 +65,94 @@ vitals:
     - diastolic_bp
     - respiratory_rate
     - body_temperature
+    - mean_arterial_pressure   # derived: (SBP + 2*DBP) / 3
+  # Derived vitals computed by feature engineer (not raw observations):
+  derived_vitals:
     - mean_arterial_pressure
+    - shock_index              # HR / SBP
+    - pulse_pressure           # SBP - DBP
 
+# ---------------------------------------------------------------------------
+# Patient Baseline
+# Engineering initial approach: EWMA
+# The final baseline methodology is a student team research decision (Phase 5).
+# CRITICAL: Baseline at time t must ONLY use observations up to time t.
+# ---------------------------------------------------------------------------
+baseline:
+  initial_method: "ewma"      # Engineering default -- NOT final research methodology
+  ewma_alpha: 0.05
+  min_observations_required: 48
+
+# ---------------------------------------------------------------------------
+# Models
+# NOTE: prediction_horizons and architecture are illustrative starting points.
+# Final values are student team research decisions (Phase 5).
+# ---------------------------------------------------------------------------
 models:
-  prediction_horizons: [60, 180, 360]
-  forecast_horizon: 15
+  # Prediction horizons in timesteps (value depends on temporal resolution)
+  # Examples assuming 1-min resolution: 60=1h, 180=3h, 360=6h
+  prediction_horizons: [60, 180, 360]   # TBD after Phase 5 research decisions
+
+  # Future state forecast is OPTIONAL -- model may or may not implement this
+  forecast_horizon: null    # TBD -- only if student team decides to implement
+
+  # CNN-BiLSTM: illustrative hyperparameters -- student team decides final values
   cnn_bilstm:
-    num_features: 6
-    cnn_filters: 64
-    cnn_kernel_size: 3
-    lstm_hidden_dim: 128
-    lstm_num_layers: 2
-    dropout: 0.2
-    learning_rate: 0.001
-    batch_size: 64
+    num_features: null        # TBD after Phase 2 feature engineering
+    cnn_filters: 64           # illustrative
+    cnn_kernel_size: 3        # illustrative
+    lstm_hidden_dim: 128      # illustrative
+    lstm_num_layers: 2        # illustrative
+    dropout: 0.2              # illustrative
+    learning_rate: 0.001      # illustrative
+    batch_size: 64            # illustrative
     max_epochs: 100
     early_stopping_patience: 10
 
+# ---------------------------------------------------------------------------
+# Risk Thresholds
+# These are engineering defaults -- clinical thresholds TBD by student team.
+# ---------------------------------------------------------------------------
 risk:
   threshold_low: 0.35
   threshold_high: 0.65
 
+# ---------------------------------------------------------------------------
+# Explainability
+# Method is TBD -- to be selected by student team in Phase 8.
+# The architecture uses a generic ExplainerInterface.
+# ---------------------------------------------------------------------------
 explainability:
-  method: "shap"
-  ig_steps: 50
+  method: null    # TBD: "shap" | "integrated_gradients" | "timeshap" | other
+  # ig_steps: 50  # Only relevant if integrated_gradients is selected
 
+# ---------------------------------------------------------------------------
+# Uncertainty Quantification
+# Method is TBD -- to be selected by student team in Phase 8.
+# The architecture provides a generic PredictionUncertainty interface.
+# ---------------------------------------------------------------------------
 uncertainty:
-  method: "mc_dropout"
-  mc_dropout_samples: 30
+  method: null    # TBD: "mc_dropout" | "ensemble" | "conformal" | other
+  # mc_dropout_samples: 30   # Only relevant if mc_dropout is selected
 
+# ---------------------------------------------------------------------------
+# What-If Simulation
+# This is HYPOTHETICAL TRAJECTORY SIMULATION ONLY.
+# NOT treatment recommendations. NOT causal intervention claims.
+# Scenario design is a student team research decision (Phase 7).
+# ---------------------------------------------------------------------------
 whatif:
-  max_simulation_horizon: 360
-  scenarios:
-    - name: "no_intervention"
-      description: "Current trajectory continues unchanged"
-    - name: "stabilization"
-      description: "Vitals gradually normalized toward patient baseline"
-    - name: "recovery"
-      description: "Aggressive normalization toward population normal values"
+  max_simulation_horizon: null   # TBD -- depends on model and clinical context
+  # Scenarios will be parameterised by student team in Phase 7
 
+# ---------------------------------------------------------------------------
+# Dashboard
+# ---------------------------------------------------------------------------
 dashboard:
   refresh_interval_sec: 2.0
   default_view: "ward_overview"
   theme: "dark_clinical"
   port: 8501
+  # IMPORTANT: Dashboard reads from DigitalTwinState only.
+  # Dashboard does NOT drive inference.
+  # Placeholder outputs must be visually distinguished from real model outputs.

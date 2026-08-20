@@ -1,23 +1,34 @@
 ﻿"""
 ig_explainer.py
 ---------------
-PHASE 3 PLACEHOLDER
-Integrated Gradients explainer (alternative / comparison to SHAP).
+PHASE 8 PLACEHOLDER
+Integrated Gradients concrete implementation of ExplainerInterface.
 
-Based on: Sundararajan et al., "Axiomatic Attribution for Deep Networks" (2017).
-Migrated and refactored from legacy prototype (docs/legacy_prototype/explainability.py).
+Alternative to SHAP. May be considered if gradient-based attribution
+is better suited to the final model architecture.
+
+See src/explainability/explainer.py for the generic ExplainerInterface.
+Method selection is a Phase 8 student team decision.
 
 NOT IMPLEMENTED.
 """
 from __future__ import annotations
+from .explainer import ExplainerInterface
 import numpy as np
+from typing import Optional
 
 
-class IntegratedGradientsExplainer:
-    """Integrated Gradients gradient-based attribution for CNN-BiLSTM."""
+class IntegratedGradientsExplainer(ExplainerInterface):
+    """
+    Integrated Gradients gradient-based attribution.
+    Based on: Sundararajan et al., "Axiomatic Attribution for Deep Networks" (2017).
+    """
 
     def __init__(self, model, device=None, steps: int = 50):
-        raise NotImplementedError("IntegratedGradientsExplainer: Phase 3 TODO")
+        raise NotImplementedError("IntegratedGradientsExplainer: Phase 8 TODO")
 
-    def explain(self, window: np.ndarray, baseline: np.ndarray = None) -> dict:
+    def explain(self, window: np.ndarray, baseline: Optional[np.ndarray] = None) -> dict:
         raise NotImplementedError
+
+    def is_ready(self) -> bool:
+        return False

@@ -1,9 +1,12 @@
 ﻿"""
 explainability package
 -----------------------
-Provides prediction explanation for Digital Twin risk scores.
+Generic XAI interface for the Digital Twin.
 
-Supported methods:
-  - SHAP (SHapley Additive exPlanations) — primary method
-  - Integrated Gradients (captum) — gradient-based alternative
+The XAI method is NOT fixed or pre-selected.
+It will be selected by the student team in Phase 8
+based on the final model architecture.
+
+Primary interface: ExplainerInterface (explainer.py)
+Candidate implementations: SHAPExplainer, IntegratedGradientsExplainer
 """

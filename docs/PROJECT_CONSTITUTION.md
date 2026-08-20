@@ -1,10 +1,58 @@
 ﻿# PROJECT CONSTITUTION
-## AI-Driven Predictive Patient Digital Twin for Healthcare
+## AI-Driven Predictive Patient Digital Twin for ICU Healthcare
 ### B.Tech Major Project — Phase 0 Architecture Document
 
-> **Status:** Phase 0 Complete — Architecture Defined, No Models Implemented  
-> **Date:** August 2026  
-> **Revision:** 1.0
+> **Status:** Phase 0 Complete (v1.1 — Architecture Corrections Applied)
+> **Date:** August 2026
+> **Revision:** 1.1
+
+---
+
+## 0. Ownership and Responsibility Matrix
+
+### 0.1 Student Research Team Owns
+
+The student research team owns all ML research decisions:
+
+- Clinical prediction target definition and finalisation
+- Clinical label derivation methodology
+- Feature selection decisions
+- Final CNN-BiLSTM architecture choices
+- Model training and hyperparameter tuning
+- Model evaluation design and execution
+- Experimental design and ablation studies
+- Interpretation of ML results
+- Final research conclusions
+
+### 0.2 Antigravity Is Responsible For
+
+- Software architecture and design
+- Data ingestion implementations
+- Preprocessing pipeline implementation
+- Temporal alignment pipeline
+- Digital Twin infrastructure (state, engine, interfaces)
+- Simulated real-time clinical data replay layer
+- Model-agnostic ML integration interfaces
+- Dashboard engineering
+- Testing infrastructure
+- Engineering documentation
+
+### 0.3 Antigravity Must NEVER
+
+- Fabricate ML results, metrics, or predictions
+- Fabricate clinical labels or outcome definitions
+- Claim synthetic data represents real patient behaviour
+- Make unsupported clinical claims
+- Decide the final ML architecture without student team approval
+- Present placeholder inference outputs as validated research results
+
+### 0.4 Placeholder Models
+
+Placeholder models are permitted ONLY for software integration testing, demonstrating
+data flow, and UI scaffolding with dummy outputs.
+
+Every placeholder model output MUST be clearly labelled in code, logs, and UI.
+No placeholder output may be presented as a research result.
 
 ---
 
@@ -12,484 +60,579 @@
 
 This project builds a research-grade **AI-Driven Predictive Patient Digital Twin** for ICU patients.
 
-The Digital Twin maintains a continuously-updating computational representation of an ICU patient reconstructed from historical clinical data replayed as a simulated real-time stream. It performs multi-horizon deterioration risk prediction, future physiological state forecasting, explainable AI attribution, uncertainty quantification, and controlled what-if scenario simulation — all visualised through an interactive clinical dashboard.
+The Digital Twin maintains a continuously-updating computational representation of an ICU patient,
+reconstructed from historical clinical data replayed as a simulated real-time stream.
 
 ### 1.1 Clinical Focus
-ICU patient physiological deterioration / early deterioration prediction.
 
-Sepsis may be used as an evaluation case in Phase 3/4 if clinically and technically justified.
+**ICU patient physiological deterioration / early deterioration prediction.**
+
+The specific prediction target has NOT been finalised at Phase 0.
+It will be selected by the student research team after Phase 1 dataset analysis.
+
+Candidate deterioration labels (illustrative only — not finalisedd):
+- Onset of physiological deterioration (composite)
+- ICU mortality within N hours
+- Sepsis onset (using Sepsis-3 or another justified definition)
+- Acute respiratory failure
+- Haemodynamic instability
+
+**Sepsis-3 is NOT the mandated label.** It is one candidate among several.
 
 ### 1.2 Critical Boundaries
+
 - NO physical IoT devices. Input is a **simulated real-time clinical data replay** layer.
-- NO treatment recommendations. This is a research simulation tool.
-- NO clinical claims without defined label generation methodology.
-- Data is de-identified, publicly available clinical research data (MIMIC-IV, eICU).
+- NO treatment recommendations. This is a research simulation tool only.
+- NO clinical claims without an explicitly documented label generation methodology.
+- Data is de-identified, publicly available clinical research data.
+- **Synthetic data is NOT research data.** See Section 1.3.
+
+### 1.3 Synthetic Data Policy
+
+Synthetic data is permitted ONLY for:
+
+- Unit testing of software components
+- Software development and pipeline integration testing
+- Replay-engine and edge-case testing
+- UI demonstration when real clinical data is unavailable
+
+Synthetic data MUST NOT be used to:
+
+- Claim clinical model performance
+- Report model accuracy or evaluation metrics
+- Represent real-world patient behaviour
+- Support any clinical or research conclusion
+
+All ML performance claims must be derived from legitimate clinical research datasets
+(MIMIC-IV, MIMIC-IV Demo, VitalDB, eICU) under their respective data use agreements.
 
 ---
 
 ## 2. Architecture Overview
 
+### 2.1 Layered Architecture
+
+The system comprises five distinct layers.
+**The Digital Twin is NOT the dashboard.**
+The Digital Twin Engine and its state exist independently of any visualisation layer.
+
 ```
-                    HISTORICAL CLINICAL DATA
-                    (MIMIC-IV / VitalDB / eICU / Synthetic)
-                              │
-                              ▼
-                    ┌─────────────────────┐
-                    │   DATA INGESTION    │
-                    │  (src/ingestion/)   │
-                    └─────────┬───────────┘
-                              │
-                              ▼
-                    ┌─────────────────────┐
-                    │  DATA CLEANING &    │
-                    │  PREPROCESSING      │
-                    │ (src/preprocessing/)│
-                    └─────────┬───────────┘
-                              │
-                              ▼
-                    ┌─────────────────────┐
-                    │ TEMPORAL ALIGNMENT  │
-                    │ (uniform time grid) │
-                    └─────────┬───────────┘
-                              │
-                              ▼
-                    ┌─────────────────────┐
-                    │ FEATURE ENGINEERING │
-                    │   (src/features/)   │
-                    │ Δ, dX/dt, baseline  │
-                    │ deviation, NEWS2    │
-                    └─────────┬───────────┘
-                              │
-                              ▼
-                    ┌─────────────────────┐
-                    │  PATIENT TIMELINE   │
-                    │   (per patient,     │
-                    │  temporally indexed)│
-                    └─────────┬───────────┘
-                              │
-                ┌─────────────┴──────────────┐
-                │                            │
-                ▼                            ▼
-    ┌───────────────────┐        ┌──────────────────────┐
-    │  DIGITAL TWIN     │        │  STREAMING/REPLAY    │
-    │  STATE STORE      │◄───────│  SIMULATOR           │
-    │  (src/twin/)      │ update │  (src/simulation/)   │
-    └─────────┬─────────┘        └──────────────────────┘
-              │
-              ▼ (sliding window matrix)
-    ┌─────────────────────────────────────────┐
-    │              MODEL LAYER                │
-    │            (src/models/)               │
-    │                                         │
-    │  ┌──────────────┐  ┌──────────────────┐ │
-    │  │  RISK        │  │  FUTURE STATE    │ │
-    │  │  PREDICTION  │  │  PREDICTION      │ │
-    │  │  (1h/3h/6h)  │  │  (forecast_      │ │
-    │  │  probabilities│  │   horizon steps) │ │
-    │  └──────┬───────┘  └───────┬──────────┘ │
-    └─────────┼──────────────────┼────────────┘
-              └─────────┬────────┘
-                        │
-                        ▼
-            ┌───────────────────────┐
-            │   WHAT-IF SIMULATION  │
-            │  (src/simulation/     │
-            │   scenario_simulator) │
-            └───────────┬───────────┘
-                        │
-                        ▼
-            ┌───────────────────────┐
-            │   EXPLAINABILITY      │
-            │   (src/explainability)│
-            │   SHAP / Integrated   │
-            │   Gradients           │
-            └───────────┬───────────┘
-                        │
-                        ▼
-            ┌───────────────────────┐
-            │  UNCERTAINTY ANALYSIS │
-            │  MC Dropout / Ensemble│
-            └───────────┬───────────┘
-                        │
-                        ▼
-            ┌───────────────────────┐
-            │  DIGITAL TWIN UI      │
-            │   (dashboard/)        │
-            │   Streamlit + Plotly  │
-            └───────────────────────┘
+LAYER 1: DATA ACQUISITION
+  Historical Clinical Data
+  (MIMIC-IV / MIMIC-IV Demo / VitalDB / MIMIC Waveform / eICU)
+       |                         |
+  [Replay Simulator]       [Training Pipeline]
+  (simulated real-time)    (offline, batch)
+       |
+LAYER 2: PREPROCESSING PIPELINE
+  Ingestion -> Cleaning -> Temporal Alignment -> Feature Engineering
+  (src/ingestion/ -> src/preprocessing/ -> src/features/)
+       |
+LAYER 3: DIGITAL TWIN CORE  <- INDEPENDENT OF DASHBOARD
+  DigitalTwinState (Observed | Derived | Predicted | Simulation)
+  DigitalTwinEngine (orchestrator)
+       |
+LAYER 4: INTELLIGENCE LAYER  (student-owned ML research)
+  PredictionInterface (model-agnostic)
+  Risk Prediction / Future State / Uncertainty / XAI / What-If
+       |
+LAYER 5: VISUALISATION LAYER  (reads from Digital Twin only)
+  Dashboard (Streamlit + Plotly) -- dashboard/ --
 ```
+
+### 2.2 Digital Twin Independence Principle
+
+The Digital Twin MUST be operable without Streamlit running.
+
+```
+  Digital Twin Engine
+        | updates
+  DigitalTwinState
+        | read by
+  PredictionInterface -> results written back to state
+        | read by
+  Dashboard (visualisation only)
+```
+
+The dashboard NEVER writes to DigitalTwinState directly.
+The dashboard NEVER triggers ML inference directly.
 
 ---
 
 ## 3. Module Responsibility Table
 
-| Module | Package Path | Primary Responsibility | Phase |
-|---|---|---|---|
-| **MIMIC-IV Loader** | `src/ingestion/mimic_iv_loader.py` | Load MIMIC-IV ICU tables (chartevents, labevents, icustays, patients, admissions) | 1 |
-| **VitalDB Loader** | `src/ingestion/vitaldb_loader.py` | Load VitalDB high-frequency physiological recordings via API | 2 |
-| **Synthetic Generator** | `src/ingestion/synthetic_generator.py` | Generate realistic synthetic vital-sign time series (fallback for dev/demo) | 0/1 |
-| **Clinical Data Cleaner** | `src/preprocessing/cleaner.py` | Missing value imputation, outlier detection, physiological clipping | 1 |
-| **Temporal Aligner** | `src/preprocessing/temporal_aligner.py` | Resample to uniform time grid (default: 1-minute resolution) | 1 |
-| **Vitals Normalizer** | `src/preprocessing/normalizer.py` | Min-Max / Z-score / patient-adaptive normalisation | 1 |
-| **Feature Engineer** | `src/features/feature_engineer.py` | Compute Δ, dX/dt, rolling stats, baseline deviation, NEWS2, derived vitals | 1 |
-| **Baseline Calculator** | `src/features/baseline_calculator.py` | Patient-specific physiological baseline (EWMA) | 1 |
-| **Sequence Builder** | `src/features/sequence_builder.py` | Sliding-window sequence matrices for model input | 1 |
-| **Replay Engine** | `src/simulation/replay_engine.py` | Historical clinical data replay as simulated real-time stream | 1 |
-| **Scenario Simulator** | `src/simulation/scenario_simulator.py` | What-if / counterfactual trajectory projection | 3 |
-| **Digital Twin State** | `src/twin/patient_state.py` | Core data structure representing patient's twin at all times | 1 |
-| **Digital Twin Engine** | `src/twin/twin_engine.py` | Orchestrate state updates: observe → feature → predict → explain | 1 |
-| **Base Model** | `src/models/base_model.py` | Abstract interface for all models | 1 |
-| **Statistical Baseline** | `src/models/baselines.py` | Last-value carry-forward + threshold rules | 2 |
-| **Logistic Regression** | `src/models/baselines.py` | Logistic regression on temporal features | 2 |
-| **Random Forest** | `src/models/baselines.py` | Random forest on engineered features | 2 |
-| **Simple LSTM** | `src/models/baselines.py` | Unidirectional LSTM single-task | 2 |
-| **CNN-BiLSTM** | `src/models/cnn_bilstm.py` | Primary deep learning model (multi-task, multi-horizon) | 3 |
-| **Model Trainer** | `src/models/trainer.py` | Training loop, early stopping, checkpoint saving | 2 |
-| **SHAP Explainer** | `src/explainability/shap_explainer.py` | SHAP feature attributions | 3 |
-| **IG Explainer** | `src/explainability/ig_explainer.py` | Integrated Gradients (alternative) | 3 |
-| **Clinical Evaluator** | `src/evaluation/metrics.py` | AUROC, AUPRC, calibration, lead-time metrics | 2 |
-| **Model Comparator** | `src/evaluation/model_comparator.py` | Side-by-side comparison table of all models | 2 |
-| **Streamlit App** | `dashboard/app.py` | Dashboard entry point | 1 |
-| **Vital Charts** | `dashboard/components/vital_charts.py` | Time-series vital charts with forecast overlay | 1 |
-| **Risk Gauge** | `dashboard/components/risk_gauge.py` | Risk score gauge and multi-horizon bar | 1 |
-| **XAI Panel** | `dashboard/components/xai_panel.py` | SHAP attribution visualisation | 3 |
-| **What-If Panel** | `dashboard/components/whatif_panel.py` | Counterfactual slider panel | 3 |
-| **Ward Grid** | `dashboard/components/ward_grid.py` | ICU ward overview grid | 1 |
+| Module | Path | Responsibility | Phase | Owner |
+|---|---|---|---|---|
+| MIMIC-IV Loader | `src/ingestion/mimic_iv_loader.py` | Load MIMIC-IV ICU tables | 1 | Antigravity |
+| VitalDB Loader | `src/ingestion/vitaldb_loader.py` | Load VitalDB recordings | 1 | Antigravity |
+| Synthetic Generator | `src/ingestion/synthetic_generator.py` | Synthetic vitals (dev/test ONLY) | 0/1 | Antigravity |
+| Data Cleaner | `src/preprocessing/cleaner.py` | Missing values, outliers, clipping | 2 | Antigravity |
+| Temporal Aligner | `src/preprocessing/temporal_aligner.py` | Resample to configurable resolution | 2 | Antigravity |
+| Vitals Normalizer | `src/preprocessing/normalizer.py` | Normalisation (strategy Phase 1) | 2 | Antigravity |
+| Feature Engineer | `src/features/feature_engineer.py` | Delta, rates, rolling stats, NEWS2 | 2 | Antigravity |
+| Baseline Calculator | `src/features/baseline_calculator.py` | Patient-specific baseline (causal) | 2 | Antigravity |
+| Sequence Builder | `src/features/sequence_builder.py` | Sliding-window input matrices | 2 | Antigravity |
+| Replay Engine | `src/simulation/replay_engine.py` | Simulated real-time data stream | 4 | Antigravity |
+| Prediction Interface | `src/models/prediction_interface.py` | Model-agnostic I/O contract | 3 | Antigravity |
+| Base Model | `src/models/base_model.py` | Abstract model interface | 3 | Antigravity |
+| Baseline Models | `src/models/baselines.py` | Statistical, LR, RF, Simple LSTM | 5 | Student team |
+| CNN-BiLSTM | `src/models/cnn_bilstm.py` | Primary DL model (team decides arch) | 5 | Student team |
+| Model Trainer | `src/models/trainer.py` | Training loop infrastructure | 5 | Antigravity/Student |
+| Scenario Simulator | `src/simulation/scenario_simulator.py` | Hypothetical trajectory projection | 7 | Antigravity/Student |
+| Digital Twin State | `src/twin/patient_state.py` | Core patient state data structure | 3 | Antigravity |
+| Digital Twin Engine | `src/twin/twin_engine.py` | Per-timestep state update orchestrator | 3 | Antigravity |
+| XAI Explainer | `src/explainability/explainer.py` | XAI attribution (method TBD) | 8 | Antigravity/Student |
+| Clinical Evaluator | `src/evaluation/metrics.py` | AUROC, AUPRC, calibration, lead-time | 5 | Antigravity/Student |
+| Model Comparator | `src/evaluation/model_comparator.py` | Baseline vs main model comparison | 5 | Student team |
+| Streamlit App | `dashboard/app.py` | Dashboard entry point (vis only) | 4 | Antigravity |
+| Dashboard Components | `dashboard/components/*.py` | Vital charts, risk, XAI, what-if UI | 4-9 | Antigravity |
 
 ---
 
 ## 4. Data Flow
 
-### 4.1 Training Data Flow
+### 4.1 Offline Training Data Flow
 
 ```
-raw/mimic_iv/ ──► MIMICIVLoader ──► ClinicalDataCleaner ──► TemporalAligner
-    ──► VitalsNormalizer ──► ClinicalFeatureEngineer ──► SequenceBuilder
-    ──► ModelTrainer ──► models/checkpoints/
+raw/mimic_iv/
+    -> MIMICIVLoader
+    -> ClinicalDataCleaner
+    -> TemporalAligner (configurable resolution, confirmed Phase 1)
+    -> VitalsNormalizer
+    -> ClinicalFeatureEngineer
+    -> SequenceBuilder
+    -> [Student team: label generation + model training]
+    -> models/checkpoints/
 ```
 
-### 4.2 Inference (Simulated Real-Time) Data Flow
+### 4.2 Simulated Real-Time Inference Data Flow
 
 ```
-Synthetic / Replay Data ──► ClinicalReplayEngine
-    ──► (per timestep) new_vitals ──► DigitalTwinEngine.update()
-        ├── append to vital_history
-        ├── update sliding_window buffer
-        ├── ClinicalFeatureEngineer (deltas, baseline deviation)
-        ├── PatientBaselineCalculator.update_baseline()
-        ├── Model.predict(sliding_window)
-        │     ├── risk_scores (1h/3h/6h)
-        │     ├── forecast_vitals
-        │     └── news2_tier
-        ├── SHAPExplainer.explain()
-        └── update DigitalTwinState ──► Dashboard reads state
+Historical Dataset (MIMIC-IV / Synthetic fallback)
+    -> ClinicalReplayEngine
+    -> (per simulated timestep) new_vitals observation
+    -> DigitalTwinEngine.update(patient_id, new_vitals)
+          |
+          +- append to ObservedState.vital_history
+          +- update ObservedState.sliding_window
+          +- ClinicalFeatureEngineer -> update DerivedState
+          |     (Delta, dX/dt, rolling stats, baseline deviation, NEWS2)
+          +- PatientBaselineCalculator.update(new_vitals)  [causal: past only]
+          +- PredictionInterface.predict(window)
+          |     -> PredictedState.risk_scores
+          |     -> PredictedState.future_state (optional)
+          |     -> PredictedState.uncertainty (if available)
+          +- updated DigitalTwinState -> Dashboard reads (visualisation only)
 ```
 
 ### 4.3 What-If Simulation Data Flow
 
 ```
-User sets vital overrides ──► ScenarioDefinition
-    ──► ScenarioSimulator.simulate(current_state_snapshot, [scenarios])
-        ├── Project each scenario forward N steps through model
-        └── ScenarioResult list ──► Dashboard renders trajectory comparison
+User defines ScenarioDefinition(s)
+    -> ScenarioSimulator.simulate(observed_state_snapshot, [scenarios])
+          +- Project via PredictionInterface (hypothetical only)
+          +- Return list[ScenarioResult]
+    -> SimulationState.scenario_results updated
+    -> Dashboard renders trajectory comparison
+
+NOTE: All what-if output is labelled:
+"Hypothetical model projection - NOT a clinical recommendation"
 ```
 
 ---
 
 ## 5. Digital Twin State Schema
 
-The `DigitalTwinState` (defined in `src/twin/patient_state.py`) is the central data structure.
+The DigitalTwinState is partitioned into four sub-states.
+
+### 5.1 Observed State
+
+Contains only directly measured/reported information.
+
+```python
+@dataclass
+class ObservedState:
+    patient_id:        str
+    demographics:      dict
+    current_vitals:    dict          # {vital_key: latest_raw_value}
+    vital_history:     pd.DataFrame  # full temporally-indexed record
+    latest_timestamp:  datetime
+    data_source:       str           # "synthetic" | "mimic_iv" | "vitaldb"
+    replay_step_index: int
+```
+
+### 5.2 Derived State
+
+Computed causally from observed history only.
+**All derivations use ONLY observations available at or before time t.**
+
+```python
+@dataclass
+class DerivedState:
+    sliding_window:      np.ndarray  # (window_size, num_features)
+    vital_deltas:        dict        # DeltaX_t = X_t - X_{t-1}
+    vital_rates:         dict        # dX/dt over short window
+    rolling_stats:       dict        # {window: {vital: {mean, std, min, max}}}
+    patient_baseline:    dict        # patient-specific baseline (method TBD)
+    baseline_valid:      bool        # True when >= min_observations
+    baseline_deviations: dict        # X_t - PatientBaseline_t
+    news2_score:         int
+    news2_tier:          str         # "Low" | "Medium" | "High"
+    derived_vitals:      dict        # MAP, Shock Index, Pulse Pressure
+```
+
+### 5.3 Predicted State
+
+Populated by PredictionInterface after each model call.
+All fields None/False until a real model is integrated (Phase 6).
+
+```python
+@dataclass
+class PredictedState:
+    risk_scores:         dict                  # {horizon_steps: probability}
+    risk_tier:           str
+    future_state:        Optional[np.ndarray]  # optional, if model supports it
+    uncertainty:         Optional[dict]        # PredictionUncertainty (method TBD)
+    xai_attributions:    Optional[dict]        # {vital_key: attribution} (method TBD)
+    prediction_valid:    bool                  # False until real model integrated
+    last_predicted_at:   Optional[datetime]
+```
+
+### 5.4 Simulation State
+
+Populated by ScenarioSimulator. Empty until Phase 7.
+
+```python
+@dataclass
+class SimulationState:
+    active_scenarios:     list
+    scenario_results:     list    # hypothetical projections only
+    simulation_valid:     bool
+    simulation_timestamp: Optional[datetime]
+```
+
+### 5.5 Top-Level Wrapper
 
 ```python
 @dataclass
 class DigitalTwinState:
-
-    # IDENTITY
-    patient_id:           str
-    demographics:         dict          # age, gender, weight, comorbidities
-
-    # CURRENT PHYSIOLOGICAL STATE
-    current_vitals:       dict          # {vital_key: latest_value}
-    vital_history:        DataFrame     # temporally indexed, all observed vitals
-    sliding_window:       np.ndarray    # (window_size, num_features) — model input
-
-    # PERSONALISED BASELINE
-    patient_baseline:     dict          # {vital_key: ewma_baseline}
-    baseline_valid:       bool          # True when >= min_observations
-    baseline_deviations:  dict          # Deviation_t = X_t - PatientBaseline
-
-    # TEMPORAL TRENDS
-    vital_deltas:         dict          # ΔX_t = X_t - X_{t-1}
-    vital_rates:          dict          # dX/dt approximation
-    rolling_stats:        dict          # {window: {vital: {mean, std, min, max}}}
-
-    # RISK ASSESSMENT
-    news2_score:          int           # Computed NEWS2 integer score
-    news2_tier:           str           # "Low" | "Medium" | "High"
-    risk_scores:          dict          # {60: p_1h, 180: p_3h, 360: p_6h}
-    risk_tier:            str
-
-    # PREDICTIVE STATE
-    forecast_vitals:      np.ndarray    # (forecast_horizon, num_features)
-    forecast_uncertainty: np.ndarray    # (forecast_horizon,) — optional
-    multi_horizon_risk:   dict          # {1h: p, 3h: p, 6h: p}
-
-    # EXPLAINABILITY
-    last_shap_values:     dict          # {vital_key: shap_contribution}
-
-    # SIMULATION
-    active_scenarios:     list[ScenarioResult]
-
-    # METADATA
-    last_updated_at:      datetime
-    replay_step_index:    int
-    data_source:          str
+    observed:        ObservedState
+    derived:         DerivedState
+    predicted:       PredictedState
+    simulation:      SimulationState
+    last_updated_at: datetime
 ```
-
-### 5.1 Key Derived Quantities
-
-| Quantity | Formula | Description |
-|---|---|---|
-| Delta | `ΔX_t = X_t - X_{t-1}` | First-order change |
-| Rate of change | `dX/dt ≈ (X_t - X_{t-w}) / w` | Change over window w |
-| Baseline deviation | `Dev_t = X_t - Baseline_t` | Personalised deviation |
-| Baseline update | `B_t = α · X_t + (1-α) · B_{t-1}` | EWMA personalised baseline |
-| Shock Index | `SI = HR / SBP` | Haemodynamic instability indicator |
-| MAP | `MAP = (SBP + 2·DBP) / 3` | Mean arterial pressure |
 
 ---
 
-## 6. Model Architecture (Planned)
+## 6. Prediction Interface (Model-Agnostic)
 
-### 6.1 Primary Architecture: CNN-BiLSTM (Phase 3)
+The Digital Twin Engine depends on PredictionInterface, NOT CNN-BiLSTM directly.
 
+```python
+@dataclass
+class ModelInput:
+    sliding_window:   np.ndarray  # (window_size, num_features)
+    patient_id:       str
+    derived_features: dict        # supplementary features
+
+@dataclass
+class PredictionOutput:
+    risk_scores:     dict                  # {horizon_steps: float} -- required
+    risk_tier:       str
+    future_state:    Optional[np.ndarray]  # optional
+    uncertainty:     Optional[dict]        # optional, method TBD
+    is_placeholder:  bool = True           # MUST be False for real trained models
+
+class PredictionInterface(ABC):
+    @abstractmethod
+    def predict(self, model_input: ModelInput) -> PredictionOutput: ...
+    @abstractmethod
+    def is_ready(self) -> bool: ...
 ```
-Input: (Batch, window_size=24, num_features=6+)
-    ↓
-Conv1D (filters=64, kernel=3, padding=same) + BatchNorm + ReLU
-    ↓
-BiLSTM (hidden=128, layers=2, dropout=0.2)
-    ↓
-Last hidden state: (Batch, 256)
-    ↓
-┌──────────────────┬──────────────────────┬───────────────────────┐
-│ Head 1: Risk     │ Head 2: NEWS2 Tier   │ Head 3: Forecast      │
-│ Linear(256,32)   │ Linear(256,32)       │ Linear(256,64)        │
-│ ReLU             │ ReLU                 │ ReLU                  │
-│ Linear(32,3)     │ Linear(32,3)         │ Linear(64,horizon×F)  │
-│ Sigmoid (×3)     │ Softmax (3 class)    │ Reshape (horizon,F)   │
-│ (1h,3h,6h prob)  │                      │                       │
-└──────────────────┴──────────────────────┴───────────────────────┘
-```
 
-**Note:** Head 1 is extended from legacy prototype's single-horizon to multi-horizon (1h/3h/6h) probabilities. This is the primary architectural enhancement.
-
-### 6.2 Comparison Ladder (Phase 2 → Phase 3)
-
-| Model | Type | Horizon | Features |
-|---|---|---|---|
-| Statistical Baseline | Heuristic | Single | Raw vitals |
-| Logistic Regression | Classical ML | Single | Engineered features |
-| Random Forest | Classical ML | Single | Engineered features |
-| Simple LSTM | DL | Single | Raw vitals |
-| **CNN-BiLSTM** | **DL (primary)** | **Multi (1h/3h/6h)** | **Full features** |
-
-### 6.3 Label Generation
-
-**Risk Labels:**
-- Will be derived from MIMIC-IV outcomes: ICU mortality, sepsis onset (Sepsis-3 criteria), organ failure flags
-- Labels must NOT be fabricated — derivation methodology must be explicitly documented in Phase 2
-
-**Forecast Labels:**
-- Future vital-sign observations from the same patient timeline (supervised regression)
+Rules:
+- `is_placeholder = True` for all stub/demo models.
+- Dashboard MUST visually distinguish placeholder outputs from real model outputs.
+- `future_state` is OPTIONAL. Digital Twin functions without it.
+- `uncertainty` is OPTIONAL. Method selected in Phase 8.
 
 ---
 
 ## 7. Storage and Data Structure
 
-```
-data/
-├── raw/           # Raw source data — never modified — not committed
-├── interim/       # Partially processed (per-patient DataFrames) — not committed
-├── processed/     # Full analysis-ready dataset — not committed
-├── features/      # Feature matrices and sequence arrays — not committed
-└── synthetic/     # Synthetic ward data (safe to commit for testing)
+Only `data/synthetic/` may be committed.
+No real clinical data is ever committed to the repository.
 
-models/
-├── checkpoints/   # Saved model weights (.pt files) — not committed to git
-└── registry/      # JSON model metadata (hyperparams, eval metrics, git hash) — committed
-```
-
-**Storage Format:**
-| Stage | Format | Rationale |
+| Stage | Format | Committed? |
 |---|---|---|
-| Raw MIMIC-IV | CSV / Parquet | Native MIMIC-IV format |
-| Interim / Processed | Parquet | Efficient columnar I/O |
-| Feature matrices | NumPy .npz | Fast array serialisation |
-| Model weights | PyTorch .pt | Native format |
-| Configuration | YAML | Human-readable |
+| Raw clinical data | CSV / Parquet | NO |
+| Interim / Processed | Parquet | NO |
+| Feature matrices | NumPy .npz | NO |
+| Model weights | PyTorch .pt | NO |
+| Synthetic (dev/test) | CSV | YES |
+| Model registry metadata | JSON | YES |
+| Configuration | YAML | YES |
 
 ---
 
-## 8. Development Roadmap
+## 8. Temporal Resolution Policy
 
-### Phase 0 — Architecture Scaffold ✅ COMPLETE
-**Deliverables:**
-- [x] Full modular directory structure
-- [x] Project Constitution document
-- [x] Digital Twin State schema
-- [x] Module responsibility table
-- [x] Data flow definition
-- [x] Configuration file (configs/settings.yaml)
-- [x] Placeholder stubs for all modules
-- [x] Legacy prototype archived in docs/legacy_prototype/
-- [x] README, .gitignore, pyproject.toml
+**Temporal resolution is CONFIGURABLE and NOT fixed at Phase 0.**
 
----
+Clinical datasets have different sampling frequencies:
+- MIMIC-IV chartevents: typically hourly for many vitals
+- MIMIC-III waveform: up to 125 Hz
+- VitalDB: 1-500 Hz
 
-### Phase 1 — Data Pipeline & Digital Twin Foundation 🔜 NEXT
-**Estimated Duration:** 3-4 weeks  
-**Key Deliverables:**
-- [ ] Port and refactor synthetic generator with config integration
-- [ ] MIMIC-IV ingestion (start with MIMIC-IV Demo subset)
-- [ ] Data cleaning pipeline (cleaner.py)
-- [ ] Temporal alignment to 1-minute grid
-- [ ] Feature engineering (deltas, rolling stats, baseline deviation, NEWS2)
-- [ ] DigitalTwinState fully implemented and tested
-- [ ] DigitalTwinEngine (orchestrator) implemented
-- [ ] ClinicalReplayEngine operational with synthetic data
-- [ ] Minimal but functional Streamlit dashboard showing live state updates
-- [ ] Unit tests for all Phase 1 components
-- [ ] EDA notebook: MIMIC-IV data exploration
+The final resolution(s) will be confirmed after Phase 1 dataset profiling.
 
-**Success Criteria:**
-- A synthetic patient's DigitalTwinState updates correctly at each timestep
-- Dashboard displays current vitals, deltas, baseline deviations, and NEWS2 score
-- All Phase 1 unit tests pass
+In configs/settings.yaml:
+
+```yaml
+preprocessing:
+  temporal_resolution_minutes: null   # TBD after Phase 1 EDA
+```
+
+No component may hardcode `resolution = 1 minute` as a universal assumption.
 
 ---
 
-### Phase 2 — Baseline Models & Training Pipeline
-**Estimated Duration:** 3-4 weeks  
-**Key Deliverables:**
-- [ ] Sequence builder (sliding window dataset generation from feature DataFrames)
-- [ ] Patient-level train/val/test split
-- [ ] Label generation from MIMIC-IV outcomes (documented methodology)
-- [ ] Statistical baseline
-- [ ] Logistic Regression + Random Forest baselines
-- [ ] Simple LSTM baseline
-- [ ] Training pipeline with early stopping
-- [ ] Evaluation framework: AUROC, AUPRC, calibration, lead time
-- [ ] Model comparison table (notebook)
+## 9. Patient Baseline Methodology
 
-**Success Criteria:**
-- All baseline models produce AUROC > 0.65 on validation set (minimum viability)
-- Training/evaluation pipeline is fully reproducible
+### 9.1 Engineering Initial Approach
 
----
+For Phase 2/3 engineering, an EWMA is used as a starting point:
 
-### Phase 3 — CNN-BiLSTM, XAI, What-If
-**Estimated Duration:** 4-5 weeks  
-**Key Deliverables:**
-- [ ] CNN-BiLSTM multi-task multi-horizon model
-- [ ] Multi-horizon risk prediction heads (1h / 3h / 6h)
-- [ ] Vital forecast head
-- [ ] MC Dropout uncertainty quantification
-- [ ] SHAP explainer for CNN-BiLSTM
-- [ ] ScenarioSimulator for what-if trajectory projection
-- [ ] Full dashboard integration (XAI panel, what-if panel, uncertainty display)
-- [ ] Comparison: CNN-BiLSTM vs all baselines
+  B_t = alpha * X_t + (1 - alpha) * B_{t-1}
 
-**Success Criteria:**
-- CNN-BiLSTM outperforms all baselines on at least one primary metric
-- SHAP explanations are stable and clinically plausible
-- What-if scenarios produce meaningfully different trajectories
+This is an **initial engineering approach**, NOT the final research methodology.
+
+### 9.2 Research Methodology (Phase 5)
+
+The final baseline methodology is a student team research decision and may differ.
+
+### 9.3 Causal Constraint (Non-Negotiable)
+
+**The patient baseline at time t must only use observations available up to time t.**
+
+Future observations MUST NEVER influence the baseline used for an earlier prediction.
+This constraint applies to ALL baseline methods chosen.
 
 ---
 
-### Phase 4 — Evaluation, Validation & Documentation
-**Estimated Duration:** 2-3 weeks  
-**Key Deliverables:**
-- [ ] eICU external validation (if access obtained)
-- [ ] MIMIC-III Waveform data integration (optional)
-- [ ] VitalDB integration (optional)
-- [ ] Full evaluation report notebook
-- [ ] Project report / thesis writeup data
-- [ ] API documentation
-- [ ] Final dashboard polish
+## 10. What-If Simulation — Research Boundary
+
+### What It Is
+
+A controlled **hypothetical trajectory simulation** tool.
+Compares model-projected patient trajectories under different assumed vital-sign scenarios.
+
+### What It Is NOT
+
+- NOT a treatment recommendation engine
+- NOT a clinical prescription tool
+- NOT a causal model
+- NOT a validated clinical tool
+
+All what-if outputs must be labelled:
+"Hypothetical model projection — not a clinical recommendation"
+
+The scenario methodology will be designed by the student team in Phase 7.
 
 ---
 
-## 9. What Is NOT Implemented Yet
+## 11. Uncertainty Estimation
 
-As of Phase 0, **nothing beyond scaffolding is implemented**. Specifically:
+Uncertainty is architecturally supported via `PredictedState.uncertainty`.
 
-| Component | Implementation Status |
+**The uncertainty estimation method is NOT fixed at Phase 0.**
+
+It is a research decision for the student team in Phase 8.
+
+Candidate methods (illustrative):
+- Monte Carlo (MC) Dropout
+- Deep Ensembles
+- Conformal Prediction
+- Bayesian approximations
+
+---
+
+## 12. Explainability (XAI)
+
+XAI is supported via `PredictedState.xai_attributions`.
+
+**The XAI method is NOT coupled to one library at Phase 0.**
+
+A generic `ExplainerInterface` will be defined in Phase 3.
+The specific method will be selected by the student team in Phase 8.
+
+Candidate methods (illustrative):
+- SHAP (currently favoured)
+- Integrated Gradients (captum)
+- TimeShap
+- Attention-weight visualisation
+
+---
+
+## 13. Model Architecture
+
+### 13.1 Current Direction
+
+CNN-BiLSTM is the current research direction, subject to student team finalisation.
+
+The values in `configs/settings.yaml` under `models.cnn_bilstm` are illustrative starting points only.
+
+### 13.2 Candidate Prediction Targets (Not Finalised)
+
+The following are candidate deterioration labels under consideration.
+The final selection is a Phase 5 research decision:
+
+- ICU mortality within 6/12/24 hours
+- Sepsis onset (Sepsis-3 or another justified definition)
+- Acute respiratory deterioration (SpO2-based)
+- Composite deterioration score
+- Other outcome that Phase 1 dataset analysis reveals as tractable
+
+### 13.3 Model Comparison Ladder
+
+| Model | Type | Phase | Owner |
+|---|---|---|---|
+| Statistical Baseline | Heuristic | 5 | Student team |
+| Logistic Regression | Classical ML | 5 | Student team |
+| Random Forest | Classical ML | 5 | Student team |
+| Simple LSTM | DL temporal | 5 | Student team |
+| **CNN-BiLSTM** | **DL primary (planned)** | **5** | **Student team** |
+
+---
+
+## 14. Phase-Gated Development Roadmap
+
+### PHASE GATING RULE (Mandatory)
+
+Every phase ends with a phase gate review.
+The next phase MUST NOT begin until the student team explicitly approves.
+
+Each gate summary must include:
+1. Implementation summary
+2. Files created or modified
+3. Tests performed and results
+4. Known limitations
+5. Research decisions requiring student approval
+6. Next-phase recommendation
+
+**Antigravity does not advance phases autonomously.**
+
+---
+
+PHASE 0 -- Architecture and Project Constitution -- COMPLETE (v1.1)
+PHASE 1 -- Dataset Discovery, Ingestion and Data Profiling -- NEXT
+PHASE 2 -- Clinical Preprocessing and Temporal Pipeline
+PHASE 3 -- Digital Twin State and Engine
+PHASE 4 -- Simulated Real-Time Replay + Minimal Visualisation  [*** 30% MILESTONE ***]
+PHASE 5 -- Student ML Research and Model Development  (student-owned)
+PHASE 6 -- ML Integration with Digital Twin
+PHASE 7 -- What-If Trajectory Simulation
+PHASE 8 -- XAI and Uncertainty Integration
+PHASE 9 -- Complete Dashboard
+PHASE 10 -- External Validation
+PHASE 11 -- Final Integration, Testing and Research Evaluation
+
+---
+
+## 15. 30% Milestone Definition
+
+The 30% milestone is reached when:
+
+  Real clinical/demo dataset (MIMIC-IV Demo)
+          |
+  Data ingestion (MIMICIVLoader)
+          |
+  Preprocessing + Feature Engineering
+          |
+  DigitalTwinState populated correctly
+          |
+  DigitalTwinEngine driving state updates
+          |
+  Sequential simulated clinical observations (replay)
+          |
+  Twin state updates per timestep
+          |
+  Basic visualisation (real derived features shown in dashboard)
+
+This milestone does NOT require:
+- Trained ML models
+- CNN-BiLSTM
+- SHAP / XAI
+- What-if simulation
+- Final dashboard
+
+---
+
+## 16. What Is NOT Implemented
+
+As of Phase 0 v1.1, nothing beyond architectural scaffold and stubs is implemented.
+
+| Component | Status |
 |---|---|
-| MIMIC-IV data loading | ❌ Not implemented |
-| VitalDB loading | ❌ Not implemented |
-| Data cleaning | ❌ Not implemented |
-| Temporal alignment | ❌ Not implemented |
-| Feature engineering | ❌ Not implemented |
-| Patient baseline calculator | ❌ Not implemented |
-| Sequence builder | ❌ Not implemented |
-| Clinical replay engine | ❌ Not implemented |
-| Digital Twin State (full) | 🟡 Schema defined, not wired |
-| Digital Twin Engine | ❌ Not implemented |
-| Statistical baseline model | ❌ Not implemented |
-| Logistic Regression model | ❌ Not implemented |
-| Random Forest model | ❌ Not implemented |
-| Simple LSTM | ❌ Not implemented |
-| CNN-BiLSTM | ❌ Not implemented |
-| SHAP explainer | ❌ Not implemented |
-| Integrated Gradients explainer | ❌ Not implemented |
-| Scenario simulator | ❌ Not implemented |
-| Uncertainty quantification | ❌ Not implemented |
-| Training pipeline | ❌ Not implemented |
-| Evaluation framework | ❌ Not implemented |
-| Full dashboard | 🟡 Placeholder only |
-| Any model training results | ❌ None — no fabricated metrics |
-| Label generation methodology | ❌ Pending Phase 2 |
-
-**The legacy prototype (docs/legacy_prototype/) is a fully synthetic, monolithic demo. It is NOT used in the new modular architecture and is preserved for reference only.**
+| MIMIC-IV data loading | NOT IMPLEMENTED |
+| VitalDB loading | NOT IMPLEMENTED |
+| Data cleaning | NOT IMPLEMENTED |
+| Temporal alignment | NOT IMPLEMENTED |
+| Feature engineering | NOT IMPLEMENTED |
+| Patient baseline calculator | NOT IMPLEMENTED |
+| Sequence builder | NOT IMPLEMENTED |
+| Clinical replay engine | NOT IMPLEMENTED |
+| DigitalTwinState (four-partition, wired) | SCHEMA DEFINED ONLY |
+| Digital Twin Engine | NOT IMPLEMENTED |
+| PredictionInterface | INTERFACE DEFINED ONLY |
+| PlaceholderPredictor | NOT IMPLEMENTED |
+| Any prediction model | NOT IMPLEMENTED |
+| XAI / SHAP | NOT IMPLEMENTED |
+| Uncertainty quantification | NOT IMPLEMENTED |
+| What-if simulation | NOT IMPLEMENTED |
+| Model training pipeline | NOT IMPLEMENTED |
+| Evaluation framework | NOT IMPLEMENTED |
+| Prediction target / labels | PENDING PHASE 5 RESEARCH DECISION |
+| Full dashboard | PLACEHOLDER SCAFFOLD ONLY |
+| Any training results or metrics | NONE - NO FABRICATED NUMBERS |
 
 ---
 
-## 10. Known Risks and Unknowns
+## 17. Known Risks
 
 | Risk | Severity | Mitigation |
 |---|---|---|
-| MIMIC-IV access and download time | Medium | Start with MIMIC-IV Demo subset; obtain full access in parallel |
-| Irregular sampling in MIMIC-IV chartevents | High | Temporal aligner handles resampling; document assumptions |
-| Class imbalance in deterioration labels | High | AUPRC as primary metric; class weighting in loss function |
-| Label quality: deterioration labels may be noisy | High | Use established definitions (Sepsis-3); document label derivation fully |
-| MIMIC-IV has per-patient temporal heterogeneity | Medium | Patient-level train/val/test split; not random |
-| CNN-BiLSTM may not outperform simpler baselines | Medium | Comparison ladder is built in; report honestly |
-| SHAP for temporal CNNs requires careful implementation | Medium | Use DeepSHAP or TimeShap; validate attribution stability |
-| MC Dropout uncertainty may be poorly calibrated | Medium | Calibration curve + Brier score in evaluation |
-| What-if simulation is physically unconstrained | Low | Use for trajectory comparison only; add disclaimer in UI |
-| eICU access (Phase 4) may not be obtainable in time | Low | Mark as optional; skip if unavailable |
+| MIMIC-IV credentialing delay | Medium | Start with MIMIC-IV Demo |
+| Sparse sampling in MIMIC-IV chartevents | High | Resolution determined after Phase 1 EDA |
+| Class imbalance in deterioration labels | High | AUPRC primary metric; assessed Phase 5 |
+| Label definition uncertainty | High | Phase 5 research decision |
+| Per-patient temporal heterogeneity | Medium | Patient-level splits enforced |
+| CNN-BiLSTM may not outperform baselines | Medium | Results reported honestly |
+| XAI method / model compatibility | Medium | Generic interface allows substitution |
+| Causal leakage in baseline computation | High | Strict causal constraint in code |
+| eICU access not guaranteed | Low | External validation optional |
 
 ---
 
-## 11. Next Phase Recommendation
+## 18. Architecture Validation Checklist
 
-**Proceed to Phase 1: Data Pipeline & Digital Twin Foundation.**
-
-### Recommended Phase 1 Start Sequence
-
-1. **Apply for MIMIC-IV access** on PhysioNet (if not already held). Begin with MIMIC-IV Demo.
-2. **Port and refactor the synthetic generator** from the legacy prototype into `src/ingestion/synthetic_generator.py` with config integration. This gives an immediately usable data source.
-3. **Implement DigitalTwinState fully** — wire the dataclass, add `to_dict()` and `summary()`, write unit tests.
-4. **Implement ClinicalFeatureEngineer** — deltas, rolling stats, baseline deviation, NEWS2. Use synthetic data to validate outputs.
-5. **Implement ClinicalReplayEngine** (synthetic mode) — get the end-to-end `replay → state update` loop working.
-6. **Implement DigitalTwinEngine** — wire ingestion → features → state updates.
-7. **Build minimal Streamlit dashboard** — display live synthetic patient state (vitals, NEWS2, deltas).
-8. **Start MIMIC-IV ingestion** once data access is confirmed.
-9. **Write EDA notebook** on MIMIC-IV ICU stays.
-
-**Do NOT start model training (Phase 2) until the complete data → feature → Digital Twin State pipeline is validated on real MIMIC-IV data.**
+- [x] ML ownership belongs to student team (Section 0)
+- [x] Sepsis-3 is NOT hardcoded as the final prediction target (Sections 1.1, 13.2)
+- [x] Synthetic data is clearly separated from research data (Sections 1.3, 7)
+- [x] Digital Twin is independent of dashboard (Sections 2.1, 2.2)
+- [x] Prediction interface is model-agnostic (Section 6)
+- [x] Observed/Derived/Predicted/Simulation state separated (Section 5)
+- [x] Temporal resolution is configurable (Section 8)
+- [x] EWMA is not treated as final baseline methodology (Section 9)
+- [x] What-if simulation is clearly hypothetical (Section 10)
+- [x] Uncertainty method is not prematurely fixed (Section 11)
+- [x] XAI is not prematurely coupled to one library (Section 12)
+- [x] Phase gates are enforced (Section 14)
+- [x] 30% milestone is clearly defined (Section 15)
+- [x] No ML results have been fabricated (Section 16)
+- [x] No research conclusions have been fabricated
 
 ---
 
-*End of Project Constitution — Phase 0*
+*End of Project Constitution -- Phase 0 v1.1*

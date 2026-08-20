@@ -1,33 +1,37 @@
 ﻿"""
 shap_explainer.py
 -----------------
-PHASE 3 PLACEHOLDER
-SHAP-based feature attribution for the trained CNN-BiLSTM model.
+PHASE 8 PLACEHOLDER
+SHAP-based concrete implementation of ExplainerInterface.
 
-Responsibilities:
-  - Compute SHAP values per vital-sign feature per timestep
-  - Aggregate temporal attributions to feature-level importance
-  - Return explanation dict compatible with DigitalTwinState.last_shap_values
+SHAP is currently the favoured XAI approach, but is NOT mandatory.
+The final XAI method will be selected by the student team in Phase 8.
+This file will only be implemented if SHAP is confirmed as the method of choice.
 
-NOTE: Legacy prototype used Integrated Gradients (captum).
-SHAP is the primary target per project constitution.
-Both may be supported (configurable).
+See src/explainability/explainer.py for the generic ExplainerInterface.
 
 NOT IMPLEMENTED.
 """
 from __future__ import annotations
+from .explainer import ExplainerInterface
 import numpy as np
+from typing import Optional
 
 
-class SHAPExplainer:
-    """SHAP-based prediction explainer for temporal clinical models."""
+class SHAPExplainer(ExplainerInterface):
+    """
+    SHAP-based prediction explainer.
+    Concrete implementation of ExplainerInterface using SHAP library.
+
+    Requires a trained model compatible with SHAP (e.g., DeepSHAP or KernelSHAP).
+    Method selection and validation is a Phase 8 student team decision.
+    """
 
     def __init__(self, model, config: dict):
-        raise NotImplementedError("SHAPExplainer: Phase 3 TODO")
+        raise NotImplementedError("SHAPExplainer: Phase 8 TODO")
 
-    def explain(self, window: np.ndarray) -> dict:
-        """
-        Compute feature attributions for a single inference window.
-        Returns {vital_key: {shap_value, impact_pct, direction}}.
-        """
+    def explain(self, window: np.ndarray, baseline: Optional[np.ndarray] = None) -> dict:
         raise NotImplementedError
+
+    def is_ready(self) -> bool:
+        return False
