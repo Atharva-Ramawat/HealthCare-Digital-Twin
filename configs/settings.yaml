@@ -1,0 +1,88 @@
+﻿# =============================================================================
+# AI-Driven Predictive Patient Digital Twin for Healthcare
+# Central Configuration File  (configs/settings.yaml)
+# =============================================================================
+# All paths are relative to the project root unless prefixed with ${env:...}
+# Do NOT hardcode absolute paths here.
+
+project:
+  name: "AI-Driven Predictive Patient Digital Twin"
+  version: "0.1.0-phase0"
+  description: "Research-grade ICU patient Digital Twin with multi-horizon deterioration prediction"
+  clinical_focus: "ICU patient physiological deterioration / early deterioration prediction"
+
+paths:
+  data:
+    raw:
+      mimic_iv:        "data/raw/mimic_iv"
+      mimic_waveform:  "data/raw/mimic_waveform"
+      vitaldb:         "data/raw/vitaldb"
+      eicu:            "data/raw/eicu"
+    interim:           "data/interim"
+    processed:         "data/processed"
+    features:          "data/features"
+    synthetic:         "data/synthetic"
+  models:
+    checkpoints:       "models/checkpoints"
+    registry:          "models/registry"
+  logs:                "logs"
+
+simulation:
+  mode: "synthetic"
+  sliding_window_size: 24
+  playback_delay_sec: 1.0
+  buffer_max_length: 500
+  replay_loop: true
+
+vitals:
+  keys:
+    - heart_rate
+    - spo2
+    - systolic_bp
+    - diastolic_bp
+    - respiratory_rate
+    - body_temperature
+    - mean_arterial_pressure
+
+models:
+  prediction_horizons: [60, 180, 360]
+  forecast_horizon: 15
+  cnn_bilstm:
+    num_features: 6
+    cnn_filters: 64
+    cnn_kernel_size: 3
+    lstm_hidden_dim: 128
+    lstm_num_layers: 2
+    dropout: 0.2
+    learning_rate: 0.001
+    batch_size: 64
+    max_epochs: 100
+    early_stopping_patience: 10
+
+risk:
+  threshold_low: 0.35
+  threshold_high: 0.65
+
+explainability:
+  method: "shap"
+  ig_steps: 50
+
+uncertainty:
+  method: "mc_dropout"
+  mc_dropout_samples: 30
+
+whatif:
+  max_simulation_horizon: 360
+  scenarios:
+    - name: "no_intervention"
+      description: "Current trajectory continues unchanged"
+    - name: "stabilization"
+      description: "Vitals gradually normalized toward patient baseline"
+    - name: "recovery"
+      description: "Aggressive normalization toward population normal values"
+
+dashboard:
+  refresh_interval_sec: 2.0
+  default_view: "ward_overview"
+  theme: "dark_clinical"
+  port: 8501

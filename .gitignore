@@ -1,0 +1,37 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+
+# Data (never commit raw clinical data)
+data/raw/
+data/interim/
+data/processed/
+data/features/
+
+# Model weights (use model registry instead)
+models/checkpoints/*.pt
+models/checkpoints/*.pth
+
+# Environment
+.env
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

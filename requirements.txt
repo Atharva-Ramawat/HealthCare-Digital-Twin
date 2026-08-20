@@ -1,0 +1,50 @@
+﻿# AI-Driven Predictive Patient Digital Twin - Python Dependencies
+# Pin versions are indicative; resolve conflicts in a venv before finalising.
+
+# Core scientific stack
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.11.0
+scikit-learn>=1.3.0
+
+# Deep learning
+torch>=2.1.0
+torchvision>=0.16.0
+
+# Data / clinical
+pyarrow>=13.0.0       # Parquet support for MIMIC-IV
+wfdb>=4.1.0           # Waveform Database (MIMIC-III waveforms)
+vitaldb>=1.4.0        # VitalDB Python client
+
+# YAML config
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# XAI / Explainability
+shap>=0.43.0
+captum>=0.7.0         # Integrated Gradients (PyTorch)
+
+# Visualization / Dashboard
+streamlit>=1.35.0
+plotly>=5.18.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Evaluation / Statistics
+statsmodels>=0.14.0
+lifelines>=0.27.0     # Survival analysis (optional for future use)
+
+# Utilities
+tqdm>=4.66.0
+loguru>=0.7.0
+joblib>=1.3.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Development
+black>=23.0.0
+isort>=5.12.0
+flake8>=6.1.0
+mypy>=1.5.0
