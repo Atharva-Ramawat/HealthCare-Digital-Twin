@@ -1,7 +1,7 @@
-﻿# =============================================================================
+# =============================================================================
 # AI-Driven Predictive Patient Digital Twin for ICU Healthcare
 # Central Configuration File  (configs/settings.yaml)
-# Phase 0 v1.1
+# Phase 1 v1.0
 # =============================================================================
 # All paths are relative to the project root.
 # Do NOT hardcode absolute paths here.
@@ -9,10 +9,10 @@
 
 project:
   name: "AI-Driven Predictive Patient Digital Twin"
-  version: "0.1.1-phase0"
+  version: "0.1.1-phase1"
   description: "Research-grade ICU patient Digital Twin with multi-horizon deterioration prediction"
   clinical_focus: "ICU patient physiological deterioration / early deterioration prediction"
-  phase: 0
+  phase: 1
 
 # ---------------------------------------------------------------------------
 # Data Paths
@@ -20,7 +20,8 @@ project:
 paths:
   data:
     raw:
-      mimic_iv:        "data/raw/mimic_iv"
+      mimic_iv_demo:   "data/raw/mimic_iv_demo"   # Phase 1 development dataset (100 patients, available)
+      mimic_iv:        "data/raw/mimic_iv"         # Full research dataset (requires PhysioNet credentials)
       mimic_waveform:  "data/raw/mimic_waveform"
       vitaldb:         "data/raw/vitaldb"
       eicu:            "data/raw/eicu"
@@ -32,6 +33,44 @@ paths:
     checkpoints:       "models/checkpoints"
     registry:          "models/registry"
   logs:                "logs"
+
+# ---------------------------------------------------------------------------
+# Phase 1 Dataset Settings (empirically derived from MIMIC-IV Demo v2.2 EDA)
+# ---------------------------------------------------------------------------
+phase1_dataset:
+  primary_development: "mimic_iv_demo"
+  primary_development_path: "data/raw/mimic_iv_demo"
+  primary_research: "mimic_iv"            # requires credentialing
+  n_patients_demo: 100                    # empirically confirmed
+  n_icu_stays_demo: 140                   # empirically confirmed
+  n_admissions_demo: 275                  # empirically confirmed
+  icu_los_median_hours_demo: 51.72        # empirically measured
+  hospital_mortality_rate_demo: 0.0545    # empirically measured
+
+# ---------------------------------------------------------------------------
+# Phase 1 Candidate Variables (CANDIDATE status — confirm before Phase 2)
+# ---------------------------------------------------------------------------
+phase1_variables:
+  chartevents_candidates:
+    heart_rate:       220045
+    spo2:             220277
+    respiratory_rate: 220210
+    sbp_noninvasive:  220179
+    dbp_noninvasive:  220180
+    map_noninvasive:  220181
+    sbp_arterial:     220050
+    dbp_arterial:     220051
+    map_arterial:     220052
+    temperature_c:    223762
+    temperature_f:    223761
+    glucose_chart:    220621
+  labevents_candidates:
+    glucose_lab:  50931
+    lactate:      50813
+    creatinine:   50912
+    wbc:          51301
+
+
 
 # ---------------------------------------------------------------------------
 # Preprocessing
