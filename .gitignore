@@ -3,13 +3,14 @@
 # Git Ignore
 # ============================================================
 
-# ------------------------------------------------------------
-# Python
-# ------------------------------------------------------------
+
+# ============================================================
+# PYTHON
+# ============================================================
+
 __pycache__/
 *.py[cod]
 *$py.class
-
 *.so
 .Python
 
@@ -29,7 +30,11 @@ dist/
 pip-wheel-metadata/
 wheels/
 
-# Test / coverage
+
+# ============================================================
+# TESTING / COVERAGE
+# ============================================================
+
 .pytest_cache/
 .coverage
 .coverage.*
@@ -41,74 +46,130 @@ htmlcov/
 dmypy.json
 .pyre/
 
-# ------------------------------------------------------------
-# Jupyter
-# ------------------------------------------------------------
+
+# ============================================================
+# JUPYTER
+# ============================================================
+
 .ipynb_checkpoints/
 
-# ------------------------------------------------------------
-# Environment / Secrets
-# ------------------------------------------------------------
+
+# ============================================================
+# ENVIRONMENT / SECRETS
+# ============================================================
+
 .env
 .env.*
 !.env.example
 
 *.pem
 *.key
+*.secret
+*.credentials
+
 secrets/
 credentials/
 config.local.*
 
+
+# ============================================================
+# DATASETS
+# IMPORTANT:
+# Never commit MIMIC/eICU/VitalDB or other clinical datasets.
+# Directory placeholders (.gitkeep) remain trackable.
+# ============================================================
+
 # ------------------------------------------------------------
-# MIMIC-IV / MIMIC-CXR DATA
-# IMPORTANT: DO NOT COMMIT CLINICAL DATA
+# MIMIC-IV
 # ------------------------------------------------------------
 
-# Raw MIMIC-IV
-data/raw/mimic_iv/
-data/raw/mimic_iv_demo/
-data/raw/mimic-iv/
-data/raw/mimic-iv-demo/
+data/raw/mimic_iv/*
+data/raw/mimic_iv_demo/*
+data/raw/mimic-iv/*
+data/raw/mimic-iv-demo/*
 
-# Raw MIMIC-CXR
-data/raw/mimic_cxr/
-data/raw/mimic-cxr/
-data/raw/mimic_cxr_jpg/
-data/raw/mimic-cxr-jpg/
+# Allow directory placeholders
+!data/raw/mimic_iv/.gitkeep
+!data/raw/mimic_iv_demo/.gitkeep
+!data/raw/mimic-iv/.gitkeep
+!data/raw/mimic-iv-demo/.gitkeep
 
-# Any downloaded datasets
+
+# ------------------------------------------------------------
+# MIMIC-CXR
+# ------------------------------------------------------------
+
+data/raw/mimic_cxr/*
+data/raw/mimic-cxr/*
+data/raw/mimic_cxr_jpg/*
+data/raw/mimic-cxr-jpg/*
+
+!data/raw/mimic_cxr/.gitkeep
+!data/raw/mimic-cxr/.gitkeep
+!data/raw/mimic_cxr_jpg/.gitkeep
+!data/raw/mimic-cxr-jpg/.gitkeep
+
+
+# ------------------------------------------------------------
+# Other clinical datasets
+# ------------------------------------------------------------
+
+data/raw/eicu/*
+data/raw/vitaldb/*
+data/raw/mimic_waveform/*
+
+!data/raw/eicu/.gitkeep
+!data/raw/vitaldb/.gitkeep
+!data/raw/mimic_waveform/.gitkeep
+
+
+# ------------------------------------------------------------
+# Generic downloaded clinical data
+# ------------------------------------------------------------
+
 data/raw/**/*.csv
 data/raw/**/*.csv.gz
 data/raw/**/*.parquet
+data/raw/**/*.parquet.gz
 data/raw/**/*.json
 data/raw/**/*.json.gz
 data/raw/**/*.tsv
 data/raw/**/*.tsv.gz
+data/raw/**/*.txt
 
-# CXR images
+
+# ------------------------------------------------------------
+# Medical images / waveforms
+# ------------------------------------------------------------
+
 data/**/*.jpg
 data/**/*.jpeg
 data/**/*.png
 data/**/*.dcm
 data/**/*.dicom
+data/**/*.edf
+data/**/*.wfdb
 
-# ------------------------------------------------------------
-# Large generated datasets
-# ------------------------------------------------------------
-data/processed/
+
+# ============================================================
+# GENERATED DATA / FEATURES
+# ============================================================
+
 data/interim/
+data/processed/
+data/features/
+data/sequences/
+data/tensors/
 data/cache/
 
+# Generic generated datasets
 *.parquet
 *.parquet.gz
 
-# Keep directory structure documentation if needed
-!data/raw/.gitkeep
-!data/processed/.gitkeep
 
-# ------------------------------------------------------------
-# Machine Learning Models / Checkpoints
-# ------------------------------------------------------------
+# ============================================================
+# MACHINE LEARNING MODELS / CHECKPOINTS
+# ============================================================
 
 # PyTorch
 *.pt
@@ -123,47 +184,67 @@ data/cache/
 # ONNX
 *.onnx
 
-# ML checkpoints
+# Model checkpoint directories
 models/checkpoints/
 ml/**/checkpoints/
-ml/**/outputs/
 
-# TensorBoard
-runs/
-tensorboard/
-lightning_logs/
-
-# Weights & Biases
-wandb/
-.wandb/
-
-# ------------------------------------------------------------
 # Generated ML outputs
-# ------------------------------------------------------------
+ml/**/outputs/
 outputs/
 results/
 artifacts/
 
-# Keep reports that are intentionally committed
+
+# ============================================================
+# TRAINING / EXPERIMENT TRACKING
+# ============================================================
+
+runs/
+tensorboard/
+lightning_logs/
+
+wandb/
+.wandb/
+
+
+# ============================================================
+# REPORT EXCEPTIONS
+# Keep important academic documentation tracked
+# ============================================================
+
 !ml/**/PHASE*_REPORT.md
 !ml/**/TARGET_DEFINITIONS.md
+!ml/**/README.md
 
-# ------------------------------------------------------------
-# Python application logs
-# ------------------------------------------------------------
+# Keep root documentation
+!README.md
+!ARCHITECTURE.md
+!PROJECT_CONTEXT.md
+!DEVELOPMENT_ROADMAP.md
+
+
+# ============================================================
+# PYTHON APPLICATION LOGS
+# ============================================================
+
 *.log
 logs/
 
-# ------------------------------------------------------------
-# FastAPI
-# ------------------------------------------------------------
+
+# ============================================================
+# FASTAPI
+# ============================================================
+
 .fastapi/
 uvicorn.log
 
-# ------------------------------------------------------------
-# React / Node
-# ------------------------------------------------------------
+
+# ============================================================
+# REACT / NODE
+# ============================================================
+
 node_modules/
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -174,26 +255,29 @@ pnpm-debug.log*
 .pnpm-store/
 
 # Build outputs
-dist/
-build/
-.next/
-out/
-.vite/
-.parcel-cache/
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/out/
+frontend/.vite/
+frontend/.parcel-cache/
 
 # React environment files
 frontend/.env
 frontend/.env.*
 !frontend/.env.example
 
-# ------------------------------------------------------------
-# TypeScript
-# ------------------------------------------------------------
+
+# ============================================================
+# TYPESCRIPT
+# ============================================================
+
 *.tsbuildinfo
 
-# ------------------------------------------------------------
-# IDE / Editors
-# ------------------------------------------------------------
+
+# ============================================================
+# IDE / EDITORS
+# ============================================================
 
 # VS Code
 .vscode/*
@@ -212,20 +296,23 @@ frontend/.env.*
 *.sublime-workspace
 *.sublime-project
 
-# ------------------------------------------------------------
-# Operating System
-# ------------------------------------------------------------
+
+# ============================================================
+# OPERATING SYSTEM
+# ============================================================
+
 .DS_Store
 Thumbs.db
 Desktop.ini
 
-# Windows
 $RECYCLE.BIN/
 *.lnk
 
-# ------------------------------------------------------------
-# Temporary files
-# ------------------------------------------------------------
+
+# ============================================================
+# TEMPORARY FILES
+# ============================================================
+
 *.tmp
 *.temp
 *.bak
@@ -236,43 +323,43 @@ $RECYCLE.BIN/
 tmp/
 temp/
 
-# ------------------------------------------------------------
-# Antigravity / local AI development files
-# ------------------------------------------------------------
 
-# Local scratch/workspace metadata
+# ============================================================
+# ANTIGRAVITY / GEMINI LOCAL DEVELOPMENT
+# ============================================================
+
 .antigravity/
 .gemini/
-
-# If Antigravity creates local scratch directories
 scratch/
 
-# ------------------------------------------------------------
-# Docker
-# ------------------------------------------------------------
-*.tar
+# Do not accidentally commit local AI workspace metadata
+**/.antigravity/
+**/.gemini/
 
-# Local Docker volumes
+
+# ============================================================
+# DOCKER
+# ============================================================
+
+*.tar
 docker-data/
 docker-volumes/
 
-# ------------------------------------------------------------
-# Database / local runtime files
-# ------------------------------------------------------------
+
+# ============================================================
+# DATABASE / LOCAL RUNTIME
+# ============================================================
+
 *.db
 *.sqlite
 *.sqlite3
 
-# ------------------------------------------------------------
-# OS / generated archives
-# ------------------------------------------------------------
+
+# ============================================================
+# ARCHIVES
+# ============================================================
+
 *.zip
 *.tar.gz
 *.7z
 *.rar
-
-# ------------------------------------------------------------
-# Secrets / credentials
-# ------------------------------------------------------------
-*.secret
-*.credentials

@@ -14,36 +14,74 @@ import numpy as np
 
 FORECAST_CHANNELS = ["heart_rate", "spo2", "sbp", "respiratory_rate", "temperature_c"]
 
+# Baseline Normal Defaults used strictly for computing fallback risk scores when unobserved
+NORMAL_VITAL_DEFAULTS = {
+    "heart_rate": 75.0,
+    "spo2": 98.0,
+    "sbp": 120.0,
+    "dbp": 80.0,
+    "map": 85.0,
+    "respiratory_rate": 16.0,
+    "temperature_c": 37.0
+}
+
 
 def compute_vital_instability_score(
-    hr: float,
-    spo2: float,
-    sbp: float,
-    rr: float,
-    map_val: float
+    hr: Any,
+    spo2: Any,
+    sbp: Any,
+    rr: Any,
+    map_val: Any
 ) -> float:
     """
-    Compute a continuous physiological instability index in [0.0, 1.0] from raw vitals.
+    Compute a continuous physiological instability index in [0.0, 1.0] from vitals.
+    Safely handles missing or non-numeric values.
     """
+    # Safe float conversion
+    try:
+        hr_f = float(hr) if pd.notnull(hr) else NORMAL_VITAL_DEFAULTS["heart_rate"]
+    except (ValueError, TypeError):
+        hr_f = NORMAL_VITAL_DEFAULTS["heart_rate"]
+
+    try:
+        spo2_f = float(spo2) if pd.notnull(spo2) else NORMAL_VITAL_DEFAULTS["spo2"]
+    except (ValueError, TypeError):
+        spo2_f = NORMAL_VITAL_DEFAULTS["spo2"]
+
+    try:
+        sbp_f = float(sbp) if pd.notnull(sbp) else NORMAL_VITAL_DEFAULTS["sbp"]
+    except (ValueError, TypeError):
+        sbp_f = NORMAL_VITAL_DEFAULTS["sbp"]
+
+    try:
+        rr_f = float(rr) if pd.notnull(rr) else NORMAL_VITAL_DEFAULTS["respiratory_rate"]
+    except (ValueError, TypeError):
+        rr_f = NORMAL_VITAL_DEFAULTS["respiratory_rate"]
+
+    try:
+        map_f = float(map_val) if pd.notnull(map_val) else NORMAL_VITAL_DEFAULTS["map"]
+    except (ValueError, TypeError):
+        map_f = NORMAL_VITAL_DEFAULTS["map"]
+
     score = 0.0
     # SpO2 penalty
-    if spo2 < 88.0: score += 0.35
-    elif spo2 < 92.0: score += 0.20
-    elif spo2 < 95.0: score += 0.10
+    if spo2_f < 88.0: score += 0.35
+    elif spo2_f < 92.0: score += 0.20
+    elif spo2_f < 95.0: score += 0.10
 
     # Hemodynamic penalty
-    if map_val < 60.0 or sbp < 85.0: score += 0.30
-    elif map_val < 65.0 or sbp < 90.0: score += 0.20
-    elif map_val < 70.0: score += 0.10
+    if map_f < 60.0 or sbp_f < 85.0: score += 0.30
+    elif map_f < 65.0 or sbp_f < 90.0: score += 0.20
+    elif map_f < 70.0: score += 0.10
 
     # Respiratory Rate penalty
-    if rr > 30.0 or rr < 8.0: score += 0.25
-    elif rr > 24.0: score += 0.15
-    elif rr > 20.0: score += 0.05
+    if rr_f > 30.0 or rr_f < 8.0: score += 0.25
+    elif rr_f > 24.0: score += 0.15
+    elif rr_f > 20.0: score += 0.05
 
     # Heart Rate penalty
-    if hr > 130.0 or hr < 40.0: score += 0.20
-    elif hr > 110.0 or hr < 50.0: score += 0.10
+    if hr_f > 130.0 or hr_f < 40.0: score += 0.20
+    elif hr_f > 110.0 or hr_f < 50.0: score += 0.10
 
     return min(1.0, score)
 
@@ -64,14 +102,28 @@ def extract_targets_for_window(
     if future_end_idx >= total_len:
         return None
 
-    future_slice = raw_timeline_df.iloc[pred_idx + 1 : future_end_idx + 1]
+    # Slice future window [pred_idx + 1 : pred_idx + 4]
+    future_slice = raw_timeline_df.iloc[pred_idx + 1 : future_end_idx + 1].copy()
+
+    # Forward fill any unobserved future forecast values within the slice from the pre-window
+    future_filled = future_slice.copy()
+    for ch in FORECAST_CHANNELS:
+        if ch in future_filled.columns:
+            # If still null, backfill from the prediction point
+            if future_filled[ch].isnull().any():
+                last_val = raw_timeline_df[ch].iloc[:pred_idx + 1].dropna()
+                fill_val = last_val.iloc[-1] if len(last_val) > 0 else NORMAL_VITAL_DEFAULTS.get(ch, 0.0)
+                future_filled[ch] = future_filled[ch].fillna(fill_val)
+        else:
+            future_filled[ch] = NORMAL_VITAL_DEFAULTS.get(ch, 0.0)
 
     # 1. Head 1: Physiological Deterioration Target (Persistence Rule)
     # Check abnormal conditions across the future 4 steps
-    hypoxemia = future_slice["spo2"] < 90.0
-    hypotension = (future_slice["map"] < 65.0) | (future_slice["sbp"] < 90.0)
-    tachypnea = future_slice["respiratory_rate"] > 28.0
-    hr_instability = (future_slice["heart_rate"] < 45.0) | (future_slice["heart_rate"] > 130.0)
+    hypoxemia = future_filled["spo2"] < 90.0
+    map_col = "map" if "map" in future_filled.columns else "sbp"
+    hypotension = (future_filled[map_col] < 65.0) | (future_filled["sbp"] < 90.0)
+    tachypnea = future_filled["respiratory_rate"] > 28.0
+    hr_instability = (future_filled["heart_rate"] < 45.0) | (future_filled["heart_rate"] > 130.0)
 
     any_abnormal_per_step = hypoxemia | hypotension | tachypnea | hr_instability
     abnormal_step_count = int(any_abnormal_per_step.sum())
@@ -82,14 +134,13 @@ def extract_targets_for_window(
     # 2. Head 2: Risk Tier (0=Low, 1=Medium, 2=High)
     if is_deterioration == 1:
         risk_tier = 2  # High Risk
-    elif abnormal_step_count == 1 or np.any(future_slice["spo2"] < 93.0) or np.any(future_slice["respiratory_rate"] > 22.0):
+    elif abnormal_step_count == 1 or np.any(future_filled["spo2"] < 93.0) or np.any(future_filled["respiratory_rate"] > 22.0):
         risk_tier = 1  # Medium Risk
     else:
         risk_tier = 0  # Low Risk
 
     # 3. Head 3: Short-Term Vital Forecasting (Shape [4, 5])
-    # Extract future values for HR, SpO2, SBP, RR, Temp
-    forecast_matrix = future_slice[FORECAST_CHANNELS].values.astype(np.float32)  # Shape (4, 5)
+    forecast_matrix = future_filled[FORECAST_CHANNELS].values.astype(np.float32)  # Shape (4, 5)
 
     # 4. Head 4: Observational Treatment-Response State (0=Stable, 1=Improving, 2=Worsening)
     # Compare pre-intervention risk [pred_idx - 3, pred_idx] vs future risk
@@ -97,12 +148,18 @@ def extract_targets_for_window(
     pre_slice = raw_timeline_df.iloc[pre_start : pred_idx + 1]
 
     pre_scores = [
-        compute_vital_instability_score(row["heart_rate"], row["spo2"], row["sbp"], row["respiratory_rate"], row["map"])
+        compute_vital_instability_score(
+            row.get("heart_rate"), row.get("spo2"), row.get("sbp"),
+            row.get("respiratory_rate"), row.get("map", row.get("sbp"))
+        )
         for _, row in pre_slice.iterrows()
     ]
     post_scores = [
-        compute_vital_instability_score(row["heart_rate"], row["spo2"], row["sbp"], row["respiratory_rate"], row["map"])
-        for _, row in future_slice.iterrows()
+        compute_vital_instability_score(
+            row.get("heart_rate"), row.get("spo2"), row.get("sbp"),
+            row.get("respiratory_rate"), row.get("map", row.get("sbp"))
+        )
+        for _, row in future_filled.iterrows()
     ]
 
     mean_pre_risk = float(np.mean(pre_scores)) if pre_scores else 0.0
