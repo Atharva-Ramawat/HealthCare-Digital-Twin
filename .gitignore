@@ -1,37 +1,278 @@
-﻿# Python
+﻿# ============================================================
+# AI-Driven Digital Twin for Smart Healthcare
+# Git Ignore
+# ============================================================
+
+# ------------------------------------------------------------
+# Python
+# ------------------------------------------------------------
 __pycache__/
 *.py[cod]
-*.egg-info/
-dist/
-build/
+*$py.class
+
+*.so
+.Python
+
+# Virtual environments
 .venv/
 venv/
 env/
+ENV/
+env.bak/
+venv.bak/
 
-# Data (never commit raw clinical data)
-data/raw/
-data/interim/
-data/processed/
-data/features/
+# Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+wheels/
 
-# Model weights (use model registry instead)
-models/checkpoints/*.pt
-models/checkpoints/*.pth
+# Test / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
 
-# Environment
-.env
-
-# Jupyter checkpoints
+# ------------------------------------------------------------
+# Jupyter
+# ------------------------------------------------------------
 .ipynb_checkpoints/
 
-# IDE
-.vscode/
-.idea/
+# ------------------------------------------------------------
+# Environment / Secrets
+# ------------------------------------------------------------
+.env
+.env.*
+!.env.example
 
-# Logs
-logs/
+*.pem
+*.key
+secrets/
+credentials/
+config.local.*
+
+# ------------------------------------------------------------
+# MIMIC-IV / MIMIC-CXR DATA
+# IMPORTANT: DO NOT COMMIT CLINICAL DATA
+# ------------------------------------------------------------
+
+# Raw MIMIC-IV
+data/raw/mimic_iv/
+data/raw/mimic_iv_demo/
+data/raw/mimic-iv/
+data/raw/mimic-iv-demo/
+
+# Raw MIMIC-CXR
+data/raw/mimic_cxr/
+data/raw/mimic-cxr/
+data/raw/mimic_cxr_jpg/
+data/raw/mimic-cxr-jpg/
+
+# Any downloaded datasets
+data/raw/**/*.csv
+data/raw/**/*.csv.gz
+data/raw/**/*.parquet
+data/raw/**/*.json
+data/raw/**/*.json.gz
+data/raw/**/*.tsv
+data/raw/**/*.tsv.gz
+
+# CXR images
+data/**/*.jpg
+data/**/*.jpeg
+data/**/*.png
+data/**/*.dcm
+data/**/*.dicom
+
+# ------------------------------------------------------------
+# Large generated datasets
+# ------------------------------------------------------------
+data/processed/
+data/interim/
+data/cache/
+
+*.parquet
+*.parquet.gz
+
+# Keep directory structure documentation if needed
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# ------------------------------------------------------------
+# Machine Learning Models / Checkpoints
+# ------------------------------------------------------------
+
+# PyTorch
+*.pt
+*.pth
+*.ckpt
+
+# TensorFlow / Keras
+*.h5
+*.keras
+*.pb
+
+# ONNX
+*.onnx
+
+# ML checkpoints
+models/checkpoints/
+ml/**/checkpoints/
+ml/**/outputs/
+
+# TensorBoard
+runs/
+tensorboard/
+lightning_logs/
+
+# Weights & Biases
+wandb/
+.wandb/
+
+# ------------------------------------------------------------
+# Generated ML outputs
+# ------------------------------------------------------------
+outputs/
+results/
+artifacts/
+
+# Keep reports that are intentionally committed
+!ml/**/PHASE*_REPORT.md
+!ml/**/TARGET_DEFINITIONS.md
+
+# ------------------------------------------------------------
+# Python application logs
+# ------------------------------------------------------------
 *.log
+logs/
 
-# OS
+# ------------------------------------------------------------
+# FastAPI
+# ------------------------------------------------------------
+.fastapi/
+uvicorn.log
+
+# ------------------------------------------------------------
+# React / Node
+# ------------------------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.npm/
+.yarn/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+.vite/
+.parcel-cache/
+
+# React environment files
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# ------------------------------------------------------------
+# TypeScript
+# ------------------------------------------------------------
+*.tsbuildinfo
+
+# ------------------------------------------------------------
+# IDE / Editors
+# ------------------------------------------------------------
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# JetBrains
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime
+*.sublime-workspace
+*.sublime-project
+
+# ------------------------------------------------------------
+# Operating System
+# ------------------------------------------------------------
 .DS_Store
 Thumbs.db
+Desktop.ini
+
+# Windows
+$RECYCLE.BIN/
+*.lnk
+
+# ------------------------------------------------------------
+# Temporary files
+# ------------------------------------------------------------
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+
+tmp/
+temp/
+
+# ------------------------------------------------------------
+# Antigravity / local AI development files
+# ------------------------------------------------------------
+
+# Local scratch/workspace metadata
+.antigravity/
+.gemini/
+
+# If Antigravity creates local scratch directories
+scratch/
+
+# ------------------------------------------------------------
+# Docker
+# ------------------------------------------------------------
+*.tar
+
+# Local Docker volumes
+docker-data/
+docker-volumes/
+
+# ------------------------------------------------------------
+# Database / local runtime files
+# ------------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+
+# ------------------------------------------------------------
+# OS / generated archives
+# ------------------------------------------------------------
+*.zip
+*.tar.gz
+*.7z
+*.rar
+
+# ------------------------------------------------------------
+# Secrets / credentials
+# ------------------------------------------------------------
+*.secret
+*.credentials
