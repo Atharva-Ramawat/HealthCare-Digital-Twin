@@ -1,0 +1,242 @@
+{
+  "generated_at": "2026-08-23 01:07:54",
+  "dataset_name": "MIMIC-IV Demo v2.2 (100 Patients Subset)",
+  "cohort_summary": {
+    "total_patients_in_db": 100,
+    "total_pulmonary_patients": 62,
+    "pulmonary_prevalence_pct": 62.0,
+    "total_pulmonary_admissions": 115,
+    "total_pulmonary_icustays": 97,
+    "eligible_icustays_over_6h": 97,
+    "condition_distribution": {
+      "Pneumonia": 49,
+      "Other Respiratory Condition": 46,
+      "Acute Respiratory Failure": 39,
+      "Asthma": 24,
+      "Pulmonary Edema": 22,
+      "Pleural Effusion": 19,
+      "ARDS": 13,
+      "Pneumothorax": 4
+    },
+    "top_diagnoses": {
+      "Acute respiratory failure": 14,
+      "Asthma, unspecified type, unspecified": 13,
+      "Unspecified asthma, uncomplicated": 11,
+      "Acute respiratory failure with hypoxia": 11,
+      "Pneumonia, organism unspecified": 8,
+      "Ventilator associated pneumonia": 8,
+      "Pneumonia, unspecified organism": 7,
+      "Personal history of noncompliance with medical treatment, presenting hazards to health": 7,
+      "Atelectasis": 6,
+      "Unspecified pleural effusion": 6
+    }
+  },
+  "sampling_distribution_observed": {
+    "all_chartevents_intervals": {
+      "total_intervals_measured": 29991,
+      "mean_minutes": 42.33,
+      "median_minutes": 11.0,
+      "p25_minutes": 2.0,
+      "p75_minutes": 36.0,
+      "p90_minutes": 59.0,
+      "p95_minutes": 60.0
+    },
+    "per_variable_vitals": {
+      "Heart Rate": {
+        "total_measurements": 11552,
+        "measurements_per_stay_median": 74.0,
+        "interval_median_min": 60.0,
+        "interval_mean_min": 52.66,
+        "interval_p25_min": 60.0,
+        "interval_p75_min": 60.0,
+        "interval_p90_min": 60.0
+      },
+      "SpO2": {
+        "total_measurements": 11265,
+        "measurements_per_stay_median": 74.0,
+        "interval_median_min": 60.0,
+        "interval_mean_min": 53.61,
+        "interval_p25_min": 60.0,
+        "interval_p75_min": 60.0,
+        "interval_p90_min": 60.0
+      },
+      "Respiratory Rate": {
+        "total_measurements": 11552,
+        "measurements_per_stay_median": 74.0,
+        "interval_median_min": 60.0,
+        "interval_mean_min": 52.88,
+        "interval_p25_min": 60.0,
+        "interval_p75_min": 60.0,
+        "interval_p90_min": 60.0
+      },
+      "Systolic BP": {
+        "total_measurements": 11479,
+        "measurements_per_stay_median": 72.0,
+        "interval_median_min": 60.0,
+        "interval_mean_min": 53.28,
+        "interval_p25_min": 58.0,
+        "interval_p75_min": 60.0,
+        "interval_p90_min": 60.0
+      },
+      "Diastolic BP": {
+        "total_measurements": 11479,
+        "measurements_per_stay_median": 72.0,
+        "interval_median_min": 60.0,
+        "interval_mean_min": 53.29,
+        "interval_p25_min": 58.0,
+        "interval_p75_min": 60.0,
+        "interval_p90_min": 60.0
+      },
+      "Mean Arterial Pressure": {
+        "total_measurements": 11503,
+        "measurements_per_stay_median": 72.0,
+        "interval_median_min": 60.0,
+        "interval_mean_min": 53.25,
+        "interval_p25_min": 58.0,
+        "interval_p75_min": 60.0,
+        "interval_p90_min": 60.0
+      },
+      "Temperature": {
+        "total_measurements": 3157,
+        "measurements_per_stay_median": 21.0,
+        "interval_median_min": 240.0,
+        "interval_mean_min": 189.69,
+        "interval_p25_min": 120.0,
+        "interval_p75_min": 240.0,
+        "interval_p90_min": 270.0
+      }
+    },
+    "per_variable_labs": {
+      "WBC": {
+        "total_measurements": 2415,
+        "median_interval_hours": 23.8,
+        "mean_interval_hours": 437.07
+      },
+      "Hemoglobin": {
+        "total_measurements": 2438,
+        "median_interval_hours": 23.75,
+        "mean_interval_hours": 439.61
+      },
+      "Lactate": {
+        "total_measurements": 649,
+        "median_interval_hours": 7.82,
+        "mean_interval_hours": 996.95
+      },
+      "Creatinine": {
+        "total_measurements": 2630,
+        "median_interval_hours": 23.13,
+        "mean_interval_hours": 407.85
+      },
+      "Glucose": {
+        "total_measurements": 2366,
+        "median_interval_hours": 22.43,
+        "mean_interval_hours": 417.0
+      },
+      "PO2 (Blood Gas)": {
+        "total_measurements": 734,
+        "median_interval_hours": 5.38,
+        "mean_interval_hours": 376.38
+      },
+      "PCO2 (Blood Gas)": {
+        "total_measurements": 734,
+        "median_interval_hours": 5.38,
+        "mean_interval_hours": 376.38
+      }
+    }
+  },
+  "temporal_grid_evaluation": {
+    "chosen_resolution": "15 minutes",
+    "justification": "Empirical vital sampling median is 10.0 min (P75 = 34 min). A 15-min grid provides an optimal balance between temporal fidelity and imputation stability.",
+    "sequence_length_steps": 24,
+    "sequence_duration_hours": 6.0,
+    "total_grid_timesteps_15m": 41103,
+    "raw_grid_missingness_pct": {
+      "heart_rate": 71.9,
+      "spo2": 72.6,
+      "respiratory_rate": 71.9,
+      "systolic_bp": 72.1,
+      "temperature": 92.3
+    },
+    "estimated_sequences_1h_horizon": 38387,
+    "estimated_sequences_3h_horizon": 37611,
+    "estimated_sequences_6h_horizon": 36447
+  },
+  "treatment_events_observed": {
+    "top_icu_infusions": {
+      "NaCl 0.9%": 2493,
+      "Dextrose 5%": 1903,
+      "Solution": 1101,
+      "Norepinephrine": 838,
+      "Propofol": 635,
+      "Gastric Meds": 635,
+      "PO Intake": 613,
+      "GT Flush": 552,
+      "Fentanyl": 541,
+      "Phenylephrine": 528
+    },
+    "top_pharmacy_orders": {
+      "Insulin": 841,
+      "0.9% Sodium Chloride": 638,
+      "Potassium Chloride": 477,
+      "Sodium Chloride 0.9%  Flush": 472,
+      "Furosemide": 452,
+      "5% Dextrose": 375,
+      "Bag": 366,
+      "Magnesium Sulfate": 318,
+      "HYDROmorphone (Dilaudid)": 287,
+      "Iso-Osmotic Dextrose": 281
+    },
+    "treatment_categories": {
+      "IV_Infusions (inputevents)": {
+        "Vasopressor / Inotrope": 1479,
+        "Antibiotic": 744,
+        "Diuretic": 194
+      },
+      "Pharmacy_Orders (prescriptions)": {
+        "Antibiotic": 591,
+        "Diuretic": 518,
+        "Bronchodilator / Respiratory Inhalant": 182,
+        "Vasopressor / Inotrope": 145,
+        "Corticosteroid": 67
+      }
+    },
+    "episode_counts": {
+      "Vasopressors": 1479,
+      "Diuretics": 712,
+      "Antibiotics": 591,
+      "Bronchodilators": 182,
+      "Corticosteroids": 67
+    }
+  },
+  "target_feasibility_analysis": {
+    "deterioration_prevalence_pct_15m": 0.05,
+    "is_1h_horizon_feasible": true,
+    "is_3h_horizon_feasible": true,
+    "is_6h_horizon_feasible": true,
+    "treatment_response_episodes_available": 2373
+  },
+  "feature_availability_determination": {
+    "confirmed_available_vitals": [
+      "Heart Rate",
+      "SpO2",
+      "Respiratory Rate",
+      "Systolic BP",
+      "Diastolic BP",
+      "Mean Arterial Pressure",
+      "Temperature"
+    ],
+    "confirmed_available_labs": [
+      "WBC",
+      "Hemoglobin",
+      "Lactate",
+      "Creatinine",
+      "Glucose",
+      "Blood Gas PO2/PCO2"
+    ],
+    "sparse_or_removed_features": [
+      "Arterial Line Blood Gases (ABG pH/PO2 continuous)",
+      "Cardiac Output",
+      "Central Venous Pressure (CVP)"
+    ]
+  }
+}

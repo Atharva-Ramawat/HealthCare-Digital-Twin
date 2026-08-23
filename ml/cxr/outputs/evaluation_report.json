@@ -1,0 +1,92 @@
+{
+  "timestamp": "2026-08-23 00:47:49",
+  "total_samples": 30,
+  "loss": 0.5734,
+  "macro_auroc": 0.8928,
+  "micro_auroc": 0.9485,
+  "evaluated_classes_count": 8,
+  "per_class_auroc": {
+    "Pneumonia": 0.945,
+    "Pleural Effusion": 1.0,
+    "Atelectasis": 0.7,
+    "Consolidation": 0.9665,
+    "Edema": 1.0,
+    "Pneumothorax": 1.0,
+    "Cardiomegaly": 0.5646,
+    "No Finding": 0.9659
+  },
+  "per_class_metrics": {
+    "Pneumonia": {
+      "auroc": 0.945,
+      "threshold": 0.35,
+      "precision": 0.7143,
+      "recall": 1.0,
+      "f1_score": 0.8333,
+      "positive_samples": 10,
+      "prevalence_rate": 0.3333
+    },
+    "Pleural Effusion": {
+      "auroc": 1.0,
+      "threshold": 0.4,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "positive_samples": 11,
+      "prevalence_rate": 0.3667
+    },
+    "Atelectasis": {
+      "auroc": 0.7,
+      "threshold": 0.38,
+      "precision": 0.3333,
+      "recall": 1.0,
+      "f1_score": 0.5,
+      "positive_samples": 10,
+      "prevalence_rate": 0.3333
+    },
+    "Consolidation": {
+      "auroc": 0.9665,
+      "threshold": 0.35,
+      "precision": 0.7857,
+      "recall": 1.0,
+      "f1_score": 0.88,
+      "positive_samples": 11,
+      "prevalence_rate": 0.3667
+    },
+    "Edema": {
+      "auroc": 1.0,
+      "threshold": 0.38,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "positive_samples": 5,
+      "prevalence_rate": 0.1667
+    },
+    "Pneumothorax": {
+      "auroc": 1.0,
+      "threshold": 0.28,
+      "precision": 0.1071,
+      "recall": 1.0,
+      "f1_score": 0.1935,
+      "positive_samples": 3,
+      "prevalence_rate": 0.1
+    },
+    "Cardiomegaly": {
+      "auroc": 0.5646,
+      "threshold": 0.42,
+      "precision": 0.4167,
+      "recall": 0.9091,
+      "f1_score": 0.5714,
+      "positive_samples": 11,
+      "prevalence_rate": 0.3667
+    },
+    "No Finding": {
+      "auroc": 0.9659,
+      "threshold": 0.5,
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1_score": 0.8889,
+      "positive_samples": 8,
+      "prevalence_rate": 0.2667
+    }
+  }
+}

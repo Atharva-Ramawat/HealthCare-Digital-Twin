@@ -1,4 +1,4 @@
-﻿# AI-Driven Predictive Patient Digital Twin for ICU Healthcare
+# AI-Driven Predictive Patient Digital Twin for ICU Healthcare
 
 > **B.Tech Major Project** — Research-grade ICU patient Digital Twin with simulated real-time
 > clinical data replay, multi-horizon physiological deterioration prediction, explainability,
@@ -13,8 +13,8 @@
 - **No medical advice or treatment recommendations are provided.** This is a research tool only.
 - **Synthetic data is for development and testing only.** All ML performance claims must come
   from real clinical research datasets (MIMIC-IV, VitalDB, eICU).
-- **Current Status: Phase 0 v1.1 — Architecture Scaffold and Constitution.**
-  No models are trained or deployed.
+- **Current Status: Phase 1 Complete — Dataset Discovery, Ingestion, and Research Decisions Locked.**
+  No models are trained or deployed. See `docs/PHASE1_DECISIONS.md` for approved research decisions.
 - **ML research is owned by the student team.** See docs/PROJECT_CONSTITUTION.md Section 0.
 
 ---
@@ -28,7 +28,8 @@ Build a research-grade Digital Twin of an ICU patient that:
 3. Replays historical clinical observations as a simulated real-time stream
 4. Tracks patient-specific physiological baselines
 5. Computes temporal trends and derived clinical features
-6. Predicts deterioration risk over configurable future horizons (horizons TBD in Phase 5)
+6. Predicts deterioration risk over three horizons: **1 hour, 3 hours, and 6 hours**
+   (primary target: mechanical ventilation initiation; secondary: vasopressor initiation)
 7. Optionally predicts future physiological states
 8. Provides prediction explanations (XAI method TBD in Phase 8)
 9. Estimates prediction uncertainty (method TBD in Phase 8)
@@ -143,11 +144,12 @@ streamlit run dashboard/app.py
 
 | Source | Type | Use | Status |
 |---|---|---|---|
-| MIMIC-IV / Demo | Structured clinical (ICU) | Primary training data | Phase 1 |
-| MIMIC Waveform | High-frequency physiological | Waveform features (optional) | Phase 1+ |
-| VitalDB | High-frequency OR/ICU | Additional physiological data | Phase 1 |
-| eICU | Multi-centre ICU | External validation | Phase 10 |
-| Synthetic Generator | Algorithmic | Development / testing ONLY | Phase 0/1 |
+| MIMIC-IV Demo v2.2 | Structured clinical (ICU) | **Development dataset — 100 patients, Phase 1–2** | ✅ Downloaded |
+| MIMIC-IV (full) | Structured clinical (ICU) | Primary research training dataset | Requires PhysioNet credentialing |
+| MIMIC Waveform | High-frequency physiological | Waveform features (optional, future) | Phase 4+ |
+| VitalDB | High-frequency OR/ICU | External validation only (future) | NOT Phase 2 |
+| eICU | Multi-centre ICU | External validation only (future) | NOT Phase 2 |
+| Synthetic Generator | Algorithmic | Development / testing ONLY | ⚠ Never clinical evidence |
 
 ---
 
@@ -157,9 +159,9 @@ Every phase requires explicit student team approval before the next begins.
 
 | Phase | Focus | Status |
 |---|---|---|
-| 0 | Architecture, scaffold, constitution | Done (v1.1) |
-| 1 | Dataset discovery, ingestion, data profiling | Next |
-| 2 | Clinical preprocessing and temporal pipeline | Pending |
+| 0 | Architecture, scaffold, constitution | ✅ Done (v1.1) |
+| 1 | Dataset discovery, ingestion, data profiling, research decisions | ✅ Done — decisions locked |
+| **2** | **Clinical preprocessing and temporal pipeline** | **Next — awaiting start approval** |
 | 3 | Digital Twin State and Engine | Pending |
 | **4** | **Simulated real-time replay + minimal visualisation** | **Pending (30% Milestone)** |
 | 5 | Student ML research and model development | Pending (student-owned) |
@@ -167,7 +169,7 @@ Every phase requires explicit student team approval before the next begins.
 | 7 | What-if trajectory simulation | Pending |
 | 8 | XAI and uncertainty integration | Pending |
 | 9 | Complete dashboard | Pending |
-| 10 | External validation | Pending (optional) |
+| 10 | External validation (eICU) | Pending (optional) |
 | 11 | Final integration, testing, evaluation | Pending |
 
 ---
@@ -196,4 +198,4 @@ recommendations. All risk scores and predictions are research outputs only.
 
 ---
 
-*Last updated: Phase 0 v1.1 -- August 2026*
+*Last updated: Phase 1 Complete — Research Decisions Locked — August 2026*

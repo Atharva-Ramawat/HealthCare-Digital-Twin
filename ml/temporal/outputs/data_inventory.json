@@ -1,0 +1,4158 @@
+{
+  "generated_at": "2026-08-23 01:07:22",
+  "dataset_source": "MIMIC-IV Clinical Database Demo v2.2",
+  "hosp_directory": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_iv_demo\\hosp",
+  "icu_directory": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_iv_demo\\icu",
+  "tables": {
+    "hosp/admissions.csv.gz": {
+      "section": "hosp",
+      "file_name": "admissions.csv.gz",
+      "file_size_bytes": 11072,
+      "file_size_kb": 10.81,
+      "row_count": 275,
+      "column_count": 16,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 275,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "admittime": {
+          "min": "2110-04-11 15:08:00",
+          "max": "2201-12-11 12:00:00",
+          "non_null_count": 275,
+          "null_count": 0
+        },
+        "dischtime": {
+          "min": "2110-04-14 15:00:00",
+          "max": "2201-12-17 13:45:00",
+          "non_null_count": 275,
+          "null_count": 0
+        },
+        "deathtime": {
+          "min": "2111-11-15 17:20:00",
+          "max": "2201-07-13 23:27:00",
+          "non_null_count": 15,
+          "null_count": 260
+        },
+        "edregtime": {
+          "min": "2110-11-30 04:45:00",
+          "max": "2201-10-30 10:48:00",
+          "non_null_count": 182,
+          "null_count": 93
+        },
+        "edouttime": {
+          "min": "2110-11-30 08:03:00",
+          "max": "2201-10-30 12:25:00",
+          "non_null_count": 182,
+          "null_count": 93
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10004235",
+            "10009628",
+            "10018081"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "24181354",
+            "25926192",
+            "23983182"
+          ]
+        },
+        "admittime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2196-02-24 14:38:00",
+            "2153-09-17 17:08:00",
+            "2134-08-18 02:02:00"
+          ]
+        },
+        "dischtime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2196-03-04 14:02:00",
+            "2153-09-25 13:20:00",
+            "2134-08-23 19:35:00"
+          ]
+        },
+        "deathtime": {
+          "dtype": "str",
+          "null_count": 260,
+          "missing_percentage": 94.55,
+          "sample_values": [
+            "2111-11-15 17:20:00",
+            "2115-10-12 22:20:00",
+            "2177-03-29 14:15:00"
+          ]
+        },
+        "admission_type": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "URGENT",
+            "URGENT",
+            "URGENT"
+          ]
+        },
+        "admit_provider_id": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "P03YMR",
+            "P41R5N",
+            "P233F6"
+          ]
+        },
+        "admission_location": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "TRANSFER FROM HOSPITAL",
+            "TRANSFER FROM HOSPITAL",
+            "TRANSFER FROM HOSPITAL"
+          ]
+        },
+        "discharge_location": {
+          "dtype": "str",
+          "null_count": 42,
+          "missing_percentage": 15.27,
+          "sample_values": [
+            "SKILLED NURSING FACILITY",
+            "HOME HEALTH CARE",
+            "SKILLED NURSING FACILITY"
+          ]
+        },
+        "insurance": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Medicaid",
+            "Medicaid",
+            "Medicare"
+          ]
+        },
+        "language": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "ENGLISH",
+            "?",
+            "ENGLISH"
+          ]
+        },
+        "marital_status": {
+          "dtype": "str",
+          "null_count": 12,
+          "missing_percentage": 4.36,
+          "sample_values": [
+            "SINGLE",
+            "MARRIED",
+            "MARRIED"
+          ]
+        },
+        "race": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "BLACK/CAPE VERDEAN",
+            "HISPANIC/LATINO - PUERTO RICAN",
+            "WHITE"
+          ]
+        },
+        "edregtime": {
+          "dtype": "str",
+          "null_count": 93,
+          "missing_percentage": 33.82,
+          "sample_values": [
+            "2196-02-24 12:15:00",
+            "2134-08-17 16:24:00",
+            "2119-10-26 06:00:00"
+          ]
+        },
+        "edouttime": {
+          "dtype": "str",
+          "null_count": 93,
+          "missing_percentage": 33.82,
+          "sample_values": [
+            "2196-02-24 17:07:00",
+            "2134-08-18 03:15:00",
+            "2119-10-26 06:37:00"
+          ]
+        },
+        "hospital_expire_flag": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "0",
+            "0",
+            "0"
+          ]
+        }
+      }
+    },
+    "hosp/d_icd_diagnoses.csv.gz": {
+      "section": "hosp",
+      "file_name": "d_icd_diagnoses.csv.gz",
+      "file_size_bytes": 1813533,
+      "file_size_kb": 1771.03,
+      "row_count": 109775,
+      "column_count": 3,
+      "identifiers": {
+        "has_subject_id": false,
+        "unique_subjects": 0,
+        "has_hadm_id": false,
+        "unique_hadm_ids": 0,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {},
+      "columns": {
+        "icd_code": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "0090",
+            "01160",
+            "01186"
+          ]
+        },
+        "icd_version": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "9",
+            "9",
+            "9"
+          ]
+        },
+        "long_title": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Infectious colitis, enteritis, and gastroenteritis",
+            "Tuberculous pneumonia [any form], unspecified",
+            "Other specified pulmonary tuberculosis, tubercle bacilli not found by bacteriological or histological examination, but tuberculosis confirmed by other methods [inoculation of animals]"
+          ]
+        }
+      }
+    },
+    "hosp/d_labitems.csv.gz": {
+      "section": "hosp",
+      "file_name": "d_labitems.csv.gz",
+      "file_size_bytes": 13520,
+      "file_size_kb": 13.2,
+      "row_count": 1622,
+      "column_count": 4,
+      "identifiers": {
+        "has_subject_id": false,
+        "unique_subjects": 0,
+        "has_hadm_id": false,
+        "unique_hadm_ids": 0,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {},
+      "columns": {
+        "itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "50808",
+            "50826",
+            "50813"
+          ]
+        },
+        "label": {
+          "dtype": "str",
+          "null_count": 3,
+          "missing_percentage": 0.18,
+          "sample_values": [
+            "Free Calcium",
+            "Tidal Volume",
+            "Lactate"
+          ]
+        },
+        "fluid": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Blood",
+            "Blood",
+            "Blood"
+          ]
+        },
+        "category": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Blood Gas",
+            "Blood Gas",
+            "Blood Gas"
+          ]
+        }
+      }
+    },
+    "hosp/diagnoses_icd.csv.gz": {
+      "section": "hosp",
+      "file_name": "diagnoses_icd.csv.gz",
+      "file_size_bytes": 24198,
+      "file_size_kb": 23.63,
+      "row_count": 4506,
+      "column_count": 5,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 275,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {},
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10035185",
+            "10035185",
+            "10035185"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "22580999",
+            "22580999",
+            "22580999"
+          ]
+        },
+        "seq_num": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "3",
+            "10",
+            "1"
+          ]
+        },
+        "icd_code": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "4139",
+            "V707",
+            "41401"
+          ]
+        },
+        "icd_version": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "9",
+            "9",
+            "9"
+          ]
+        }
+      }
+    },
+    "hosp/drgcodes.csv.gz": {
+      "section": "hosp",
+      "file_name": "drgcodes.csv.gz",
+      "file_size_bytes": 7459,
+      "file_size_kb": 7.28,
+      "row_count": 454,
+      "column_count": 7,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 233,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {},
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10004235",
+            "10026255",
+            "10032725"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "22187210",
+            "22059910",
+            "20611640"
+          ]
+        },
+        "drg_type": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "HCFA",
+            "HCFA",
+            "HCFA"
+          ]
+        },
+        "drg_code": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "864",
+            "180",
+            "54"
+          ]
+        },
+        "description": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "FEVER",
+            "RESPIRATORY NEOPLASMS W MCC",
+            "NERVOUS SYSTEM NEOPLASMS W MCC"
+          ]
+        },
+        "drg_severity": {
+          "dtype": "float64",
+          "null_count": 233,
+          "missing_percentage": 51.32,
+          "sample_values": [
+            "3.0",
+            "2.0",
+            "2.0"
+          ]
+        },
+        "drg_mortality": {
+          "dtype": "float64",
+          "null_count": 233,
+          "missing_percentage": 51.32,
+          "sample_values": [
+            "1.0",
+            "1.0",
+            "1.0"
+          ]
+        }
+      }
+    },
+    "hosp/emar.csv.gz": {
+      "section": "hosp",
+      "file_name": "emar.csv.gz",
+      "file_size_bytes": 734347,
+      "file_size_kb": 717.14,
+      "row_count": 35835,
+      "column_count": 12,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 65,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 181,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "charttime": {
+          "min": "2113-07-17 15:30:00",
+          "max": "2201-12-17 08:12:00",
+          "non_null_count": 35835,
+          "null_count": 0
+        },
+        "scheduletime": {
+          "min": "2075-03-02 00:00:00",
+          "max": "2201-12-17 08:12:00",
+          "non_null_count": 35822,
+          "null_count": 13
+        },
+        "storetime": {
+          "min": "2113-07-17 15:30:00",
+          "max": "2201-12-17 08:17:00",
+          "non_null_count": 35835,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10005909",
+            "10005909",
+            "10008287"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "float64",
+          "null_count": 1006,
+          "missing_percentage": 2.81,
+          "sample_values": [
+            "20199380.0",
+            "20199380.0",
+            "22168393.0"
+          ]
+        },
+        "emar_id": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10005909-74",
+            "10005909-79",
+            "10008287-32"
+          ]
+        },
+        "emar_seq": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "74",
+            "79",
+            "32"
+          ]
+        },
+        "poe_id": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10005909-97",
+            "10005909-97",
+            "10008287-58"
+          ]
+        },
+        "pharmacy_id": {
+          "dtype": "float64",
+          "null_count": 6463,
+          "missing_percentage": 18.04,
+          "sample_values": [
+            "96110427.0",
+            "96110427.0",
+            "52131847.0"
+          ]
+        },
+        "enter_provider_id": {
+          "dtype": "str",
+          "null_count": 32895,
+          "missing_percentage": 91.8,
+          "sample_values": [
+            "P26PKF",
+            "P33K2X",
+            "P54TSS"
+          ]
+        },
+        "charttime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2144-10-31 05:56:00",
+            "2144-10-31 08:00:00",
+            "2145-09-28 20:15:00"
+          ]
+        },
+        "medication": {
+          "dtype": "str",
+          "null_count": 1576,
+          "missing_percentage": 4.4,
+          "sample_values": [
+            "Magnesium Sulfate",
+            "Magnesium Sulfate",
+            "Potassium Chloride Replacement (Critical Care and Oncology)"
+          ]
+        },
+        "event_txt": {
+          "dtype": "str",
+          "null_count": 311,
+          "missing_percentage": 0.87,
+          "sample_values": [
+            "Read",
+            "Applied",
+            "Applied"
+          ]
+        },
+        "scheduletime": {
+          "dtype": "str",
+          "null_count": 13,
+          "missing_percentage": 0.04,
+          "sample_values": [
+            "2144-10-31 05:56:00",
+            "2144-10-31 08:00:00",
+            "2145-09-28 20:15:00"
+          ]
+        },
+        "storetime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2144-10-31 05:56:00",
+            "2144-10-31 08:15:00",
+            "2145-09-28 20:38:00"
+          ]
+        }
+      }
+    },
+    "hosp/emar_detail.csv.gz": {
+      "section": "hosp",
+      "file_name": "emar_detail.csv.gz",
+      "file_size_bytes": 692290,
+      "file_size_kb": 676.06,
+      "row_count": 72018,
+      "column_count": 33,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 65,
+        "has_hadm_id": false,
+        "unique_hadm_ids": 0,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {},
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10039708",
+            "10015860",
+            "10005866"
+          ]
+        },
+        "emar_id": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10039708-1750",
+            "10015860-565",
+            "10005866-571"
+          ]
+        },
+        "emar_seq": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "1750",
+            "565",
+            "571"
+          ]
+        },
+        "parent_field_ordinal": {
+          "dtype": "float64",
+          "null_count": 35835,
+          "missing_percentage": 49.76,
+          "sample_values": [
+            "1.1",
+            "1.1",
+            "1.1"
+          ]
+        },
+        "administration_type": {
+          "dtype": "str",
+          "null_count": 36190,
+          "missing_percentage": 50.25,
+          "sample_values": [
+            "IV Infusion",
+            "IV Infusion",
+            "Insulin Infusion (IV Drip)"
+          ]
+        },
+        "pharmacy_id": {
+          "dtype": "float64",
+          "null_count": 37230,
+          "missing_percentage": 51.7,
+          "sample_values": [
+            "80400800.0",
+            "98178739.0",
+            "7889909.0"
+          ]
+        },
+        "barcode_type": {
+          "dtype": "str",
+          "null_count": 37280,
+          "missing_percentage": 51.76,
+          "sample_values": [
+            "bc",
+            "pmto",
+            "bc"
+          ]
+        },
+        "reason_for_no_barcode": {
+          "dtype": "str",
+          "null_count": 70615,
+          "missing_percentage": 98.05,
+          "sample_values": [
+            "Discarded Packaging",
+            "Given in O.R. Holding",
+            "Given in O.R. Holding"
+          ]
+        },
+        "complete_dose_not_given": {
+          "dtype": "str",
+          "null_count": 57248,
+          "missing_percentage": 79.49,
+          "sample_values": [
+            "No",
+            "No",
+            "No"
+          ]
+        },
+        "dose_due": {
+          "dtype": "str",
+          "null_count": 38200,
+          "missing_percentage": 53.04,
+          "sample_values": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "dose_due_unit": {
+          "dtype": "str",
+          "null_count": 36665,
+          "missing_percentage": 50.91,
+          "sample_values": [
+            "mcg/kg/min",
+            "mcg/hr",
+            "UNIT/HR"
+          ]
+        },
+        "dose_given": {
+          "dtype": "str",
+          "null_count": 39363,
+          "missing_percentage": 54.66,
+          "sample_values": [
+            "0.25",
+            "___",
+            "50"
+          ]
+        },
+        "dose_given_unit": {
+          "dtype": "str",
+          "null_count": 38545,
+          "missing_percentage": 53.52,
+          "sample_values": [
+            "mg",
+            "mL/hr",
+            "mcg"
+          ]
+        },
+        "will_remainder_of_dose_be_given": {
+          "dtype": "str",
+          "null_count": 53366,
+          "missing_percentage": 74.1,
+          "sample_values": [
+            "No",
+            "Yes",
+            "No"
+          ]
+        },
+        "product_amount_given": {
+          "dtype": "float64",
+          "null_count": 41630,
+          "missing_percentage": 57.8,
+          "sample_values": [
+            "250.0",
+            "100.0",
+            "100.0"
+          ]
+        },
+        "product_unit": {
+          "dtype": "str",
+          "null_count": 40789,
+          "missing_percentage": 56.64,
+          "sample_values": [
+            "mL",
+            "mL",
+            "mL"
+          ]
+        },
+        "product_code": {
+          "dtype": "str",
+          "null_count": 37771,
+          "missing_percentage": 52.45,
+          "sample_values": [
+            "MVI",
+            "MVI",
+            "MVI"
+          ]
+        },
+        "product_description": {
+          "dtype": "str",
+          "null_count": 43184,
+          "missing_percentage": 59.96,
+          "sample_values": [
+            "Potassium Phosphate 15 mmol in 250 mL 0.9% Sodium Chloride ",
+            "venetoclax 10 mg tablet",
+            "LeVETiracetam 500 mg in 100 mL 0.9% Sodium Chloride"
+          ]
+        },
+        "product_description_other": {
+          "dtype": "str",
+          "null_count": 68946,
+          "missing_percentage": 95.73,
+          "sample_values": [
+            "Insulin - Insulin Humalog",
+            "Insulin - Insulin Humalog",
+            "Insulin - Insulin Regular"
+          ]
+        },
+        "prior_infusion_rate": {
+          "dtype": "float64",
+          "null_count": 70578,
+          "missing_percentage": 98.0,
+          "sample_values": [
+            "20.0",
+            "41.6",
+            "66.7"
+          ]
+        },
+        "infusion_rate": {
+          "dtype": "float64",
+          "null_count": 70211,
+          "missing_percentage": 97.49,
+          "sample_values": [
+            "10.0",
+            "25.0",
+            "41.6"
+          ]
+        },
+        "infusion_rate_adjustment": {
+          "dtype": "str",
+          "null_count": 69234,
+          "missing_percentage": 96.13,
+          "sample_values": [
+            "See Flowsheet for Titration",
+            "See Flowsheet for Titration",
+            "See Flowsheet for Titration"
+          ]
+        },
+        "infusion_rate_adjustment_amount": {
+          "dtype": "float64",
+          "null_count": 71942,
+          "missing_percentage": 99.89,
+          "sample_values": [
+            "100.0",
+            "100.0",
+            "100.0"
+          ]
+        },
+        "infusion_rate_unit": {
+          "dtype": "str",
+          "null_count": 69103,
+          "missing_percentage": 95.95,
+          "sample_values": [
+            "mcg/hr",
+            "UNIT/HR",
+            "mcg/kg/min"
+          ]
+        },
+        "route": {
+          "dtype": "str",
+          "null_count": 61407,
+          "missing_percentage": 85.27,
+          "sample_values": [
+            "PO",
+            "PO",
+            "PO"
+          ]
+        },
+        "infusion_complete": {
+          "dtype": "str",
+          "null_count": 71627,
+          "missing_percentage": 99.46,
+          "sample_values": [
+            "N",
+            "Y",
+            "N"
+          ]
+        },
+        "completion_interval": {
+          "dtype": "str",
+          "null_count": 71674,
+          "missing_percentage": 99.52,
+          "sample_values": [
+            "within 4 hours",
+            "within 2 hours",
+            "within 2 hours"
+          ]
+        },
+        "new_iv_bag_hung": {
+          "dtype": "str",
+          "null_count": 71558,
+          "missing_percentage": 99.36,
+          "sample_values": [
+            "Y",
+            "Y",
+            "Y"
+          ]
+        },
+        "continued_infusion_in_other_location": {
+          "dtype": "str",
+          "null_count": 72004,
+          "missing_percentage": 99.98,
+          "sample_values": [
+            "Y",
+            "Y",
+            "Y"
+          ]
+        },
+        "restart_interval": {
+          "dtype": "str",
+          "null_count": 71887,
+          "missing_percentage": 99.82,
+          "sample_values": [
+            "PRN",
+            "PRN",
+            "PRN"
+          ]
+        },
+        "side": {
+          "dtype": "str",
+          "null_count": 71839,
+          "missing_percentage": 99.75,
+          "sample_values": [
+            "Center",
+            "Left",
+            "Right"
+          ]
+        },
+        "site": {
+          "dtype": "str",
+          "null_count": 71839,
+          "missing_percentage": 99.75,
+          "sample_values": [
+            "back ",
+            "Hip",
+            "flank"
+          ]
+        },
+        "non_formulary_visual_verification": {
+          "dtype": "str",
+          "null_count": 71910,
+          "missing_percentage": 99.85,
+          "sample_values": [
+            "Y",
+            "Y",
+            "Y"
+          ]
+        }
+      }
+    },
+    "hosp/hcpcsevents.csv.gz": {
+      "section": "hosp",
+      "file_name": "hcpcsevents.csv.gz",
+      "file_size_bytes": 963,
+      "file_size_kb": 0.94,
+      "row_count": 61,
+      "column_count": 6,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 18,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 41,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "chartdate": {
+          "min": "2113-07-17",
+          "max": "2201-03-23",
+          "non_null_count": 61,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10005348",
+            "10005348",
+            "10004457"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "29176490",
+            "29176490",
+            "21039249"
+          ]
+        },
+        "chartdate": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2129-05-22",
+            "2129-05-22",
+            "2140-09-17"
+          ]
+        },
+        "hcpcs_cd": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "93454",
+            "92921",
+            "92980"
+          ]
+        },
+        "seq_num": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "1",
+            "2",
+            "1"
+          ]
+        },
+        "short_description": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Cardiovascular",
+            "Cardiovascular",
+            "Cardiovascular"
+          ]
+        }
+      }
+    },
+    "hosp/labevents.csv.gz": {
+      "section": "hosp",
+      "file_name": "labevents.csv.gz",
+      "file_size_bytes": 1963979,
+      "file_size_kb": 1917.95,
+      "row_count": 107727,
+      "column_count": 16,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 252,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "charttime": {
+          "min": "2110-04-08 11:11:00",
+          "max": "2202-08-26 14:00:00",
+          "non_null_count": 107727,
+          "null_count": 0
+        },
+        "storetime": {
+          "min": "2110-04-08 17:49:00",
+          "max": "2202-08-26 14:13:00",
+          "non_null_count": 106735,
+          "null_count": 992
+        }
+      },
+      "columns": {
+        "labevent_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "172061",
+            "172062",
+            "172068"
+          ]
+        },
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10014354",
+            "10014354",
+            "10014354"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "float64",
+          "null_count": 28420,
+          "missing_percentage": 26.38,
+          "sample_values": [
+            "29600294.0",
+            "29600294.0",
+            "29600294.0"
+          ]
+        },
+        "specimen_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "1808066",
+            "1808066",
+            "1808066"
+          ]
+        },
+        "itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "51277",
+            "51279",
+            "52172"
+          ]
+        },
+        "order_provider_id": {
+          "dtype": "str",
+          "null_count": 90897,
+          "missing_percentage": 84.38,
+          "sample_values": [
+            "P54UB6",
+            "P54UB6",
+            "P54UB6"
+          ]
+        },
+        "charttime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2148-08-16 00:00:00",
+            "2148-08-16 00:00:00",
+            "2148-08-16 00:00:00"
+          ]
+        },
+        "storetime": {
+          "dtype": "str",
+          "null_count": 992,
+          "missing_percentage": 0.92,
+          "sample_values": [
+            "2148-08-16 01:30:00",
+            "2148-08-16 01:30:00",
+            "2148-08-16 01:30:00"
+          ]
+        },
+        "value": {
+          "dtype": "str",
+          "null_count": 9588,
+          "missing_percentage": 8.9,
+          "sample_values": [
+            "15.4",
+            "3.35",
+            "49.7"
+          ]
+        },
+        "valuenum": {
+          "dtype": "float64",
+          "null_count": 12481,
+          "missing_percentage": 11.59,
+          "sample_values": [
+            "15.4",
+            "3.35",
+            "49.7"
+          ]
+        },
+        "valueuom": {
+          "dtype": "str",
+          "null_count": 16203,
+          "missing_percentage": 15.04,
+          "sample_values": [
+            "%",
+            "m/uL",
+            "fL"
+          ]
+        },
+        "ref_range_lower": {
+          "dtype": "float64",
+          "null_count": 18728,
+          "missing_percentage": 17.38,
+          "sample_values": [
+            "10.5",
+            "4.6",
+            "35.1"
+          ]
+        },
+        "ref_range_upper": {
+          "dtype": "float64",
+          "null_count": 18728,
+          "missing_percentage": 17.38,
+          "sample_values": [
+            "15.5",
+            "6.1",
+            "46.3"
+          ]
+        },
+        "flag": {
+          "dtype": "str",
+          "null_count": 67452,
+          "missing_percentage": 62.61,
+          "sample_values": [
+            "abnormal",
+            "abnormal",
+            "abnormal"
+          ]
+        },
+        "priority": {
+          "dtype": "str",
+          "null_count": 9329,
+          "missing_percentage": 8.66,
+          "sample_values": [
+            "ROUTINE",
+            "ROUTINE",
+            "ROUTINE"
+          ]
+        },
+        "comments": {
+          "dtype": "str",
+          "null_count": 89273,
+          "missing_percentage": 82.87,
+          "sample_values": [
+            "New reference range as of ___.",
+            "Using this patient's age, gender, and serum creatinine value of 1.8, .  estimated GFR (eGFR) is likely between 39 and 47 mL/min/1.73 m2, .  provided the serum creatinine value is stable. .  (Patients with more muscle mass and better nutritional status are more .  likely to be at the higher end of this range.) .  An eGFR < 60 suggests kidney disease in those below the age of 65 .  and there may be kidney disease in those over 65..",
+            "New reference range as of ___."
+          ]
+        }
+      }
+    },
+    "hosp/microbiologyevents.csv.gz": {
+      "section": "hosp",
+      "file_name": "microbiologyevents.csv.gz",
+      "file_size_bytes": 80991,
+      "file_size_kb": 79.09,
+      "row_count": 2899,
+      "column_count": 25,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 97,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 171,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "chartdate": {
+          "min": "2110-01-04 00:00:00",
+          "max": "2202-01-10 00:00:00",
+          "non_null_count": 2899,
+          "null_count": 0
+        },
+        "charttime": {
+          "min": "2110-01-04 14:33:00",
+          "max": "2201-11-16 13:04:00",
+          "non_null_count": 2716,
+          "null_count": 183
+        },
+        "storedate": {
+          "min": "2110-01-05 00:00:00",
+          "max": "2202-03-17 00:00:00",
+          "non_null_count": 2883,
+          "null_count": 16
+        },
+        "storetime": {
+          "min": "2110-01-05 07:43:00",
+          "max": "2202-03-17 13:47:00",
+          "non_null_count": 2883,
+          "null_count": 16
+        }
+      },
+      "columns": {
+        "microevent_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "36",
+            "15",
+            "32"
+          ]
+        },
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10000032",
+            "10000032",
+            "10000032"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "float64",
+          "null_count": 971,
+          "missing_percentage": 33.49,
+          "sample_values": [
+            "25742920.0",
+            "22595853.0",
+            "29079034.0"
+          ]
+        },
+        "micro_specimen_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "7814634",
+            "5717063",
+            "5901894"
+          ]
+        },
+        "order_provider_id": {
+          "dtype": "str",
+          "null_count": 2596,
+          "missing_percentage": 89.55,
+          "sample_values": [
+            "P79OSU",
+            "P9156W",
+            "P9156W"
+          ]
+        },
+        "chartdate": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2180-08-06 00:00:00",
+            "2180-05-07 00:00:00",
+            "2180-07-24 00:00:00"
+          ]
+        },
+        "charttime": {
+          "dtype": "str",
+          "null_count": 183,
+          "missing_percentage": 6.31,
+          "sample_values": [
+            "2180-08-06 20:35:00",
+            "2180-05-07 00:19:00",
+            "2180-07-24 00:55:00"
+          ]
+        },
+        "spec_itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "70070",
+            "70070",
+            "70070"
+          ]
+        },
+        "spec_type_desc": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "SWAB",
+            "SWAB",
+            "SWAB"
+          ]
+        },
+        "test_seq": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "1",
+            "1",
+            "1"
+          ]
+        },
+        "storedate": {
+          "dtype": "str",
+          "null_count": 16,
+          "missing_percentage": 0.55,
+          "sample_values": [
+            "2180-08-08 00:00:00",
+            "2180-05-09 00:00:00",
+            "2180-07-27 00:00:00"
+          ]
+        },
+        "storetime": {
+          "dtype": "str",
+          "null_count": 16,
+          "missing_percentage": 0.55,
+          "sample_values": [
+            "2180-08-08 08:03:00",
+            "2180-05-09 07:57:00",
+            "2180-07-27 11:15:00"
+          ]
+        },
+        "test_itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "90115",
+            "90115",
+            "90115"
+          ]
+        },
+        "test_name": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "R/O VANCOMYCIN RESISTANT ENTEROCOCCUS",
+            "R/O VANCOMYCIN RESISTANT ENTEROCOCCUS",
+            "R/O VANCOMYCIN RESISTANT ENTEROCOCCUS"
+          ]
+        },
+        "org_itemid": {
+          "dtype": "float64",
+          "null_count": 1641,
+          "missing_percentage": 56.61,
+          "sample_values": [
+            "80053.0",
+            "80075.0",
+            "80075.0"
+          ]
+        },
+        "org_name": {
+          "dtype": "str",
+          "null_count": 1641,
+          "missing_percentage": 56.61,
+          "sample_values": [
+            "ENTEROCOCCUS SP.",
+            "YEAST",
+            "YEAST"
+          ]
+        },
+        "isolate_num": {
+          "dtype": "float64",
+          "null_count": 1641,
+          "missing_percentage": 56.61,
+          "sample_values": [
+            "1.0",
+            "1.0",
+            "1.0"
+          ]
+        },
+        "quantity": {
+          "dtype": "float64",
+          "null_count": 2899,
+          "missing_percentage": 100.0,
+          "sample_values": []
+        },
+        "ab_itemid": {
+          "dtype": "float64",
+          "null_count": 1863,
+          "missing_percentage": 64.26,
+          "sample_values": [
+            "90015.0",
+            "90027.0",
+            "90025.0"
+          ]
+        },
+        "ab_name": {
+          "dtype": "str",
+          "null_count": 1863,
+          "missing_percentage": 64.26,
+          "sample_values": [
+            "VANCOMYCIN",
+            "RIFAMPIN",
+            "LEVOFLOXACIN"
+          ]
+        },
+        "dilution_text": {
+          "dtype": "str",
+          "null_count": 1900,
+          "missing_percentage": 65.54,
+          "sample_values": [
+            ">256",
+            "<=0.5",
+            "=>8"
+          ]
+        },
+        "dilution_comparison": {
+          "dtype": "str",
+          "null_count": 1901,
+          "missing_percentage": 65.57,
+          "sample_values": [
+            "<=        ",
+            "=>        ",
+            "<=        "
+          ]
+        },
+        "dilution_value": {
+          "dtype": "float64",
+          "null_count": 1901,
+          "missing_percentage": 65.57,
+          "sample_values": [
+            "0.5",
+            "8.0",
+            "1.0"
+          ]
+        },
+        "interpretation": {
+          "dtype": "str",
+          "null_count": 1863,
+          "missing_percentage": 64.26,
+          "sample_values": [
+            "R",
+            "S",
+            "R"
+          ]
+        },
+        "comments": {
+          "dtype": "str",
+          "null_count": 811,
+          "missing_percentage": 27.98,
+          "sample_values": [
+            "No VRE isolated.  ",
+            "No VRE isolated.  ",
+            "No VRE isolated.  "
+          ]
+        }
+      }
+    },
+    "hosp/omr.csv.gz": {
+      "section": "hosp",
+      "file_name": "omr.csv.gz",
+      "file_size_bytes": 17339,
+      "file_size_kb": 16.93,
+      "row_count": 2964,
+      "column_count": 5,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 79,
+        "has_hadm_id": false,
+        "unique_hadm_ids": 0,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "chartdate": {
+          "min": "2109-10-15",
+          "max": "2202-12-17",
+          "non_null_count": 2964,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10011398",
+            "10011398",
+            "10011398"
+          ]
+        },
+        "chartdate": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2146-12-01",
+            "2147-01-22",
+            "2146-12-01"
+          ]
+        },
+        "seq_num": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "1",
+            "1",
+            "1"
+          ]
+        },
+        "result_name": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Height (Inches)",
+            "Weight (Lbs)",
+            "Weight (Lbs)"
+          ]
+        },
+        "result_value": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "63",
+            "127",
+            "135"
+          ]
+        }
+      }
+    },
+    "hosp/patients.csv.gz": {
+      "section": "hosp",
+      "file_name": "patients.csv.gz",
+      "file_size_bytes": 1083,
+      "file_size_kb": 1.06,
+      "row_count": 100,
+      "column_count": 6,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": false,
+        "unique_hadm_ids": 0,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {},
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10014729",
+            "10003400",
+            "10002428"
+          ]
+        },
+        "gender": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "F",
+            "F",
+            "F"
+          ]
+        },
+        "anchor_age": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "21",
+            "72",
+            "80"
+          ]
+        },
+        "anchor_year": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2125",
+            "2134",
+            "2155"
+          ]
+        },
+        "anchor_year_group": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2011 - 2013",
+            "2011 - 2013",
+            "2011 - 2013"
+          ]
+        },
+        "dod": {
+          "dtype": "str",
+          "null_count": 69,
+          "missing_percentage": 69.0,
+          "sample_values": [
+            "2137-09-02",
+            "2143-03-30",
+            "2146-02-09"
+          ]
+        }
+      }
+    },
+    "hosp/pharmacy.csv.gz": {
+      "section": "hosp",
+      "file_name": "pharmacy.csv.gz",
+      "file_size_bytes": 503956,
+      "file_size_kb": 492.14,
+      "row_count": 15306,
+      "column_count": 27,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 250,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "starttime": {
+          "min": "2110-04-11 15:00:00",
+          "max": "2201-12-13 20:00:00",
+          "non_null_count": 15306,
+          "null_count": 0
+        },
+        "stoptime": {
+          "min": "2110-04-11 17:00:00",
+          "max": "2201-12-17 18:00:00",
+          "non_null_count": 15225,
+          "null_count": 81
+        },
+        "entertime": {
+          "min": "2110-04-11 15:15:24",
+          "max": "2201-12-13 19:28:50",
+          "non_null_count": 15306,
+          "null_count": 0
+        },
+        "verifiedtime": {
+          "min": "2110-04-11 15:15:24",
+          "max": "2201-12-13 19:28:50",
+          "non_null_count": 15300,
+          "null_count": 6
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10027602",
+            "10027602",
+            "10027602"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "28166872",
+            "28166872",
+            "28166872"
+          ]
+        },
+        "pharmacy_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "24340150",
+            "14435820",
+            "40720238"
+          ]
+        },
+        "poe_id": {
+          "dtype": "str",
+          "null_count": 86,
+          "missing_percentage": 0.56,
+          "sample_values": [
+            "10020740-96",
+            "10002428-187",
+            "10002428-219"
+          ]
+        },
+        "starttime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2201-10-30 12:00:00",
+            "2201-10-30 12:00:00",
+            "2201-10-30 12:00:00"
+          ]
+        },
+        "stoptime": {
+          "dtype": "str",
+          "null_count": 81,
+          "missing_percentage": 0.53,
+          "sample_values": [
+            "2156-04-17 16:00:00",
+            "2156-04-20 08:00:00",
+            "2156-04-23 10:00:00"
+          ]
+        },
+        "medication": {
+          "dtype": "str",
+          "null_count": 1013,
+          "missing_percentage": 6.62,
+          "sample_values": [
+            "Midazolam",
+            "Midazolam",
+            "Fentanyl Citrate"
+          ]
+        },
+        "proc_type": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Miscellaneous Charges",
+            "Miscellaneous Charges",
+            "Miscellaneous Charges"
+          ]
+        },
+        "status": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Inactive (Due to a change order)",
+            "Inactive (Due to a change order)",
+            "Inactive (Due to a change order)"
+          ]
+        },
+        "entertime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2201-10-30 12:32:11",
+            "2201-10-30 12:54:34",
+            "2201-10-30 12:32:11"
+          ]
+        },
+        "verifiedtime": {
+          "dtype": "str",
+          "null_count": 6,
+          "missing_percentage": 0.04,
+          "sample_values": [
+            "2150-03-12 14:42:34",
+            "2156-04-17 09:32:56",
+            "2156-04-18 11:03:53"
+          ]
+        },
+        "route": {
+          "dtype": "str",
+          "null_count": 87,
+          "missing_percentage": 0.57,
+          "sample_values": [
+            "IV",
+            "IV DRIP",
+            "TP"
+          ]
+        },
+        "frequency": {
+          "dtype": "str",
+          "null_count": 87,
+          "missing_percentage": 0.57,
+          "sample_values": [
+            "1X",
+            "1X",
+            "1X"
+          ]
+        },
+        "disp_sched": {
+          "dtype": "str",
+          "null_count": 6397,
+          "missing_percentage": 41.79,
+          "sample_values": [
+            "21",
+            "13",
+            "0"
+          ]
+        },
+        "infusion_type": {
+          "dtype": "str",
+          "null_count": 14272,
+          "missing_percentage": 93.24,
+          "sample_values": [
+            "B",
+            "B",
+            "B"
+          ]
+        },
+        "sliding_scale": {
+          "dtype": "str",
+          "null_count": 13266,
+          "missing_percentage": 86.67,
+          "sample_values": [
+            "Y",
+            "Y",
+            "Y"
+          ]
+        },
+        "lockout_interval": {
+          "dtype": "float64",
+          "null_count": 15054,
+          "missing_percentage": 98.35,
+          "sample_values": [
+            "6.0",
+            "6.0",
+            "6.0"
+          ]
+        },
+        "basal_rate": {
+          "dtype": "float64",
+          "null_count": 15053,
+          "missing_percentage": 98.35,
+          "sample_values": [
+            "0.0",
+            "0.0",
+            "0.0"
+          ]
+        },
+        "one_hr_max": {
+          "dtype": "float64",
+          "null_count": 15246,
+          "missing_percentage": 99.61,
+          "sample_values": [
+            "2.4",
+            "1.2",
+            "1.2"
+          ]
+        },
+        "doses_per_24_hrs": {
+          "dtype": "float64",
+          "null_count": 6040,
+          "missing_percentage": 39.46,
+          "sample_values": [
+            "0.0",
+            "0.0",
+            "0.0"
+          ]
+        },
+        "duration": {
+          "dtype": "float64",
+          "null_count": 11297,
+          "missing_percentage": 73.81,
+          "sample_values": [
+            "1.0",
+            "1.0",
+            "1.0"
+          ]
+        },
+        "duration_interval": {
+          "dtype": "str",
+          "null_count": 87,
+          "missing_percentage": 0.57,
+          "sample_values": [
+            "Doses",
+            "Doses",
+            "Doses"
+          ]
+        },
+        "expiration_value": {
+          "dtype": "float64",
+          "null_count": 2292,
+          "missing_percentage": 14.97,
+          "sample_values": [
+            "365.0",
+            "36.0",
+            "36.0"
+          ]
+        },
+        "expiration_unit": {
+          "dtype": "str",
+          "null_count": 102,
+          "missing_percentage": 0.67,
+          "sample_values": [
+            "Enter on Label",
+            "Enter on Label",
+            "Days"
+          ]
+        },
+        "expirationdate": {
+          "dtype": "float64",
+          "null_count": 15306,
+          "missing_percentage": 100.0,
+          "sample_values": []
+        },
+        "dispensation": {
+          "dtype": "str",
+          "null_count": 90,
+          "missing_percentage": 0.59,
+          "sample_values": [
+            "Omnicell",
+            "LET CALL",
+            "Omnicell"
+          ]
+        },
+        "fill_quantity": {
+          "dtype": "float64",
+          "null_count": 15306,
+          "missing_percentage": 100.0,
+          "sample_values": []
+        }
+      }
+    },
+    "hosp/poe.csv.gz": {
+      "section": "hosp",
+      "file_name": "poe.csv.gz",
+      "file_size_bytes": 611200,
+      "file_size_kb": 596.88,
+      "row_count": 45154,
+      "column_count": 12,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 272,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "ordertime": {
+          "min": "2110-04-11 09:13:54",
+          "max": "2201-12-17 12:39:00",
+          "non_null_count": 45154,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "poe_id": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10002930-456",
+            "10002930-454",
+            "10002930-455"
+          ]
+        },
+        "poe_seq": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "456",
+            "454",
+            "455"
+          ]
+        },
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10002930",
+            "10002930",
+            "10002930"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "20282368",
+            "20282368",
+            "20282368"
+          ]
+        },
+        "ordertime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2201-03-23 19:14:33",
+            "2201-03-23 19:14:33",
+            "2201-03-23 19:14:33"
+          ]
+        },
+        "order_type": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "General Care",
+            "General Care",
+            "General Care"
+          ]
+        },
+        "order_subtype": {
+          "dtype": "str",
+          "null_count": 28795,
+          "missing_percentage": 63.77,
+          "sample_values": [
+            "Other",
+            "Vitals/Monitoring",
+            "Activity"
+          ]
+        },
+        "transaction_type": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "New",
+            "New",
+            "New"
+          ]
+        },
+        "discontinue_of_poe_id": {
+          "dtype": "str",
+          "null_count": 34644,
+          "missing_percentage": 76.72,
+          "sample_values": [
+            "10002930-443",
+            "10002930-458",
+            "10002930-473"
+          ]
+        },
+        "discontinued_by_poe_id": {
+          "dtype": "str",
+          "null_count": 34695,
+          "missing_percentage": 76.84,
+          "sample_values": [
+            "10002930-457",
+            "10002930-460",
+            "10002930-458"
+          ]
+        },
+        "order_provider_id": {
+          "dtype": "str",
+          "null_count": 792,
+          "missing_percentage": 1.75,
+          "sample_values": [
+            "P04TDP",
+            "P04TDP",
+            "P04TDP"
+          ]
+        },
+        "order_status": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Inactive",
+            "Inactive",
+            "Inactive"
+          ]
+        }
+      }
+    },
+    "hosp/poe_detail.csv.gz": {
+      "section": "hosp",
+      "file_name": "poe_detail.csv.gz",
+      "file_size_bytes": 26574,
+      "file_size_kb": 25.95,
+      "row_count": 3795,
+      "column_count": 5,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": false,
+        "unique_hadm_ids": 0,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {},
+      "columns": {
+        "poe_id": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10011398-23",
+            "10011398-103",
+            "10011398-163"
+          ]
+        },
+        "poe_seq": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "23",
+            "103",
+            "163"
+          ]
+        },
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10011398",
+            "10011398",
+            "10011398"
+          ]
+        },
+        "field_name": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Admit to",
+            "Transfer to",
+            "Discharge Planning"
+          ]
+        },
+        "field_value": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Surgery",
+            "Surgery",
+            "Finalized"
+          ]
+        }
+      }
+    },
+    "hosp/prescriptions.csv.gz": {
+      "section": "hosp",
+      "file_name": "prescriptions.csv.gz",
+      "file_size_bytes": 606447,
+      "file_size_kb": 592.23,
+      "row_count": 18087,
+      "column_count": 21,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 250,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "starttime": {
+          "min": "2110-04-11 15:00:00",
+          "max": "2201-12-13 20:00:00",
+          "non_null_count": 18087,
+          "null_count": 0
+        },
+        "stoptime": {
+          "min": "2110-04-11 17:00:00",
+          "max": "2201-12-17 18:00:00",
+          "non_null_count": 18073,
+          "null_count": 14
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10027602",
+            "10027602",
+            "10027602"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "28166872",
+            "28166872",
+            "28166872"
+          ]
+        },
+        "pharmacy_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "27168639",
+            "40720238",
+            "62845687"
+          ]
+        },
+        "poe_id": {
+          "dtype": "str",
+          "null_count": 118,
+          "missing_percentage": 0.65,
+          "sample_values": [
+            "10023239-119",
+            "10023239-284",
+            "10023239-308"
+          ]
+        },
+        "poe_seq": {
+          "dtype": "float64",
+          "null_count": 118,
+          "missing_percentage": 0.65,
+          "sample_values": [
+            "119.0",
+            "284.0",
+            "308.0"
+          ]
+        },
+        "order_provider_id": {
+          "dtype": "str",
+          "null_count": 94,
+          "missing_percentage": 0.52,
+          "sample_values": [
+            "P45MRP",
+            "P820BX",
+            "P26UJY"
+          ]
+        },
+        "starttime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2201-10-30 12:00:00",
+            "2201-10-30 12:00:00",
+            "2201-10-31 12:00:00"
+          ]
+        },
+        "stoptime": {
+          "dtype": "str",
+          "null_count": 14,
+          "missing_percentage": 0.08,
+          "sample_values": [
+            "2137-06-22 19:00:00",
+            "2140-10-06 16:00:00",
+            "2140-10-08 19:00:00"
+          ]
+        },
+        "drug_type": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "MAIN",
+            "MAIN",
+            "MAIN"
+          ]
+        },
+        "drug": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Fentanyl Citrate",
+            "Fentanyl Citrate",
+            "Lorazepam"
+          ]
+        },
+        "formulary_drug_cd": {
+          "dtype": "str",
+          "null_count": 12,
+          "missing_percentage": 0.07,
+          "sample_values": [
+            "FENT2I",
+            "FENT2I",
+            "LORA2I"
+          ]
+        },
+        "gsn": {
+          "dtype": "str",
+          "null_count": 2519,
+          "missing_percentage": 13.93,
+          "sample_values": [
+            "027413 001723 029916 016311 001750 001740 016312 001757 001752 001753 027414 001744 001743 001730 001726 019179 ",
+            "027413 001723 029916 016311 001750 001740 016312 001757 001752 001753 027414 001744 001743 001730 001726 019179 ",
+            "027413 001723 029916 016311 001750 001740 016312 001757 001752 001753 027414 001744 001743 001730 001726 019179 "
+          ]
+        },
+        "ndc": {
+          "dtype": "float64",
+          "null_count": 21,
+          "missing_percentage": 0.12,
+          "sample_values": [
+            "2821501.0",
+            "2821501.0",
+            "2821501.0"
+          ]
+        },
+        "prod_strength": {
+          "dtype": "str",
+          "null_count": 9,
+          "missing_percentage": 0.05,
+          "sample_values": [
+            "100 Units / mL - 10 mL Vial",
+            "100 Units / mL - 10 mL Vial",
+            "100 Units / mL - 10 mL Vial"
+          ]
+        },
+        "form_rx": {
+          "dtype": "str",
+          "null_count": 18075,
+          "missing_percentage": 99.93,
+          "sample_values": [
+            "TAB",
+            "TAB",
+            "CAP"
+          ]
+        },
+        "dose_val_rx": {
+          "dtype": "str",
+          "null_count": 9,
+          "missing_percentage": 0.05,
+          "sample_values": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "dose_unit_rx": {
+          "dtype": "str",
+          "null_count": 9,
+          "missing_percentage": 0.05,
+          "sample_values": [
+            "UNIT",
+            "UNIT",
+            "UNIT"
+          ]
+        },
+        "form_val_disp": {
+          "dtype": "str",
+          "null_count": 9,
+          "missing_percentage": 0.05,
+          "sample_values": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "form_unit_disp": {
+          "dtype": "str",
+          "null_count": 9,
+          "missing_percentage": 0.05,
+          "sample_values": [
+            "mL",
+            "mL",
+            "mL"
+          ]
+        },
+        "doses_per_24_hrs": {
+          "dtype": "float64",
+          "null_count": 7383,
+          "missing_percentage": 40.82,
+          "sample_values": [
+            "1.0",
+            "0.0",
+            "1.0"
+          ]
+        },
+        "route": {
+          "dtype": "str",
+          "null_count": 6,
+          "missing_percentage": 0.03,
+          "sample_values": [
+            "SC",
+            "SC",
+            "SC"
+          ]
+        }
+      }
+    },
+    "hosp/procedures_icd.csv.gz": {
+      "section": "hosp",
+      "file_name": "procedures_icd.csv.gz",
+      "file_size_bytes": 6602,
+      "file_size_kb": 6.45,
+      "row_count": 722,
+      "column_count": 6,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 92,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 187,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "chartdate": {
+          "min": "2110-04-11",
+          "max": "2201-12-12",
+          "non_null_count": 722,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10011398",
+            "10011398",
+            "10011398"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "27505812",
+            "27505812",
+            "27505812"
+          ]
+        },
+        "seq_num": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "3",
+            "2",
+            "1"
+          ]
+        },
+        "chartdate": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2146-12-15",
+            "2146-12-15",
+            "2146-12-15"
+          ]
+        },
+        "icd_code": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "3961",
+            "3615",
+            "3614"
+          ]
+        },
+        "icd_version": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "9",
+            "9",
+            "9"
+          ]
+        }
+      }
+    },
+    "hosp/provider.csv.gz": {
+      "section": "hosp",
+      "file_name": "provider.csv.gz",
+      "file_size_bytes": 151283,
+      "file_size_kb": 147.74,
+      "row_count": 40508,
+      "column_count": 1,
+      "identifiers": {
+        "has_subject_id": false,
+        "unique_subjects": 0,
+        "has_hadm_id": false,
+        "unique_hadm_ids": 0,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {},
+      "columns": {
+        "provider_id": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "P003F3",
+            "P005JG",
+            "P005MB"
+          ]
+        }
+      }
+    },
+    "hosp/services.csv.gz": {
+      "section": "hosp",
+      "file_name": "services.csv.gz",
+      "file_size_bytes": 5072,
+      "file_size_kb": 4.95,
+      "row_count": 319,
+      "column_count": 5,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 275,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "transfertime": {
+          "min": "2110-04-11 15:09:36",
+          "max": "2201-12-11 03:04:13",
+          "non_null_count": 319,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10001725",
+            "10019003",
+            "10007818"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "25563031",
+            "28003918",
+            "22987108"
+          ]
+        },
+        "transfertime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2110-04-11 15:09:36",
+            "2148-12-21 03:32:53",
+            "2146-06-10 16:38:18"
+          ]
+        },
+        "prev_service": {
+          "dtype": "str",
+          "null_count": 275,
+          "missing_percentage": 86.21,
+          "sample_values": [
+            "TRAUM",
+            "SURG",
+            "NSURG"
+          ]
+        },
+        "curr_service": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "GYN",
+            "GYN",
+            "MED"
+          ]
+        }
+      }
+    },
+    "hosp/transfers.csv.gz": {
+      "section": "hosp",
+      "file_name": "transfers.csv.gz",
+      "file_size_bytes": 23480,
+      "file_size_kb": 22.93,
+      "row_count": 1190,
+      "column_count": 7,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 275,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {
+        "intime": {
+          "min": "2110-04-11 15:09:36",
+          "max": "2201-12-17 13:48:45",
+          "non_null_count": 1190,
+          "null_count": 0
+        },
+        "outtime": {
+          "min": "2110-04-11 15:52:22",
+          "max": "2201-12-17 13:48:45",
+          "non_null_count": 915,
+          "null_count": 275
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10009049",
+            "10025612",
+            "10020786"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "float64",
+          "null_count": 54,
+          "missing_percentage": 4.54,
+          "sample_values": [
+            "22995465.0",
+            "23403708.0",
+            "23488445.0"
+          ]
+        },
+        "transfer_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "30030230",
+            "32533329",
+            "37922399"
+          ]
+        },
+        "eventtype": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "discharge",
+            "discharge",
+            "discharge"
+          ]
+        },
+        "careunit": {
+          "dtype": "str",
+          "null_count": 275,
+          "missing_percentage": 23.11,
+          "sample_values": [
+            "Med/Surg",
+            "Med/Surg",
+            "Med/Surg"
+          ]
+        },
+        "intime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2174-05-31 14:21:47",
+            "2125-10-03 12:25:27",
+            "2189-06-13 17:25:44"
+          ]
+        },
+        "outtime": {
+          "dtype": "str",
+          "null_count": 275,
+          "missing_percentage": 23.11,
+          "sample_values": [
+            "2154-01-09 11:53:26",
+            "2125-10-03 12:25:27",
+            "2129-04-11 17:45:53"
+          ]
+        }
+      }
+    },
+    "icu/chartevents.csv.gz": {
+      "section": "icu",
+      "file_name": "chartevents.csv.gz",
+      "file_size_bytes": 5549389,
+      "file_size_kb": 5419.33,
+      "row_count": 668862,
+      "column_count": 11,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 128,
+        "has_stay_id": true,
+        "unique_stay_ids": 140
+      },
+      "timestamp_columns": {
+        "charttime": {
+          "min": "2110-04-11 15:52:00",
+          "max": "2201-12-13 18:16:00",
+          "non_null_count": 668862,
+          "null_count": 0
+        },
+        "storetime": {
+          "min": "2110-04-11 16:01:00",
+          "max": "2201-12-13 18:06:00",
+          "non_null_count": 667703,
+          "null_count": 1159
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10005817",
+            "10005817",
+            "10005817"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "20626031",
+            "20626031",
+            "20626031"
+          ]
+        },
+        "stay_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "32604416",
+            "32604416",
+            "32604416"
+          ]
+        },
+        "caregiver_id": {
+          "dtype": "float64",
+          "null_count": 24240,
+          "missing_percentage": 3.62,
+          "sample_values": [
+            "6770.0",
+            "6770.0",
+            "6770.0"
+          ]
+        },
+        "charttime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2132-12-16 00:00:00",
+            "2132-12-16 00:00:00",
+            "2132-12-16 00:00:00"
+          ]
+        },
+        "storetime": {
+          "dtype": "str",
+          "null_count": 1159,
+          "missing_percentage": 0.17,
+          "sample_values": [
+            "2132-12-15 23:45:00",
+            "2132-12-15 23:43:00",
+            "2132-12-15 23:47:00"
+          ]
+        },
+        "itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "225054",
+            "223769",
+            "223956"
+          ]
+        },
+        "value": {
+          "dtype": "str",
+          "null_count": 20730,
+          "missing_percentage": 3.1,
+          "sample_values": [
+            "On ",
+            "100",
+            "Atrial demand"
+          ]
+        },
+        "valuenum": {
+          "dtype": "float64",
+          "null_count": 411388,
+          "missing_percentage": 61.51,
+          "sample_values": [
+            "100.0",
+            "0.0",
+            "52.0"
+          ]
+        },
+        "valueuom": {
+          "dtype": "str",
+          "null_count": 506291,
+          "missing_percentage": 75.69,
+          "sample_values": [
+            "%",
+            "bpm",
+            "bpm"
+          ]
+        },
+        "warning": {
+          "dtype": "float64",
+          "null_count": 1159,
+          "missing_percentage": 0.17,
+          "sample_values": [
+            "0.0",
+            "0.0",
+            "0.0"
+          ]
+        }
+      }
+    },
+    "icu/d_items.csv.gz": {
+      "section": "icu",
+      "file_name": "d_items.csv.gz",
+      "file_size_bytes": 57073,
+      "file_size_kb": 55.74,
+      "row_count": 4014,
+      "column_count": 9,
+      "identifiers": {
+        "has_subject_id": false,
+        "unique_subjects": 0,
+        "has_hadm_id": false,
+        "unique_hadm_ids": 0,
+        "has_stay_id": false,
+        "unique_stay_ids": 0
+      },
+      "timestamp_columns": {},
+      "columns": {
+        "itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "226228",
+            "226545",
+            "229877"
+          ]
+        },
+        "label": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Gender",
+            "Race",
+            "Suction events (CH)"
+          ]
+        },
+        "abbreviation": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Gender",
+            "Race",
+            "Suction events (CH)"
+          ]
+        },
+        "linksto": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "chartevents",
+            "chartevents",
+            "chartevents"
+          ]
+        },
+        "category": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "ADT",
+            "ADT",
+            "ECMO"
+          ]
+        },
+        "unitname": {
+          "dtype": "str",
+          "null_count": 2906,
+          "missing_percentage": 72.4,
+          "sample_values": [
+            "L/min",
+            "%",
+            "RPM"
+          ]
+        },
+        "param_type": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Text",
+            "Text",
+            "Text"
+          ]
+        },
+        "lownormalvalue": {
+          "dtype": "float64",
+          "null_count": 3995,
+          "missing_percentage": 99.53,
+          "sample_values": [
+            "4.0",
+            "4.0",
+            "-2.0"
+          ]
+        },
+        "highnormalvalue": {
+          "dtype": "float64",
+          "null_count": 3992,
+          "missing_percentage": 99.45,
+          "sample_values": [
+            "20.0",
+            "20.0",
+            "12.100000381469728"
+          ]
+        }
+      }
+    },
+    "icu/datetimeevents.csv.gz": {
+      "section": "icu",
+      "file_name": "datetimeevents.csv.gz",
+      "file_size_bytes": 119448,
+      "file_size_kb": 116.65,
+      "row_count": 15280,
+      "column_count": 10,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 127,
+        "has_stay_id": true,
+        "unique_stay_ids": 138
+      },
+      "timestamp_columns": {
+        "charttime": {
+          "min": "2110-04-11 16:02:00",
+          "max": "2201-12-13 14:18:00",
+          "non_null_count": 15280,
+          "null_count": 0
+        },
+        "storetime": {
+          "min": "2110-04-11 16:03:00",
+          "max": "2201-12-13 14:18:00",
+          "non_null_count": 15280,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10002428",
+            "10002428",
+            "10002428"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "23473524",
+            "23473524",
+            "23473524"
+          ]
+        },
+        "stay_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "35479615",
+            "35479615",
+            "35479615"
+          ]
+        },
+        "caregiver_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "29441",
+            "29441",
+            "29441"
+          ]
+        },
+        "charttime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2156-05-15 10:50:00",
+            "2156-05-15 10:50:00",
+            "2156-05-15 10:50:00"
+          ]
+        },
+        "storetime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2156-05-15 10:50:00",
+            "2156-05-15 10:50:00",
+            "2156-05-15 10:50:00"
+          ]
+        },
+        "itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "225343",
+            "225348",
+            "225345"
+          ]
+        },
+        "value": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2156-05-11 00:00:00",
+            "2156-05-11 00:00:00",
+            "2156-05-14 09:00:00"
+          ]
+        },
+        "valueuom": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Date",
+            "Date",
+            "Date and Time"
+          ]
+        },
+        "warning": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "0",
+            "0",
+            "0"
+          ]
+        }
+      }
+    },
+    "icu/icustays.csv.gz": {
+      "section": "icu",
+      "file_name": "icustays.csv.gz",
+      "file_size_bytes": 5667,
+      "file_size_kb": 5.53,
+      "row_count": 140,
+      "column_count": 8,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 128,
+        "has_stay_id": true,
+        "unique_stay_ids": 140
+      },
+      "timestamp_columns": {
+        "intime": {
+          "min": "2110-04-11 15:52:22",
+          "max": "2201-12-11 20:11:52",
+          "non_null_count": 140,
+          "null_count": 0
+        },
+        "outtime": {
+          "min": "2110-04-12 23:59:56",
+          "max": "2201-12-13 18:29:00",
+          "non_null_count": 140,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10018328",
+            "10020187",
+            "10020187"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "23786647",
+            "24104168",
+            "26842957"
+          ]
+        },
+        "stay_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "31269608",
+            "37509585",
+            "32554129"
+          ]
+        },
+        "first_careunit": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Neuro Stepdown",
+            "Neuro Surgical Intensive Care Unit (Neuro SICU)",
+            "Neuro Intermediate"
+          ]
+        },
+        "last_careunit": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Neuro Stepdown",
+            "Neuro Stepdown",
+            "Neuro Intermediate"
+          ]
+        },
+        "intime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2154-04-24 23:03:44",
+            "2169-01-15 04:56:00",
+            "2170-02-24 18:18:46"
+          ]
+        },
+        "outtime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2154-05-02 15:55:21",
+            "2169-01-20 15:47:50",
+            "2170-02-25 15:15:26"
+          ]
+        },
+        "los": {
+          "dtype": "float64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "7.702511574074075",
+            "5.452662037037037",
+            "0.8726851851851852"
+          ]
+        }
+      }
+    },
+    "icu/ingredientevents.csv.gz": {
+      "section": "icu",
+      "file_name": "ingredientevents.csv.gz",
+      "file_size_bytes": 601205,
+      "file_size_kb": 587.11,
+      "row_count": 25728,
+      "column_count": 17,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 99,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 127,
+        "has_stay_id": true,
+        "unique_stay_ids": 138
+      },
+      "timestamp_columns": {
+        "starttime": {
+          "min": "2110-04-11 15:55:00",
+          "max": "2201-12-13 16:51:00",
+          "non_null_count": 25728,
+          "null_count": 0
+        },
+        "endtime": {
+          "min": "2110-04-11 15:56:00",
+          "max": "2201-12-13 18:28:00",
+          "non_null_count": 25728,
+          "null_count": 0
+        },
+        "storetime": {
+          "min": "2110-04-11 18:43:00",
+          "max": "2201-12-13 16:51:00",
+          "non_null_count": 25728,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10005817",
+            "10005817",
+            "10005817"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "20626031",
+            "20626031",
+            "20626031"
+          ]
+        },
+        "stay_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "32604416",
+            "32604416",
+            "32604416"
+          ]
+        },
+        "caregiver_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "4793",
+            "4793",
+            "20310"
+          ]
+        },
+        "starttime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2132-12-17 05:00:00",
+            "2132-12-17 05:00:00",
+            "2132-12-17 12:00:00"
+          ]
+        },
+        "endtime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2132-12-17 06:00:00",
+            "2132-12-17 06:00:00",
+            "2132-12-17 13:00:00"
+          ]
+        },
+        "storetime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2132-12-17 06:01:00",
+            "2132-12-17 06:01:00",
+            "2132-12-17 12:48:00"
+          ]
+        },
+        "itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "227074",
+            "220490",
+            "220490"
+          ]
+        },
+        "amount": {
+          "dtype": "float64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "49.999998807907104",
+            "49.999998807907104",
+            "249.99999046325684"
+          ]
+        },
+        "amountuom": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "ml",
+            "ml",
+            "ml"
+          ]
+        },
+        "rate": {
+          "dtype": "float64",
+          "null_count": 9085,
+          "missing_percentage": 35.31,
+          "sample_values": [
+            "50.0",
+            "50.0",
+            "249.9999847412109"
+          ]
+        },
+        "rateuom": {
+          "dtype": "str",
+          "null_count": 9085,
+          "missing_percentage": 35.31,
+          "sample_values": [
+            "mL/hour",
+            "mL/hour",
+            "mL/hour"
+          ]
+        },
+        "orderid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "7330951",
+            "7330951",
+            "5334154"
+          ]
+        },
+        "linkorderid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "7330951",
+            "7330951",
+            "5334154"
+          ]
+        },
+        "statusdescription": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "FinishedRunning",
+            "FinishedRunning",
+            "FinishedRunning"
+          ]
+        },
+        "originalamount": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "originalrate": {
+          "dtype": "float64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "50.0",
+            "50.0",
+            "250.0"
+          ]
+        }
+      }
+    },
+    "icu/inputevents.csv.gz": {
+      "section": "icu",
+      "file_name": "inputevents.csv.gz",
+      "file_size_bytes": 788253,
+      "file_size_kb": 769.78,
+      "row_count": 20404,
+      "column_count": 26,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 99,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 127,
+        "has_stay_id": true,
+        "unique_stay_ids": 138
+      },
+      "timestamp_columns": {
+        "starttime": {
+          "min": "2110-04-11 15:55:00",
+          "max": "2201-12-13 16:51:00",
+          "non_null_count": 20404,
+          "null_count": 0
+        },
+        "endtime": {
+          "min": "2110-04-11 15:56:00",
+          "max": "2201-12-13 18:28:00",
+          "non_null_count": 20404,
+          "null_count": 0
+        },
+        "storetime": {
+          "min": "2110-04-11 18:43:00",
+          "max": "2201-12-13 16:51:00",
+          "non_null_count": 20404,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10005817",
+            "10005817",
+            "10005817"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "20626031",
+            "20626031",
+            "20626031"
+          ]
+        },
+        "stay_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "32604416",
+            "32604416",
+            "32604416"
+          ]
+        },
+        "caregiver_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "4793",
+            "92805",
+            "20310"
+          ]
+        },
+        "starttime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2132-12-16 19:50:00",
+            "2132-12-15 20:15:00",
+            "2132-12-17 09:15:00"
+          ]
+        },
+        "endtime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2132-12-16 19:51:00",
+            "2132-12-15 20:16:00",
+            "2132-12-17 09:16:00"
+          ]
+        },
+        "storetime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2132-12-16 19:50:00",
+            "2132-12-15 20:11:00",
+            "2132-12-17 09:28:00"
+          ]
+        },
+        "itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "225798",
+            "225798",
+            "225798"
+          ]
+        },
+        "amount": {
+          "dtype": "float64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "1.0",
+            "1.0",
+            "1.0"
+          ]
+        },
+        "amountuom": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "dose",
+            "dose",
+            "dose"
+          ]
+        },
+        "rate": {
+          "dtype": "float64",
+          "null_count": 9366,
+          "missing_percentage": 45.9,
+          "sample_values": [
+            "5.003638744354248",
+            "40.90279769897461",
+            "20.48247718811035"
+          ]
+        },
+        "rateuom": {
+          "dtype": "str",
+          "null_count": 9366,
+          "missing_percentage": 45.9,
+          "sample_values": [
+            "mL/hour",
+            "mL/hour",
+            "mL/hour"
+          ]
+        },
+        "orderid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "3316866",
+            "8515923",
+            "8912103"
+          ]
+        },
+        "linkorderid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "3316866",
+            "8515923",
+            "8912103"
+          ]
+        },
+        "ordercategoryname": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "08-Antibiotics (IV)",
+            "08-Antibiotics (IV)",
+            "08-Antibiotics (IV)"
+          ]
+        },
+        "secondaryordercategoryname": {
+          "dtype": "str",
+          "null_count": 6260,
+          "missing_percentage": 30.68,
+          "sample_values": [
+            "02-Fluids (Crystalloids)",
+            "02-Fluids (Crystalloids)",
+            "02-Fluids (Crystalloids)"
+          ]
+        },
+        "ordercomponenttypedescription": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Main order parameter",
+            "Main order parameter",
+            "Main order parameter"
+          ]
+        },
+        "ordercategorydescription": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Drug Push",
+            "Drug Push",
+            "Drug Push"
+          ]
+        },
+        "patientweight": {
+          "dtype": "float64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "91.0",
+            "91.0",
+            "91.0"
+          ]
+        },
+        "totalamount": {
+          "dtype": "float64",
+          "null_count": 3314,
+          "missing_percentage": 16.24,
+          "sample_values": [
+            "500.0",
+            "500.0",
+            "500.0"
+          ]
+        },
+        "totalamountuom": {
+          "dtype": "str",
+          "null_count": 3312,
+          "missing_percentage": 16.23,
+          "sample_values": [
+            "ml",
+            "ml",
+            "ml"
+          ]
+        },
+        "isopenbag": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "continueinnextdept": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "statusdescription": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "FinishedRunning",
+            "FinishedRunning",
+            "FinishedRunning"
+          ]
+        },
+        "originalamount": {
+          "dtype": "float64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "1.0",
+            "1.0",
+            "1.0"
+          ]
+        },
+        "originalrate": {
+          "dtype": "float64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "1.0",
+            "1.0",
+            "1.0"
+          ]
+        }
+      }
+    },
+    "icu/outputevents.csv.gz": {
+      "section": "icu",
+      "file_name": "outputevents.csv.gz",
+      "file_size_bytes": 96413,
+      "file_size_kb": 94.15,
+      "row_count": 9362,
+      "column_count": 9,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 126,
+        "has_stay_id": true,
+        "unique_stay_ids": 137
+      },
+      "timestamp_columns": {
+        "charttime": {
+          "min": "2110-04-11 17:00:00",
+          "max": "2201-12-13 18:00:00",
+          "non_null_count": 9362,
+          "null_count": 0
+        },
+        "storetime": {
+          "min": "2110-04-11 18:44:00",
+          "max": "2201-12-13 17:50:00",
+          "non_null_count": 9362,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10002428",
+            "10002428",
+            "10002428"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "23473524",
+            "23473524",
+            "23473524"
+          ]
+        },
+        "stay_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "35479615",
+            "35479615",
+            "35479615"
+          ]
+        },
+        "caregiver_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "29441",
+            "29441",
+            "29441"
+          ]
+        },
+        "charttime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2156-05-15 18:00:00",
+            "2156-05-15 12:00:00",
+            "2156-05-15 13:00:00"
+          ]
+        },
+        "storetime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2156-05-15 17:42:00",
+            "2156-05-15 12:08:00",
+            "2156-05-15 13:00:00"
+          ]
+        },
+        "itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "226583",
+            "226559",
+            "226559"
+          ]
+        },
+        "value": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "600",
+            "60",
+            "45"
+          ]
+        },
+        "valueuom": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "ml",
+            "ml",
+            "ml"
+          ]
+        }
+      }
+    },
+    "icu/procedureevents.csv.gz": {
+      "section": "icu",
+      "file_name": "procedureevents.csv.gz",
+      "file_size_bytes": 44817,
+      "file_size_kb": 43.77,
+      "row_count": 1468,
+      "column_count": 22,
+      "identifiers": {
+        "has_subject_id": true,
+        "unique_subjects": 100,
+        "has_hadm_id": true,
+        "unique_hadm_ids": 128,
+        "has_stay_id": true,
+        "unique_stay_ids": 138
+      },
+      "timestamp_columns": {
+        "starttime": {
+          "min": "2110-04-11 16:02:00",
+          "max": "2201-12-12 14:00:00",
+          "non_null_count": 1468,
+          "null_count": 0
+        },
+        "endtime": {
+          "min": "2110-04-12 23:59:00",
+          "max": "2201-12-13 18:29:00",
+          "non_null_count": 1468,
+          "null_count": 0
+        },
+        "storetime": {
+          "min": "2110-04-13 00:00:02.040",
+          "max": "2201-12-13 18:29:08.900",
+          "non_null_count": 1468,
+          "null_count": 0
+        }
+      },
+      "columns": {
+        "subject_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "10027445",
+            "10027445",
+            "10027445"
+          ]
+        },
+        "hadm_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "26275841",
+            "26275841",
+            "26275841"
+          ]
+        },
+        "stay_id": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "34499716",
+            "34499716",
+            "34499716"
+          ]
+        },
+        "caregiver_id": {
+          "dtype": "float64",
+          "null_count": 242,
+          "missing_percentage": 16.49,
+          "sample_values": [
+            "10712.0",
+            "80518.0",
+            "96407.0"
+          ]
+        },
+        "starttime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2142-07-31 01:54:00",
+            "2142-07-31 08:18:00",
+            "2142-07-31 06:00:00"
+          ]
+        },
+        "endtime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2142-08-02 10:44:00",
+            "2142-08-03 15:10:00",
+            "2142-08-03 06:03:00"
+          ]
+        },
+        "storetime": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "2142-08-02 10:44:00",
+            "2142-08-03 15:23:00",
+            "2142-08-03 08:16:00"
+          ]
+        },
+        "itemid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "225792",
+            "224263",
+            "224275"
+          ]
+        },
+        "value": {
+          "dtype": "float64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "3410.0",
+            "4732.0",
+            "4323.0"
+          ]
+        },
+        "valueuom": {
+          "dtype": "str",
+          "null_count": 771,
+          "missing_percentage": 52.52,
+          "sample_values": [
+            "min",
+            "min",
+            "min"
+          ]
+        },
+        "location": {
+          "dtype": "str",
+          "null_count": 1115,
+          "missing_percentage": 75.95,
+          "sample_values": [
+            "Right Antecubital",
+            "Left Basilic Lower Arm",
+            "Left Cephalic Lower Arm"
+          ]
+        },
+        "locationcategory": {
+          "dtype": "str",
+          "null_count": 1115,
+          "missing_percentage": 75.95,
+          "sample_values": [
+            "Peripheral",
+            "Peripheral",
+            "Peripheral"
+          ]
+        },
+        "orderid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "532221",
+            "401769",
+            "9714245"
+          ]
+        },
+        "linkorderid": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "532221",
+            "401769",
+            "9714245"
+          ]
+        },
+        "ordercategoryname": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "Ventilation",
+            "Invasive Lines",
+            "Peripheral Lines"
+          ]
+        },
+        "ordercategorydescription": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "ContinuousProcess",
+            "ContinuousProcess",
+            "ContinuousProcess"
+          ]
+        },
+        "patientweight": {
+          "dtype": "float64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "103.0",
+            "103.0",
+            "103.0"
+          ]
+        },
+        "isopenbag": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "1",
+            "1",
+            "1"
+          ]
+        },
+        "continueinnextdept": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "statusdescription": {
+          "dtype": "str",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "FinishedRunning",
+            "FinishedRunning",
+            "FinishedRunning"
+          ]
+        },
+        "ORIGINALAMOUNT": {
+          "dtype": "float64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "3410.0",
+            "4732.0",
+            "4323.0"
+          ]
+        },
+        "ORIGINALRATE": {
+          "dtype": "int64",
+          "null_count": 0,
+          "missing_percentage": 0.0,
+          "sample_values": [
+            "1",
+            "1",
+            "1"
+          ]
+        }
+      }
+    }
+  },
+  "summary": {
+    "total_tables_profiled": 28,
+    "total_rows_dataset": 1208575,
+    "patient_registry_count": 100,
+    "icu_stays_count": 140,
+    "admissions_count": 275
+  }
+}

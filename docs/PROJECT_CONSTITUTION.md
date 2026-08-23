@@ -1,10 +1,10 @@
-﻿# PROJECT CONSTITUTION
+# PROJECT CONSTITUTION
 ## AI-Driven Predictive Patient Digital Twin for ICU Healthcare
-### B.Tech Major Project — Phase 0 Architecture Document
+### B.Tech Major Project — Living Architecture Document
 
-> **Status:** Phase 0 Complete (v1.1 — Architecture Corrections Applied)
+> **Status:** Phase 1 Complete — Research Decisions Locked
 > **Date:** August 2026
-> **Revision:** 1.1
+> **Revision:** 1.2 (Phase 1 decisions incorporated)
 
 ---
 
@@ -67,17 +67,20 @@ reconstructed from historical clinical data replayed as a simulated real-time st
 
 **ICU patient physiological deterioration / early deterioration prediction.**
 
-The specific prediction target has NOT been finalised at Phase 0.
-It will be selected by the student research team after Phase 1 dataset analysis.
+> [!IMPORTANT]
+> The prediction targets have been finalised by the student research team after Phase 1 EDA.
+> See `docs/PHASE1_DECISIONS.md` for the full decision record.
 
-Candidate deterioration labels (illustrative only — not finalisedd):
-- Onset of physiological deterioration (composite)
-- ICU mortality within N hours
-- Sepsis onset (using Sepsis-3 or another justified definition)
-- Acute respiratory failure
-- Haemodynamic instability
+**Approved primary target:** Mechanical ventilation initiation  
+**Approved secondary target:** Vasopressor initiation  
+**Approved prediction horizons:** 1 hour, 3 hours, 6 hours  
+**Mortality:** Excluded as primary target (class imbalance — 15/275 admissions in Demo).
+May be explored as a secondary outcome if full MIMIC-IV access is obtained.
 
-**Sepsis-3 is NOT the mandated label.** It is one candidate among several.
+**Sepsis-3 is NOT used.** The approved targets are operationally defined from
+`icu/procedureevents` (ventilation) and `icu/inputevents` (vasopressors).
+Final label derivation logic is a student team responsibility (Phase 5).
+
 
 ### 1.2 Critical Boundaries
 
