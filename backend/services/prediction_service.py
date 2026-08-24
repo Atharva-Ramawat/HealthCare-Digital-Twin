@@ -207,12 +207,17 @@ class PredictionService:
         delta = in_t - base_t
 
         accum_grads = torch.zeros_like(in_t)
-        for alpha in torch.linspace(0.0, 1.0, steps):
-            interp = (base_t + alpha * delta).requires_grad_()
-            r1, _, _, _ = self.model(interp)
-            self.model.zero_grad()
-            r1.squeeze().backward(retain_graph=True)
-            accum_grads += interp.grad
+        prev_training_state = self.model.training
+        self.model.train()
+        try:
+            for alpha in torch.linspace(0.0, 1.0, steps):
+                interp = (base_t + alpha * delta).requires_grad_()
+                r1, _, _, _ = self.model(interp)
+                self.model.zero_grad()
+                r1.squeeze().backward(retain_graph=True)
+                accum_grads += interp.grad
+        finally:
+            self.model.train(prev_training_state)
 
         avg_grads = accum_grads / steps
         ig = (delta * avg_grads).detach().cpu().squeeze().numpy()  # (24, 5)

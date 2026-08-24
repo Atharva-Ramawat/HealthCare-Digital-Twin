@@ -1,0 +1,44 @@
+# Experiment D3: Risk Tier Classification Single Task
+experiment_name: "d3_risk_tier_only"
+description: "Single-task 3-class Risk Tier classification (Low, Medium, High)"
+
+dataset_root: null
+output_dir: "ml/temporal/outputs"
+checkpoint_dir: "models/checkpoints"
+
+sequence_length: 24
+sampling_interval: "15min"
+forecast_horizon_steps: 4
+forecast_num_variables: 5
+input_channels: 45
+
+conv_filters: 64
+conv_kernel_size: 3
+lstm_hidden_dim: 64
+lstm_num_layers: 2
+lstm_bidirectional: true
+dropout: 0.2
+
+# Heads: Only risk tier is active
+enable_forecast_head: false
+enable_instability_head: false
+enable_risk_tier_head: true
+enable_treatment_response_head: false
+
+loss_weight_forecast: 0.0
+loss_weight_risk_tier: 1.0
+loss_weight_instability: 0.0
+loss_weight_treatment_response: 0.0
+
+batch_size: 64
+num_workers: 4
+learning_rate: 0.001
+weight_decay: 0.0001
+gradient_clip_val: 1.0
+epochs: 30
+patience: 6
+random_seed: 42
+
+mixed_precision: true
+device: "auto"
+pin_memory: true

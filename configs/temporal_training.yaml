@@ -1,0 +1,55 @@
+# ============================================================
+# Portable Temporal Model Training Configuration
+# Compatible with Linux DGX, HPC Clusters, and Local Dev
+# ============================================================
+
+experiment_name: "d5_multitask_full"
+description: "Full multi-task CNN-BiLSTM on MIMIC-IV Pulmonary ICU Cohort"
+
+# Paths (Supports Environment Variable Overrides: MIMIC_IV_ROOT, DATA_ROOT, OUTPUT_DIR, CHECKPOINT_DIR)
+# Relative paths resolve against the project root directory
+dataset_root: null            # Defaults to env MIMIC_IV_ROOT or data/raw/mimic_iv_demo
+output_dir: "ml/temporal/outputs"
+checkpoint_dir: "models/checkpoints"
+
+# Temporal Sampling & Context
+sequence_length: 24           # 24 steps * 15 min = 6.0 hours historical context
+sampling_interval: "15min"
+forecast_horizon_steps: 4     # 4 steps * 15 min = 1.0 hour forecast horizon
+forecast_num_variables: 5     # HR, SpO2, SBP, RR, Temperature
+input_channels: 45
+
+# Architecture Hyperparameters
+conv_filters: 64
+conv_kernel_size: 3
+lstm_hidden_dim: 64
+lstm_num_layers: 2
+lstm_bidirectional: true
+dropout: 0.2
+
+# Task Head Enablement
+enable_forecast_head: true
+enable_instability_head: true
+enable_risk_tier_head: true
+enable_treatment_response_head: true
+
+# Multi-Task Loss Balancing Weights
+loss_weight_forecast: 1.0
+loss_weight_risk_tier: 0.5
+loss_weight_instability: 0.1
+loss_weight_treatment_response: 0.1
+
+# Optimization & Training
+batch_size: 64
+num_workers: 4                # Set to 0 on Windows dev, 4-8 on Linux DGX
+learning_rate: 0.001
+weight_decay: 0.0001
+gradient_clip_val: 1.0
+epochs: 30
+patience: 6
+random_seed: 42
+
+# Hardware & Acceleration
+mixed_precision: true         # Uses bfloat16 on Ampere/Hopper Tensor Cores, float16 fallback
+device: "auto"                # "auto", "cuda", "cuda:0", or "cpu"
+pin_memory: true

@@ -82,8 +82,10 @@ class TemporalGridAligner:
             aligned_df: DataFrame with raw + imputed physiological variables,
                         missingness indicator channels ('mask_{var}'), and timestamps.
         """
-        # 1. Establish Uniform Time Grid
-        grid_index = pd.date_range(start=intime, end=outtime, freq=self.freq_str)
+        # 1. Establish Uniform Time Grid aligned to exact frequency intervals
+        start_time = pd.to_datetime(intime).floor(self.freq_str)
+        end_time = pd.to_datetime(outtime).ceil(self.freq_str)
+        grid_index = pd.date_range(start=start_time, end=end_time, freq=self.freq_str)
         if len(grid_index) < 2:
             return pd.DataFrame()
 

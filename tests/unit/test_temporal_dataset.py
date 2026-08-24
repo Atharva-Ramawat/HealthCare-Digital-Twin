@@ -106,16 +106,22 @@ def test_target_extraction_shapes():
 def test_dataset_tensor_integrity():
     X = np.random.randn(10, 24, 45).astype(np.float32)
     y_det = np.zeros(10, dtype=np.float32)
+    m_det = np.ones(10, dtype=np.float32)
     y_tier = np.zeros(10, dtype=np.int64)
     y_fore = np.random.randn(10, 4, 5).astype(np.float32)
+    m_fore = np.ones((10, 4, 5), dtype=np.float32)
     y_resp = np.zeros(10, dtype=np.int64)
+    m_resp = np.zeros(10, dtype=np.float32)
     meta = [{"stay_id": i} for i in range(10)]
 
-    dataset = MIMICIVTemporalDataset(X, y_det, y_tier, y_fore, y_resp, meta)
+    dataset = MIMICIVTemporalDataset(X, y_det, m_det, y_tier, y_fore, m_fore, y_resp, m_resp, meta)
     assert len(dataset) == 10
     item = dataset[0]
     assert item[0].shape == torch.Size([24, 45])
     assert item[1].shape == torch.Size([])
     assert item[2].shape == torch.Size([])
-    assert item[3].shape == torch.Size([4, 5])
-    assert item[4].shape == torch.Size([])
+    assert item[3].shape == torch.Size([])
+    assert item[4].shape == torch.Size([4, 5])
+    assert item[5].shape == torch.Size([4, 5])
+    assert item[6].shape == torch.Size([])
+    assert item[7].shape == torch.Size([])

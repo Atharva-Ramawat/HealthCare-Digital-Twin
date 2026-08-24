@@ -1,7 +1,7 @@
 """
 MIMIC-IV Time-Aligned Treatment & Medication Engine.
-Tracks active ICU interventions (Vasopressors, Diuretics, Antibiotics, Bronchodilators, Corticosteroids)
-and extracts discrete treatment initiation episodes for observational treatment-response trajectory estimation.
+Tracks active ICU interventions (Vasopressors, Diuretics, Antibiotics, Bronchodilators, Corticosteroids),
+extracts discrete event-linked treatment initiation episodes (T0), and manages pre/post observation windows.
 """
 
 import os
@@ -23,7 +23,7 @@ TREATMENT_CATEGORIES = {
 
 class TreatmentTimelineEngine:
     """
-    Constructs time-aligned treatment arrays and identifies discrete treatment initiation episodes.
+    Constructs time-aligned treatment arrays and extracts discrete event-linked treatment initiation episodes.
     """
 
     def __init__(
@@ -97,6 +97,74 @@ class TreatmentTimelineEngine:
 
         return tx_df
 
+    def extract_discrete_treatment_episodes(
+        self,
+        stay_id: int,
+        subject_id: int,
+        intime: pd.Timestamp,
+        outtime: pd.Timestamp,
+        pre_window_hours: float = 2.0,
+        post_window_hours: float = 2.0
+    ) -> List[Dict[str, Any]]:
+        """
+        Extract discrete treatment initiation events (T0) with valid pre- and post-intervention bounds.
+        """
+        episodes = []
+
+        # 1. Infusions from inputevents
+        if not self.inputevents_df.empty:
+            stay_in = self.inputevents_df[self.inputevents_df["stay_id"] == stay_id].sort_values("starttime")
+            for _, row in stay_in.iterrows():
+                cat = self._categorize_drug(str(row.get("label", "")))
+                t0 = row.get("starttime")
+                if cat and pd.notnull(t0):
+                    pre_start = t0 - pd.Timedelta(hours=pre_window_hours)
+                    post_end = t0 + pd.Timedelta(hours=post_window_hours)
+                    
+                    is_eligible = (pre_start >= intime) and (post_end <= outtime)
+                    episodes.append({
+                        "patient_id": subject_id,
+                        "stay_id": stay_id,
+                        "treatment_category": cat,
+                        "drug_name": str(row.get("label", "")),
+                        "treatment_source": "icu_inputevents",
+                        "treatment_event_time": str(t0),
+                        "t0_timestamp": t0,
+                        "pre_window_start": str(pre_start),
+                        "pre_window_end": str(t0),
+                        "post_window_start": str(t0),
+                        "post_window_end": str(post_end),
+                        "is_eligible_window": is_eligible
+                    })
+
+        # 2. Prescriptions
+        if not self.prescriptions_df.empty:
+            stay_rx = self.prescriptions_df[self.prescriptions_df["subject_id"] == subject_id].sort_values("starttime")
+            for _, row in stay_rx.iterrows():
+                cat = self._categorize_drug(str(row.get("drug", "")))
+                t0 = row.get("starttime")
+                if cat and pd.notnull(t0) and (t0 >= intime) and (t0 <= outtime):
+                    pre_start = t0 - pd.Timedelta(hours=pre_window_hours)
+                    post_end = t0 + pd.Timedelta(hours=post_window_hours)
+                    
+                    is_eligible = (pre_start >= intime) and (post_end <= outtime)
+                    episodes.append({
+                        "patient_id": subject_id,
+                        "stay_id": stay_id,
+                        "treatment_category": cat,
+                        "drug_name": str(row.get("drug", "")),
+                        "treatment_source": "hosp_prescriptions",
+                        "treatment_event_time": str(t0),
+                        "t0_timestamp": t0,
+                        "pre_window_start": str(pre_start),
+                        "pre_window_end": str(t0),
+                        "post_window_start": str(t0),
+                        "post_window_end": str(post_end),
+                        "is_eligible_window": is_eligible
+                    })
+
+        return episodes
+
     def audit_treatment_episodes(
         self,
         cohort_stays: List[int]
@@ -106,8 +174,6 @@ class TreatmentTimelineEngine:
         """
         category_counts = {cat: 0 for cat in TREATMENT_CATEGORIES.keys()}
         raw_event_rows = 0
-        overlapping_events = 0
-        episodes_list = []
 
         # Tally infusions
         if not self.inputevents_df.empty:
@@ -120,18 +186,15 @@ class TreatmentTimelineEngine:
 
         # Tally prescriptions
         if not self.prescriptions_df.empty:
-            # Match prescriptions by hadm_id or subject_id
             for _, row in self.prescriptions_df.iterrows():
                 cat = self._categorize_drug(str(row["drug"]))
                 if cat:
                     category_counts[cat] += 1
                     raw_event_rows += 1
 
-        total_category_sum = sum(category_counts.values())
-
-        audit_result = {
+        return {
             "total_raw_treatment_rows": raw_event_rows,
-            "category_sum_total": total_category_sum,
+            "category_sum_total": sum(category_counts.values()),
             "category_breakdown": category_counts,
             "explanation_of_discrepancy": (
                 "The sum of treatment rows across categories exceeds unique initiation episodes because: "
@@ -141,11 +204,3 @@ class TreatmentTimelineEngine:
                 "and (3) Prescriptions and inputevents capture both order generation and bedside administration."
             )
         }
-
-        return audit_result
-
-
-if __name__ == "__main__":
-    engine = TreatmentTimelineEngine()
-    audit = engine.audit_treatment_episodes([])
-    print("Treatment Timeline Engine initialized. Audit breakdown:", audit["category_breakdown"])
