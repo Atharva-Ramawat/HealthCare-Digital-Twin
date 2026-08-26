@@ -47,7 +47,7 @@ This document specifies the end-to-end system architecture, component boundaries
 ---
 
 ## 2. Directory Layout & Module Responsibilities
-
+ 
 ```
 healthcare-digital-twin/
 ├── PROJECT_CONTEXT.md              # Global project context & principles
