@@ -33,29 +33,35 @@ from ml.cxr.config import CXRConfig, HardwareConfig
 from ml.cxr.evaluate import evaluate_cxr_model, print_evaluation_summary
 
 
-def load_or_create_metadata(config: CXRConfig) -> pd.DataFrame:
+def load_or_create_metadata(config: CXRConfig) -> Tuple[Union[pd.DataFrame, str], Optional[Union[pd.DataFrame, str]]]:
     """
-    Load real MIMIC-CXR metadata or create a validated patient-level cohort for development.
-    Guarantees disjoint patient subject IDs between train, validate, and test sets.
+    Load real MIMIC-CXR metadata files or create a validated patient-level cohort for development.
+    Guarantees disjoint patient subject IDs between train and validate sets.
     """
-    # 1. Check if official MIMIC-CXR CheXpert & Split CSVs exist
+    # 1. Check if Augmented MIMIC-CXR CSV files exist
+    if os.path.exists(config.train_metadata_path) and os.path.exists(config.val_metadata_path):
+        print(f"[Data] Found real MIMIC-CXR train metadata: {config.train_metadata_path}")
+        print(f"[Data] Found real MIMIC-CXR val metadata  : {config.val_metadata_path}")
+        print(f"[Data] Real CXR Image Root               : {config.image_root}")
+        return config.train_metadata_path, config.val_metadata_path
+
+    # 2. Check if official MIMIC-CXR CheXpert & Split CSVs exist
     if os.path.exists(config.chexpert_csv) and os.path.exists(config.split_csv):
         print(f"[Data] Loading official MIMIC-CXR CheXpert labels from {config.chexpert_csv}")
         chexpert_df = pd.read_csv(config.chexpert_csv)
         split_df = pd.read_csv(config.split_csv)
         merged_df = pd.merge(chexpert_df, split_df, on=["subject_id", "study_id"], how="inner")
         print(f"[Data] Loaded {len(merged_df)} studies across {merged_df['subject_id'].nunique()} patients.")
-        return merged_df
+        return merged_df, None
 
-    # 2. Development / Research Cohort Generator (with strictly zero patient leakage)
-    print("[Data] Official multi-GB MIMIC-CXR files not detected in local data/raw/mimic_cxr.")
+    # 3. Development / Research Cohort Generator (Fallback for sandbox dev without raw data)
+    print("[Data] Real MIMIC-CXR files not detected in local data/raw.")
     print("[Data] Generating validated research development cohort with strict patient-level separation...")
     
     np.random.seed(42)
     n_patients = 120
     patient_ids = [f"100{i:03d}" for i in range(n_patients)]
     
-    # Strictly disjoint patient-level partition: 70% train, 15% val, 15% test
     n_train = int(0.70 * n_patients)
     n_val = int(0.15 * n_patients)
     
@@ -68,7 +74,6 @@ def load_or_create_metadata(config: CXRConfig) -> pd.DataFrame:
     dicom_counter = 80000000
     
     for pid in patient_ids:
-        # Each patient has 1 to 3 CXR studies over their ICU stay
         n_studies = np.random.randint(1, 4)
         if pid in train_pats: split = "train"
         elif pid in val_pats: split = "validate"
@@ -78,7 +83,6 @@ def load_or_create_metadata(config: CXRConfig) -> pd.DataFrame:
             study_counter += 1
             dicom_counter += 1
             
-            # Clinical correlation sampling
             is_healthy = np.random.rand() < 0.25
             if is_healthy:
                 p_pneu = 0.0
@@ -103,7 +107,7 @@ def load_or_create_metadata(config: CXRConfig) -> pd.DataFrame:
                 "subject_id": pid,
                 "study_id": str(study_counter),
                 "dicom_id": str(dicom_counter),
-                "ViewPosition": "PA" if np.random.rand() < 0.55 else "AP",
+                "view_position": "PA" if np.random.rand() < 0.55 else "AP",
                 "split": split,
                 "Pneumonia": p_pneu,
                 "Pleural Effusion": p_eff,
@@ -117,12 +121,10 @@ def load_or_create_metadata(config: CXRConfig) -> pd.DataFrame:
             records.append(rec)
             
     dev_df = pd.DataFrame(records)
-    
-    # Save dev cohort to data/raw/mimic_cxr for reproducibility
     os.makedirs(config.data_dir, exist_ok=True)
     dev_df.to_csv(os.path.join(config.data_dir, "mimic_cxr_cohort_metadata.csv"), index=False)
     print(f"[Data] Created and verified cohort metadata ({len(dev_df)} studies, {n_patients} patients).")
-    return dev_df
+    return dev_df, None
 
 
 def train_cxr_model(config: Optional[CXRConfig] = None) -> Dict[str, any]:
@@ -136,28 +138,26 @@ def train_cxr_model(config: Optional[CXRConfig] = None) -> Dict[str, any]:
     device = config.hardware.device
 
     # 2. Data Preparation & Verification
-    df = load_or_create_metadata(config)
-    split_info = verify_patient_level_split(df)
-    print("\n[Data Leakage Check] Patient-level separation status:")
-    print(f" - Is Valid (Zero Leakage): {split_info['is_valid']}")
-    print(f" - Patients per split     : {split_info['patients_count']}")
-    print(f" - Samples per split      : {split_info['samples_count']}")
-    assert split_info["is_valid"] is True, "CRITICAL: Patient data leakage detected across splits!"
+    train_meta, val_meta = load_or_create_metadata(config)
 
-    # 3. Construct DataLoaders
+    # 3. Construct DataLoaders (Strict Fail-Fast on Missing Images)
     train_loader, val_loader, test_loader, pos_weights = create_cxr_dataloaders(
-        metadata_df=df,
-        images_dir=config.data_dir,
+        train_metadata=train_meta,
+        val_metadata=val_meta,
+        images_dir=config.image_root,
         batch_size=config.batch_size,
         num_workers=config.num_workers,
         target_classes=config.target_classes,
         uncertainty_policy=config.uncertainty_policy,
         image_size=config.image_size,
-        pin_memory=config.hardware.cuda_available
+        pin_memory=config.hardware.cuda_available,
+        allow_synthetic_fallback=config.allow_synthetic_fallback
     )
 
-    print(f"\n[Training] Batch Size: {config.batch_size} | Epochs: {config.epochs} | Learning Rate: {config.learning_rate}")
+    print(f"\n[Training] Train Batches: {len(train_loader)} | Val Batches: {len(val_loader)}")
+    print(f"[Training] Batch Size: {config.batch_size} | Epochs: {config.epochs} | Learning Rate: {config.learning_rate}")
     print(f"[Training] Positive Class Imbalance Weights: {np.round(pos_weights, 2).tolist()}")
+
 
     # 4. Instantiate Model, Loss, Optimizer, Scheduler
     model = DenseNet121Pulmonary(

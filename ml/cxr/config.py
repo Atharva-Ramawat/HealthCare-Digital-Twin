@@ -1,6 +1,7 @@
 """
 CXR Training, Evaluation, and Hardware Configuration.
 Detects CUDA GPU hardware properties and manages hyperparameters, paths, and checkpoint policies.
+Supports environment-variable and YAML-driven paths for portable Linux DGX and local execution.
 """
 
 import os
@@ -58,17 +59,42 @@ class HardwareConfig:
 @dataclass
 class CXRConfig:
     """MIMIC-CXR Training and Evaluation Configuration."""
-    # Data Paths
+    # Data Paths with Environment Variable Fallbacks
+    image_root: str = field(default_factory=lambda: os.environ.get(
+        "CXR_IMAGE_ROOT",
+        os.path.join(PROJECT_ROOT, "data", "raw", "mimic_cxr_aug_validate")
+    ))
+    train_metadata_path: str = field(default_factory=lambda: os.environ.get(
+        "CXR_TRAIN_METADATA",
+        os.path.join(PROJECT_ROOT, "data", "raw", "mimic_cxr_aug_train.csv")
+    ))
+    val_metadata_path: str = field(default_factory=lambda: os.environ.get(
+        "CXR_VAL_METADATA",
+        os.path.join(PROJECT_ROOT, "data", "raw", "mimic_cxr_aug_validate.csv")
+    ))
+
+    # Backward compatibility paths for official raw CheXpert/MIMIC-CXR files
     data_dir: str = os.path.join(PROJECT_ROOT, "data", "raw", "mimic_cxr")
     metadata_csv: str = os.path.join(PROJECT_ROOT, "data", "raw", "mimic_cxr", "mimic-cxr-2.0.0-metadata.csv.gz")
     chexpert_csv: str = os.path.join(PROJECT_ROOT, "data", "raw", "mimic_cxr", "mimic-cxr-2.0.0-chexpert.csv.gz")
     split_csv: str = os.path.join(PROJECT_ROOT, "data", "raw", "mimic_cxr", "mimic-cxr-2.0.0-split.csv.gz")
-    checkpoints_dir: str = os.path.join(PROJECT_ROOT, "models", "checkpoints")
-    outputs_dir: str = os.path.join(PROJECT_ROOT, "ml", "cxr", "outputs")
+
+    # Output & Checkpoint Dirs
+    checkpoints_dir: str = field(default_factory=lambda: os.environ.get(
+        "CHECKPOINT_DIR",
+        os.path.join(PROJECT_ROOT, "models", "checkpoints")
+    ))
+    outputs_dir: str = field(default_factory=lambda: os.environ.get(
+        "OUTPUT_DIR",
+        os.path.join(PROJECT_ROOT, "ml", "cxr", "outputs")
+    ))
 
     # Target Pathologies & Policy
     target_classes: List[str] = field(default_factory=lambda: list(TARGET_PULMONARY_CLASSES))
     uncertainty_policy: UncertaintyPolicy = UncertaintyPolicy.U_ZERO
+
+    # Strict Real Data Safety Flag
+    allow_synthetic_fallback: bool = False  # Set False for real MIMIC-CXR training; Fail loud if image missing
 
     # Model Hyperparameters
     architecture: str = "densenet121"
@@ -84,7 +110,7 @@ class CXRConfig:
     epochs: int = 10
     early_stopping_patience: int = 4
     num_workers: int = 0
-    mixed_precision: bool = False  # Set dynamically in __post_init__
+    mixed_precision: bool = False
 
     # Hardware
     hardware: HardwareConfig = field(default_factory=HardwareConfig)
@@ -94,3 +120,10 @@ class CXRConfig:
         os.makedirs(self.outputs_dir, exist_ok=True)
         # Enable mixed precision automatically when CUDA GPU is available
         self.mixed_precision = self.hardware.cuda_available
+        # Also ensure image_root and metadata paths are absolute
+        if not os.path.isabs(self.image_root):
+            self.image_root = os.path.abspath(os.path.join(PROJECT_ROOT, self.image_root))
+        if not os.path.isabs(self.train_metadata_path):
+            self.train_metadata_path = os.path.abspath(os.path.join(PROJECT_ROOT, self.train_metadata_path))
+        if not os.path.isabs(self.val_metadata_path):
+            self.val_metadata_path = os.path.abspath(os.path.join(PROJECT_ROOT, self.val_metadata_path))

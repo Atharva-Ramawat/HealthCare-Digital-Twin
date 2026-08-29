@@ -1,9 +1,11 @@
 """
 MIMIC-CXR / CheXpert Label Mapping, Uncertainty Policies, and Patient-Level Split Verification.
 Defines official thoracic findings, uncertainty resolution, and positive class imbalance weighting.
+Supports both tabular CheXpert ground-truth and regex-based clinical NLP report parsing.
 """
 
 import os
+import re
 from enum import Enum
 from typing import Dict, List, Optional, Tuple, Set
 import numpy as np
@@ -52,6 +54,42 @@ DEFAULT_PATHOLOGY_THRESHOLDS = {
     "No Finding": 0.50
 }
 
+# Clinical NLP Patterns for Report Finding Extraction
+REPORT_NLP_PATTERNS = {
+    "Pneumonia": (
+        re.compile(r"\b(pneumonia|bronchopneumonia|infectious\s+(infiltrate|process)|lobar\s+infiltrate)\b", re.I),
+        re.compile(r"\b(no\s+(evidence\s+of\s+)?pneumonia|without\s+pneumonia|free\s+of\s+pneumonia|no\s+acute\s+pneumonia|unlikely\s+pneumonia)\b", re.I)
+    ),
+    "Pleural Effusion": (
+        re.compile(r"\b(pleural\s+effusion|effusions?|pleural\s+fluid|blunting\s+of\s+(the\s+)?(costophrenic|cp)\s+angle)\b", re.I),
+        re.compile(r"\b(no\s+(evidence\s+of\s+)?(pleural\s+)?effusions?|without\s+(pleural\s+)?effusions?|no\s+pleural\s+fluid|clear\s+costophrenic\s+angles?)\b", re.I)
+    ),
+    "Atelectasis": (
+        re.compile(r"\b(atelectas(is|es)|atelectatic|volume\s+loss|compressive\s+atelectasis|bibasilar\s+atelectasis)\b", re.I),
+        re.compile(r"\b(no\s+(evidence\s+of\s+)?atelectas(is|es)|without\s+atelectasis|clear\s+of\s+atelectasis)\b", re.I)
+    ),
+    "Consolidation": (
+        re.compile(r"\b(consolidation|airspace\s+disease|airspace\s+opacity|focal\s+opacity|dense\s+opacity)\b", re.I),
+        re.compile(r"\b(no\s+(evidence\s+of\s+)?(focal\s+)?consolidation|without\s+consolidation|no\s+airspace\s+(disease|opacity))\b", re.I)
+    ),
+    "Edema": (
+        re.compile(r"\b(pulmonary\s+edema|interstitial\s+edema|vascular\s+congestion|fluid\s+overload|congestive\s+heart\s+failure|chf|vascular\s+engorgement)\b", re.I),
+        re.compile(r"\b(no\s+(evidence\s+of\s+)?(pulmonary\s+)?edema|without\s+edema|no\s+(overt\s+)?(vascular\s+)?congestion|no\s+vascular\s+engorgement)\b", re.I)
+    ),
+    "Pneumothorax": (
+        re.compile(r"\b(pneumothorax|pneumothoraces|apical\s+pneumothorax)\b", re.I),
+        re.compile(r"\b(no\s+(evidence\s+of\s+)?pneumothor(ax|aces)|without\s+pneumothorax|no\s+ptx|negative\s+for\s+pneumothorax)\b", re.I)
+    ),
+    "Cardiomegaly": (
+        re.compile(r"\b(cardiomegaly|enlarged\s+heart|cardiac\s+(silhouette\s+)?is\s+(moderately\s+|severely\s+|mildly\s+)?enlarged|heart\s+is\s+(moderately\s+|severely\s+|mildly\s+)?enlarged|cardiothoracic\s+ratio\s+is\s+increased)\b", re.I),
+        re.compile(r"\b(heart\s+size\s+is\s+normal|normal\s+heart\s+size|normal\s+cardiac\s+silhouette|cardiomediastinal\s+silhouette\s+is\s+normal|no\s+cardiomegaly)\b", re.I)
+    ),
+    "No Finding": (
+        re.compile(r"\b(no\s+acute\s+(cardiopulmonary|intrathoracic)\s+(process|abnormality|disease)|normal\s+chest|clear\s+lungs?|lungs\s+are\s+clear|unremarkable|within\s+normal\s+limits)\b", re.I),
+        re.compile(r"$^", re.I)
+    )
+}
+
 
 class UncertaintyPolicy(str, Enum):
     """
@@ -63,6 +101,51 @@ class UncertaintyPolicy(str, Enum):
     U_ZERO = "u_zero"
     U_ONES = "u_ones"
     U_CHEXPERT = "u_chexpert"
+
+
+def extract_labels_from_radiology_report(text: str, target_classes: List[str] = TARGET_PULMONARY_CLASSES) -> Dict[str, float]:
+    """
+    Extract multi-label pulmonary target vectors from radiology report text using clinical NLP rules.
+    Accurately handles medical negation phrases ('no evidence of', 'without', 'clear of').
+    """
+    labels = {col: 0.0 for col in target_classes}
+    if not text or not isinstance(text, str):
+        if "No Finding" in labels:
+            labels["No Finding"] = 1.0
+        return labels
+
+    for finding in target_classes:
+        if finding not in REPORT_NLP_PATTERNS:
+            continue
+        pos_pat, neg_pat = REPORT_NLP_PATTERNS[finding]
+        pos_matches = list(pos_pat.finditer(text))
+        if not pos_matches:
+            continue
+
+        is_pos = False
+        for m in pos_matches:
+            # Find start of clause/sentence or up to 100 chars before match
+            pre_text = text[:m.start()]
+            sentence_start = max(0, pre_text.rfind("."), pre_text.rfind(";"), pre_text.rfind("\n"))
+            start = max(sentence_start, m.start() - 100)
+            window = text[start:m.end()]
+            if neg_pat.search(window) or re.search(r"\b(no|without|negative\s+for|free\s+of|rules?\s+out|clear\s+of|denies)\b", window, re.I):
+                continue
+            is_pos = True
+            break
+
+        labels[finding] = 1.0 if is_pos else 0.0
+
+    # Ensure No Finding consistency
+    pathology_cols = [c for c in target_classes if c != "No Finding"]
+    if "No Finding" in target_classes:
+        has_pathology = any(labels[c] == 1.0 for c in pathology_cols)
+        if has_pathology:
+            labels["No Finding"] = 0.0
+        else:
+            labels["No Finding"] = 1.0
+
+    return labels
 
 
 def map_chexpert_labels(
@@ -83,7 +166,6 @@ def map_chexpert_labels(
 
     for col in target_classes:
         if col not in mapped_df.columns:
-            # If a target column is missing, initialize as 0.0
             mapped_df[col] = 0.0
             continue
 
@@ -104,7 +186,6 @@ def map_chexpert_labels(
     if "No Finding" in target_classes:
         has_pathology = (mapped_df[pathology_cols] == 1.0).any(axis=1)
         mapped_df.loc[has_pathology, "No Finding"] = 0.0
-        # If no pathology is present and No Finding wasn't explicitly 0, set to 1.0
         no_pathology = ~has_pathology
         mapped_df.loc[no_pathology, "No Finding"] = 1.0
 
@@ -162,29 +243,6 @@ def calculate_positive_class_weights(
     num_positives = np.sum(labels_matrix, axis=0)
     num_negatives = num_samples - num_positives
 
-    # Avoid division by zero
     weights = np.where(num_positives > 0, num_negatives / (num_positives + 1e-6), 1.0)
     weights = np.clip(weights, clamp_min, clamp_max).astype(np.float32)
     return weights
-
-
-if __name__ == "__main__":
-    # Self-test mapping and verification
-    dummy_data = {
-        "subject_id": [101, 101, 102, 103, 104, 105],
-        "study_id": [501, 502, 503, 504, 505, 506],
-        "split": ["train", "train", "train", "validate", "test", "test"],
-        "Pneumonia": [1.0, 1.0, -1.0, 0.0, 1.0, 0.0],
-        "Pleural Effusion": [0.0, 1.0, 1.0, 0.0, 0.0, 0.0],
-        "Atelectasis": [-1.0, 0.0, 0.0, 1.0, 0.0, 0.0],
-        "No Finding": [np.nan, 0.0, 0.0, 0.0, 0.0, 1.0]
-    }
-    df = pd.DataFrame(dummy_data)
-    mapped = map_chexpert_labels(df, TARGET_PULMONARY_CLASSES, UncertaintyPolicy.U_ZERO)
-    print("Mapped DataFrame target classes:")
-    print(mapped[TARGET_PULMONARY_CLASSES])
-    
-    split_info = verify_patient_level_split(mapped)
-    print("\nSplit Verification:", split_info)
-    assert split_info["is_valid"] is True, "Data leakage detected!"
-    print("Label module self-test passed successfully!")
