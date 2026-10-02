@@ -8,7 +8,7 @@ import os
 import sys
 import time
 import json
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import torch
