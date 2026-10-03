@@ -15,6 +15,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.optim.lr_scheduler import ReduceLROnPlateau
+from tqdm import tqdm
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 if PROJECT_ROOT not in sys.path:
@@ -136,6 +137,7 @@ def train_cxr_model(config: Optional[CXRConfig] = None) -> Dict[str, any]:
     # 1. Print Hardware & GPU Diagnostics
     config.hardware.print_diagnostics()
     device = config.hardware.device
+    device_type = "cuda" if config.hardware.cuda_available else "cpu"
 
     # 2. Data Preparation & Verification
     train_meta, val_meta = load_or_create_metadata(config)
@@ -158,7 +160,6 @@ def train_cxr_model(config: Optional[CXRConfig] = None) -> Dict[str, any]:
     print(f"[Training] Batch Size: {config.batch_size} | Epochs: {config.epochs} | Learning Rate: {config.learning_rate}")
     print(f"[Training] Positive Class Imbalance Weights: {np.round(pos_weights, 2).tolist()}")
 
-
     # 4. Instantiate Model, Loss, Optimizer, Scheduler
     model = DenseNet121Pulmonary(
         num_classes=len(config.target_classes),
@@ -173,9 +174,9 @@ def train_cxr_model(config: Optional[CXRConfig] = None) -> Dict[str, any]:
     optimizer = optim.AdamW(model.parameters(), lr=config.learning_rate, weight_decay=config.weight_decay)
     scheduler = ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=2)
 
-    # Mixed Precision Scaler
-    scaler = torch.cuda.amp.GradScaler() if config.mixed_precision else None
-    if config.mixed_precision:
+    # Mixed Precision Scaler (Modern torch.amp API)
+    scaler = torch.amp.GradScaler(device_type) if (config.mixed_precision and device_type == "cuda") else None
+    if config.mixed_precision and device_type == "cuda":
         print("[Training] Mixed precision (FP16 autocast) enabled for NVIDIA GPU acceleration.")
 
     best_val_auroc = 0.0
@@ -198,14 +199,22 @@ def train_cxr_model(config: Optional[CXRConfig] = None) -> Dict[str, any]:
         running_loss = 0.0
         train_batches = 0
 
-        for images, targets, _ in train_loader:
+        # Progress bar over the training batches
+        pbar = tqdm(
+            train_loader,
+            desc=f"Epoch [{epoch:02d}/{config.epochs:02d}]",
+            unit="batch",
+            leave=True
+        )
+
+        for images, targets, _ in pbar:
             images = images.to(device)
             targets = targets.to(device)
 
             optimizer.zero_grad()
 
             if config.mixed_precision and scaler is not None:
-                with torch.cuda.amp.autocast():
+                with torch.amp.autocast(device_type=device_type):
                     logits = model(images)
                     loss = criterion(logits, targets)
                 scaler.scale(loss).backward()
@@ -217,8 +226,11 @@ def train_cxr_model(config: Optional[CXRConfig] = None) -> Dict[str, any]:
                 loss.backward()
                 optimizer.step()
 
-            running_loss += loss.item()
+            batch_loss = loss.item()
+            running_loss += batch_loss
             train_batches += 1
+
+            pbar.set_postfix({"loss": f"{running_loss / train_batches:.4f}"})
 
         train_loss = running_loss / max(1, train_batches)
 
@@ -236,7 +248,7 @@ def train_cxr_model(config: Optional[CXRConfig] = None) -> Dict[str, any]:
         scheduler.step(val_auroc)
 
         epoch_duration = time.time() - epoch_start
-        print(f"Epoch [{epoch:02d}/{config.epochs:02d}] ({epoch_duration:.1f}s) | Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f} | Val Macro AUROC: {val_auroc:.4f}")
+        print(f"\n[Summary] Epoch [{epoch:02d}/{config.epochs:02d}] ({epoch_duration:.1f}s) | Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f} | Val Macro AUROC: {val_auroc:.4f}")
 
         history.append({
             "epoch": epoch,
