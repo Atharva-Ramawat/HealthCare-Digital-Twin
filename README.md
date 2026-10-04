@@ -174,20 +174,6 @@ Every phase requires explicit student team approval before the next begins.
 
 ---
 
-## Ownership
-
-| Area | Owner |
-|---|---|
-| Software architecture and infrastructure | Antigravity |
-| Data ingestion and preprocessing | Antigravity |
-| Digital Twin State and Engine | Antigravity |
-| Dashboard | Antigravity |
-| Prediction target definition | Student team |
-| Label derivation methodology | Student team |
-| Model training and evaluation | Student team |
-| Research conclusions | Student team |
-
----
 
 ## Ethical Statement
 
