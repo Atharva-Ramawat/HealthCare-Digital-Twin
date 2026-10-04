@@ -77,8 +77,9 @@ def test_db_session():
 
 @pytest.fixture
 def client(test_db_session):
-    """FastAPI TestClient with overridden database session."""
-    return TestClient(app)
+    """FastAPI TestClient with overridden database session and lifespan management."""
+    with TestClient(app) as test_client:
+        yield test_client
 
 
 def test_health_check(client):
@@ -135,27 +136,57 @@ def test_infer_study_success(client):
     assert data["top_probability"] == data["probabilities"][data["top_finding"]]
     assert data["heatmap_available"] is True
     assert "heatmap_url" in data
+    assert "latent_embedding" in data
+    assert len(data["latent_embedding"]) == 1024
     assert data["execution_time_ms"] > 0
 
 
+def test_infer_study_with_uploaded_file(client):
+    """Test DenseNet-121 inference on an uploaded image file."""
+    import io
+    from PIL import Image
+
+    # Create dummy PNG bytes
+    img = Image.new("RGB", (224, 224), color=(100, 100, 100))
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    buf.seek(0)
+
+    response = client.post(
+        "/api/cxr/studies/s_upload_test/infer",
+        files={"file": ("test.png", buf, "image/png")}
+    )
+    assert response.status_code == 200
+    data = response.json()
+    assert data["study_id"] == "s_upload_test"
+    assert len(data["probabilities"]) == 8
+    assert len(data["latent_embedding"]) == 1024
+
+
 def test_infer_nonexistent_study(client):
-    """Test inferring an unknown study returns 404."""
+    """Test inferring an unknown study with no uploaded file returns 404."""
     response = client.post("/api/cxr/studies/nonexistent_study/infer")
     assert response.status_code == 404
     assert "not found" in response.json()["detail"]
 
 
-def test_get_study_heatmap(client):
-    """Test retrieving Grad-CAM heatmap metadata for a study."""
+def test_get_study_heatmap_png_stream(client):
+    """Test generating and streaming Grad-CAM heatmap directly as PNG image."""
     response = client.get("/api/cxr/studies/s50084553/heatmap?pathology=Pleural%20Effusion")
     assert response.status_code == 200
-    data = response.json()
+    assert response.headers["content-type"] == "image/png"
+    assert len(response.content) > 0
+    assert response.content[:8] == b"\x89PNG\r\n\x1a\n"  # PNG magic header
 
+
+def test_get_study_heatmap_json_metadata(client):
+    """Test retrieving Grad-CAM heatmap metadata when format=json is requested."""
+    response = client.get("/api/cxr/studies/s50084553/heatmap?pathology=Pleural%20Effusion&format=json")
+    assert response.status_code == 200
+    data = response.json()
     assert data["study_id"] == "s50084553"
-    assert data["subject_id"] == "10003502"
     assert data["pathology"] == "Pleural Effusion"
     assert data["heatmap_available"] is True
-    assert "Grad-CAM" in data["description"]
     assert data["localization_score"] == 0.88
 
 
@@ -164,3 +195,11 @@ def test_get_heatmap_nonexistent_study(client):
     response = client.get("/api/cxr/studies/nonexistent_study/heatmap?pathology=Pneumonia")
     assert response.status_code == 404
     assert "not found" in response.json()["detail"]
+
+
+def test_get_heatmap_invalid_pathology(client):
+    """Test requesting an invalid pathology returns 400."""
+    response = client.get("/api/cxr/studies/s50084553/heatmap?pathology=InvalidCondition")
+    assert response.status_code == 400
+    assert "Invalid pathology" in response.json()["detail"]
+

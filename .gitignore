@@ -46,6 +46,9 @@ htmlcov/
 dmypy.json
 .pyre/
 
+*.pt
+*.pth
+checkpoints/
 
 # ============================================================
 # JUPYTER
@@ -363,3 +366,19 @@ docker-volumes/
 *.tar.gz
 *.7z
 *.rar
+
+
+# Local inference & Grad-CAM test outputs
+gradcam_test_output.png
+*.jpg
+*.jpeg
+*.png
+
+# Allow specific frontend UI assets (modify path if your assets live elsewhere)
+!frontend/src/assets/*.png
+!frontend/src/assets/*.svg
+!frontend/public/*.png
+
+# Ephemeral upload directories (if FastAPI uses disk buffering for large files)
+/tmp/
+/uploads/

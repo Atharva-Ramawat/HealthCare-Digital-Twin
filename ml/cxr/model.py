@@ -54,6 +54,25 @@ class DenseNet121Pulmonary(nn.Module):
         # Replace default classifier
         self.densenet.classifier = nn.Identity()
 
+        # PyTorch hooks to capture activations and gradients for Grad-CAM
+        self.activations = None
+        self.gradients = None
+
+        def forward_hook(module, input, output):
+            self.activations = output
+
+        def backward_hook(module, grad_input, grad_output):
+            self.gradients = grad_output[0]
+
+        target_layer = self.backbone.features.denseblock4.denselayer16.conv2
+        target_layer.register_forward_hook(forward_hook)
+        target_layer.register_full_backward_hook(backward_hook)
+
+    @property
+    def backbone(self) -> nn.Module:
+        """Alias to densenet backbone module for Grad-CAM and feature access."""
+        return self.densenet
+
     def extract_features(self, x: torch.Tensor) -> torch.Tensor:
         """
         Extract 1024-dimensional visual feature embedding vector for multimodal Digital Twin fusion.
@@ -66,26 +85,97 @@ class DenseNet121Pulmonary(nn.Module):
         embedding = torch.flatten(out, 1)
         return embedding
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self,
+        x: torch.Tensor,
+        return_features: bool = False
+    ) -> Union[Tuple[torch.Tensor, torch.Tensor], torch.Tensor]:
         """
         Forward pass returning raw unnormalized logits for BCEWithLogitsLoss.
         x: (Batch, 3, 224, 224)
-        Returns: logits (Batch, num_classes)
+        Returns: logits (Batch, num_classes) or (logits, embeddings) if return_features=True
         """
         embeddings = self.extract_features(x)
         logits = self.classifier_head(embeddings)
+        if return_features:
+            return logits, embeddings
         return logits
 
     def predict_probabilities(self, x: torch.Tensor) -> torch.Tensor:
         """
         Return multi-label Sigmoid probabilities [0.0 - 1.0].
         """
-        logits = self.forward(x)
+        out = self.forward(x)
+        logits = out[0] if isinstance(out, tuple) else out
         return torch.sigmoid(logits)
+
+    def generate_gradcam_heatmap(
+        self,
+        image_tensor: torch.Tensor,
+        class_idx: int,
+        target_size: tuple = (224, 224)
+    ) -> np.ndarray:
+        """
+        Generate 2D spatial Grad-CAM attention heatmap normalized to [0.0, 1.0].
+        Performs forward pass, backward pass on class_idx, computes GAP on gradients,
+        weights activations, applies ReLU, normalizes to [0, 1], and bilinearly interpolates to target_size.
+        """
+        self.eval()
+        if image_tensor.ndim == 3:
+            image_tensor = image_tensor.unsqueeze(0)
+
+        image_tensor = image_tensor.requires_grad_(True)
+
+        # Forward pass (handles (logits, embedding) tuple if return_features=True)
+        output = self(image_tensor)
+        if isinstance(output, tuple):
+            logits = output[0]
+        else:
+            logits = output
+
+        # Backward pass on the specific class_idx
+        self.zero_grad()
+        score = logits[:, class_idx].sum()
+        score.backward()
+
+        if self.activations is None or self.gradients is None:
+            raise RuntimeError("Grad-CAM hooks failed to capture activations or gradients.")
+
+        # Compute alpha weights using Global Average Pooling on the gradients
+        weights = torch.mean(self.gradients, dim=(2, 3), keepdim=True)
+
+        # Weight the activations
+        cam = torch.sum(weights * self.activations, dim=1, keepdim=True)
+
+        # Apply ReLU
+        cam = F.relu(cam)
+
+        # Bilinearly interpolate to target_size
+        cam = F.interpolate(cam, size=target_size, mode="bilinear", align_corners=False)
+
+        # Normalize to [0, 1]
+        cam_min = cam.amin(dim=(-2, -1), keepdim=True)
+        cam_max = cam.amax(dim=(-2, -1), keepdim=True)
+        denom = cam_max - cam_min
+        cam = torch.where(denom > 1e-8, (cam - cam_min) / denom, torch.zeros_like(cam))
+
+        # Explicitly ensure final heatmap tensor is moved to CPU before converting to numpy
+        cam_np = cam.squeeze().cpu().detach().numpy()
+
+        # Clean up intermediate tensors and reset hooks/gradients to prevent memory leaks
+        del weights, cam, logits, score, output
+        if self.activations is not None:
+            self.activations = self.activations.detach()
+        if self.gradients is not None:
+            self.gradients = self.gradients.detach()
+        self.zero_grad()
+
+        return cam_np
 
     def get_cam_target_layer(self) -> nn.Module:
         """Returns the final convolutional block in DenseNet-121 for Grad-CAM."""
         return self.densenet.features.denseblock4
+
 
 
 class GradCAMExplainer:

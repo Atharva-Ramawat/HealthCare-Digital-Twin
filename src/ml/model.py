@@ -168,7 +168,7 @@ class DenseNet121Pulmonary(nn.Module):
 
         # Zero gradients and backward pass (triggers backward hook on conv2)
         self.zero_grad()
-        score.backward(retain_graph=True)
+        score.backward()
 
         if self.activations is None or self.gradients is None:
             raise RuntimeError("Grad-CAM hooks failed to capture activations or gradients.")
@@ -182,13 +182,20 @@ class DenseNet121Pulmonary(nn.Module):
 
         # Bilinear interpolation upsampling to target spatial resolution
         cam = F.interpolate(cam, size=(h, w), mode="bilinear", align_corners=False)
-        cam = cam.squeeze().cpu().detach().numpy()
+        cam_np = cam.squeeze().cpu().detach().numpy()
 
         # Normalize to [0.0, 1.0]
-        cam_min, cam_max = cam.min(), cam.max()
+        cam_min, cam_max = cam_np.min(), cam_np.max()
         if cam_max - cam_min > 1e-8:
-            cam = (cam - cam_min) / (cam_max - cam_min)
+            cam_np = (cam_np - cam_min) / (cam_max - cam_min)
         else:
-            cam = np.zeros_like(cam)
+            cam_np = np.zeros_like(cam_np)
 
-        return cam.astype(np.float32)
+        del weights, cam, logits, score
+        if self.activations is not None:
+            self.activations = self.activations.detach()
+        if self.gradients is not None:
+            self.gradients = self.gradients.detach()
+        self.zero_grad()
+
+        return cam_np.astype(np.float32)
