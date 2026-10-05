@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   User, 
   Cpu, 
@@ -6,9 +6,10 @@ import {
   RefreshCw, 
   ChevronDown,
   Bed,
-  CheckCircle2,
+  CheckCircle2, 
   Wifi,
-  UploadCloud
+  FlaskConical,
+  Database
 } from 'lucide-react';
 import type { PatientProfile } from '../types/digitalTwin';
 
@@ -20,7 +21,7 @@ interface HeaderProps {
   isMockData: boolean;
   onRefresh: () => void;
   isLoading: boolean;
-  onOpenUploadModal?: () => void;
+  onNavigateToSandbox?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -31,7 +32,7 @@ export const Header: React.FC<HeaderProps> = ({
   isMockData,
   onRefresh,
   isLoading,
-  onOpenUploadModal,
+  onNavigateToSandbox,
 }) => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -68,8 +69,9 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Dropdown Menu */}
           {isDropdownOpen && (
             <div className="absolute left-0 mt-2 w-72 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-lg shadow-xl py-1 z-50">
-              <div className="px-3 py-1.5 text-[10px] font-mono uppercase text-gray-400 border-b border-gray-100 dark:border-slate-800">
-                Select Active ICU Subject
+              <div className="px-3 py-1.5 text-[10px] font-mono uppercase text-gray-400 border-b border-gray-100 dark:border-slate-800 flex items-center justify-between">
+                <span>Verified MIMIC ICU Patients</span>
+                <Database className="w-3 h-3 text-emerald-500" />
               </div>
               {availablePatients.map((p) => (
                 <button
@@ -83,39 +85,37 @@ export const Header: React.FC<HeaderProps> = ({
                   }`}
                 >
                   <div>
-                    <div className="font-bold">Patient #{p.id} • Study #{p.study_id}</div>
-                    <div className="text-[10px] text-gray-400">{p.unit} • {p.age}yo {p.gender} • {p.admission_diagnosis}</div>
+                    <div className="font-bold">{p.name} (#{p.id})</div>
+                    <div className="text-[10px] text-gray-400">{p.unit} • {p.age}yo {p.gender} • Study #{p.study_id}</div>
                   </div>
                   {p.id === currentPatient.id && <CheckCircle2 className="w-3.5 h-3.5 text-blue-500" />}
                 </button>
               ))}
 
-              {/* Upload New Patient Option inside Dropdown */}
-              <div className="p-1 border-t border-gray-100 dark:border-slate-800">
-                <button
-                  onClick={() => {
-                    setIsDropdownOpen(false);
-                    onOpenUploadModal?.();
-                  }}
-                  className="w-full text-left px-2.5 py-1.5 rounded text-xs font-mono text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/40 flex items-center space-x-2 font-bold transition-colors"
-                >
-                  <UploadCloud className="w-3.5 h-3.5 text-purple-500" />
-                  <span>+ Manual Intake & CXR Upload</span>
-                </button>
-              </div>
+              {/* Jump to Sandbox option */}
+              {onNavigateToSandbox && (
+                <div className="p-1 border-t border-gray-100 dark:border-slate-800">
+                  <button
+                    onClick={() => {
+                      setIsDropdownOpen(false);
+                      onNavigateToSandbox();
+                    }}
+                    className="w-full text-left px-2.5 py-1.5 rounded text-xs font-mono text-purple-600 dark:text-purple-400 hover:bg-purple-50 dark:hover:bg-purple-950/40 flex items-center space-x-2 font-bold transition-colors"
+                  >
+                    <FlaskConical className="w-3.5 h-3.5 text-purple-500" />
+                    <span>Open Ad-Hoc Sandbox</span>
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
 
-        {/* Upload Scan / Intake Quick Button */}
-        <button
-          onClick={onOpenUploadModal}
-          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-mono font-bold transition-all shadow-sm shadow-purple-500/20 active:scale-95"
-          title="Manual Patient Intake & CXR Upload"
-        >
-          <UploadCloud className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">Intake / Upload Scan</span>
-        </button>
+        {/* Verified Cohort Badge */}
+        <div className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-[11px] font-mono font-bold">
+          <Database className="w-3 h-3" />
+          <span>Verified MIMIC Database</span>
+        </div>
 
         {/* Demographics Badges */}
         <div className="hidden lg:flex items-center space-x-2 text-xs font-mono text-gray-600 dark:text-gray-300">
@@ -135,39 +135,42 @@ export const Header: React.FC<HeaderProps> = ({
             {currentPatient.admission_diagnosis}
           </span>
           {currentPatient.intubated && (
-            <span className="px-2 py-0.5 rounded text-[11px] bg-red-500/10 text-red-500 border border-red-500/30 animate-pulse">
-              Intubated / Mechanical Vent
+            <span className="px-2 py-0.5 rounded text-[11px] bg-red-500/10 text-red-500 border border-red-500/30 animate-pulse font-bold">
+              Ventilated
             </span>
           )}
         </div>
       </div>
 
-      {/* Right: System Latency & Hardware Metrics */}
-      <div className="flex items-center space-x-4">
-        {/* System Latency Badge */}
-        <div className="flex items-center space-x-2 text-xs font-mono bg-gray-50 dark:bg-slate-900/80 border border-gray-200 dark:border-slate-800 px-3 py-1.5 rounded-lg">
+      {/* Right: Latency & Telemetry Status Metrics */}
+      <div className="flex items-center space-x-3 md:space-x-4">
+        {/* Latency Pill */}
+        <div className="hidden sm:flex items-center space-x-2 px-2.5 py-1 rounded-lg bg-gray-100 dark:bg-slate-800/80 border border-gray-300 dark:border-slate-700 text-xs font-mono">
           <Cpu className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="text-gray-500 dark:text-gray-400 hidden sm:inline">INFERENCE:</span>
-          <span className="font-bold text-cyan-500 dark:text-cyan-400">{latencyMs} ms</span>
-          <span className="text-gray-400">•</span>
-          <Wifi className={`w-3 h-3 ${isMockData ? 'text-amber-400' : 'text-emerald-400'}`} />
-          <span className="text-[11px] text-gray-400 hidden md:inline">
-            {isMockData ? 'SIMULATED' : 'LIVE API'}
+          <span className="text-gray-500 dark:text-gray-400">DenseNet-121:</span>
+          <span className="font-bold text-gray-900 dark:text-gray-100">
+            {latencyMs}ms
           </span>
         </div>
 
-        {/* UTC Clock */}
-        <div className="hidden sm:flex items-center space-x-1.5 text-xs font-mono text-gray-500 dark:text-gray-400">
-          <Clock className="w-3.5 h-3.5 text-gray-400" />
+        {/* Real-time Clock */}
+        <div className="hidden md:flex items-center space-x-1.5 text-xs font-mono text-gray-500 dark:text-gray-400">
+          <Clock className="w-3.5 h-3.5" />
           <span>{currentTime || '00:00:00 UTC'}</span>
         </div>
 
-        {/* Refresh / Resimulate Button */}
+        {/* Live Pulse Indicator */}
+        <div className="flex items-center space-x-1.5 px-2 py-1 rounded bg-green-500/10 border border-green-500/20 text-green-500 text-[11px] font-mono">
+          <Wifi className="w-3 h-3" />
+          <span className="hidden sm:inline">{isMockData ? 'DATABASE RECOVERY' : 'LIVE TELEMETRY'}</span>
+        </div>
+
+        {/* Refresh Button */}
         <button
           onClick={onRefresh}
           disabled={isLoading}
-          className="flex items-center justify-center p-2 rounded-lg bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300 transition-colors disabled:opacity-50"
-          title="Refresh Telemetry & Rerun Fusion"
+          className="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-300 transition-colors disabled:opacity-50"
+          title="Refresh Multimodal Assessment"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin text-blue-500' : ''}`} />
         </button>

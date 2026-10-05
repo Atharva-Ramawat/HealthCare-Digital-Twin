@@ -30,6 +30,7 @@ from src.schemas.twin_schema import DigitalTwinResponse, VitalSignSnapshot, Vita
 from src.schemas.cxr_schema import TARGET_PULMONARY_CLASSES
 from src.digital_twin.simulator import VitalsSimulator
 from src.digital_twin.fusion import DigitalTwinFusion
+from src.ml.cxr.validator import is_chest_xray
 
 router = APIRouter(prefix="/api/digital-twin", tags=["Digital Twin"])
 
@@ -355,6 +356,13 @@ async def ad_hoc_infer(
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail=f"Uploaded file is not a valid image format: {e}"
+            )
+
+        # Validate Chest X-Ray Modality (OOD Gatekeeper)
+        if not is_chest_xray(pil_img):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid image modality. Please upload a valid Chest Radiograph."
             )
 
         # 3. Retrieve model safely from request.app.state.model

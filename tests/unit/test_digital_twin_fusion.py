@@ -9,6 +9,7 @@ Tests:
 from datetime import datetime
 import pytest
 import numpy as np
+from PIL import Image
 import torch
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -272,12 +273,21 @@ def test_vitals_simulator_trajectory_around_vitals():
     assert traj[-1].respiratory_rate == pytest.approx(26.0, abs=0.1)
 
 
+def _create_synthetic_cxr_test_image() -> Image.Image:
+    """Generate a monochromatic synthetic CXR phantom with anatomical contrast."""
+    x = np.linspace(-1, 1, 224)
+    y = np.linspace(-1, 1, 224)
+    xx, yy = np.meshgrid(x, y)
+    val = 80 + 110 * np.exp(-4 * xx**2) + 25 * np.cos(yy * 6)
+    val = np.clip(val, 0, 255).astype(np.uint8)
+    return Image.fromarray(np.stack([val, val, val], axis=-1))
+
+
 def test_ad_hoc_infer_endpoint_success(client):
     """Test POST /api/digital-twin/ad-hoc-infer with valid radiograph and manual vitals."""
     import io
-    from PIL import Image
 
-    img = Image.new("RGB", (224, 224), color=(120, 120, 120))
+    img = _create_synthetic_cxr_test_image()
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     buf.seek(0)
@@ -319,12 +329,40 @@ def test_ad_hoc_infer_endpoint_success(client):
     assert twin_obj.input_image_base64.startswith("data:image/png;base64,")
 
 
-def test_ad_hoc_infer_out_of_range_vitals(client):
-    """Test POST /api/digital-twin/ad-hoc-infer rejects out-of-range vitals with 400."""
+def test_ad_hoc_infer_rejects_non_cxr_color_image(client):
+    """Test POST /api/digital-twin/ad-hoc-infer rejects non-radiograph color photos with 400."""
     import io
     from PIL import Image
 
-    img = Image.new("RGB", (224, 224), color=(120, 120, 120))
+    # Color photo (sunset / natural scenery)
+    color_img = Image.new("RGB", (224, 224), color=(255, 120, 30))
+    buf = io.BytesIO()
+    color_img.save(buf, format="PNG")
+    buf.seek(0)
+
+    form_data = {
+        "patient_id": "CUSTOM-OOD",
+        "heart_rate": "85.0",
+        "spo2": "97.0",
+        "sbp": "120.0",
+        "respiratory_rate": "16.0",
+    }
+
+    response = client.post(
+        "/api/digital-twin/ad-hoc-infer",
+        data=form_data,
+        files={"file": ("photo.png", buf, "image/png")}
+    )
+
+    assert response.status_code == 400
+    assert response.json()["detail"] == "Invalid image modality. Please upload a valid Chest Radiograph."
+
+
+def test_ad_hoc_infer_out_of_range_vitals(client):
+    """Test POST /api/digital-twin/ad-hoc-infer rejects out-of-range vitals with 400."""
+    import io
+
+    img = _create_synthetic_cxr_test_image()
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     buf.seek(0)

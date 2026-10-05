@@ -1,34 +1,54 @@
+import React from 'react';
 import { 
   Activity, 
   LayoutDashboard, 
   Radio, 
-  Scan, 
-  History, 
+  GitCompare, 
+  FlaskConical,
   Moon, 
   Sun,
-  UploadCloud
+  ShieldCheck
 } from 'lucide-react';
+import type { ActiveNavView } from '../types/digitalTwin';
 
 interface SidebarProps {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
+  activeView: ActiveNavView;
+  setActiveView: (view: ActiveNavView) => void;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
-  onOpenUploadModal?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
-  activeTab,
-  setActiveTab,
+  activeView,
+  setActiveView,
   isDarkMode,
   toggleDarkMode,
-  onOpenUploadModal,
 }) => {
-  const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'monitoring', label: 'Live Monitoring', icon: Radio },
-    { id: 'cxr', label: 'CXR Analysis', icon: Scan },
-    { id: 'history', label: 'Patient History', icon: History },
+  const navItems: { id: ActiveNavView; label: string; sublabel: string; icon: React.FC<{ className?: string }> }[] = [
+    { 
+      id: 'dashboard', 
+      label: 'Dashboard', 
+      sublabel: 'Command Center', 
+      icon: LayoutDashboard 
+    },
+    { 
+      id: 'ward', 
+      label: 'Live Ward', 
+      sublabel: 'Verified MIMIC', 
+      icon: Radio 
+    },
+    { 
+      id: 'treatment', 
+      label: 'Treatment Analysis', 
+      sublabel: 'Intervention Δ', 
+      icon: GitCompare 
+    },
+    { 
+      id: 'sandbox', 
+      label: 'Ad-Hoc Sandbox', 
+      sublabel: 'Isolated Simulation', 
+      icon: FlaskConical 
+    },
   ];
 
   return (
@@ -56,42 +76,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        {/* Navigation Items */}
-        <nav className="p-3 space-y-1.5">
+        {/* Primary Views Navigation */}
+        <nav className="p-3 space-y-2">
+          <div className="hidden md:block px-2 pt-1 pb-1 text-[10px] font-mono uppercase tracking-wider text-gray-400">
+            Navigation
+          </div>
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive = activeTab === item.id;
+            const isActive = activeView === item.id;
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveTab(item.id)}
+                onClick={() => setActiveView(item.id)}
                 className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-all ${
                   isActive
                     ? 'bg-blue-600/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30 shadow-sm'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800/60 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
-                title={item.label}
+                title={`${item.label} - ${item.sublabel}`}
               >
                 <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-blue-500' : ''}`} />
-                <span className="hidden md:inline font-mono tracking-tight">{item.label}</span>
+                <div className="hidden md:flex flex-col text-left">
+                  <span className="font-mono font-bold tracking-tight">{item.label}</span>
+                  <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500">
+                    {item.sublabel}
+                  </span>
+                </div>
                 {isActive && (
                   <span className="hidden md:inline-block ml-auto w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                 )}
               </button>
             );
           })}
-
-          {/* Quick Action: New Patient Intake */}
-          <div className="pt-3 border-t border-gray-100 dark:border-slate-800">
-            <button
-              onClick={onOpenUploadModal}
-              className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-mono font-bold bg-gradient-to-r from-purple-600/10 to-indigo-600/10 hover:from-purple-600/20 hover:to-indigo-600/20 text-purple-600 dark:text-purple-400 border border-purple-500/30 transition-all shadow-sm"
-              title="Manual Patient Intake & CXR Upload"
-            >
-              <UploadCloud className="w-5 h-5 flex-shrink-0 text-purple-500" />
-              <span className="hidden md:inline tracking-tight">Intake / Upload</span>
-            </button>
-          </div>
         </nav>
       </div>
 
@@ -99,12 +115,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-3 border-t border-gray-200 dark:border-clinical-border space-y-2">
         <div className="hidden md:block px-3 py-2 rounded-lg bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 text-[11px]">
           <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 font-mono">
-            <span>DEVICE</span>
-            <span className="text-emerald-500 font-semibold">CUDA GPU</span>
+            <span className="flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+              STATUS
+            </span>
+            <span className="text-emerald-500 font-semibold">ONLINE</span>
           </div>
           <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 font-mono mt-1">
-            <span>MODEL</span>
-            <span className="text-gray-700 dark:text-gray-300">DenseNet-121</span>
+            <span>DEVICE</span>
+            <span className="text-gray-700 dark:text-gray-300">CUDA GPU</span>
           </div>
         </div>
 

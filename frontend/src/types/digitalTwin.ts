@@ -62,3 +62,28 @@ export interface SystemMetrics {
   device: string;
   last_sync: string;
 }
+
+export type ActiveNavView = 'dashboard' | 'ward' | 'treatment' | 'sandbox';
+
+export interface WardAlert {
+  id: string;
+  timestamp: string;
+  bed: string;
+  patientName: string;
+  patientId: string;
+  severity: 'critical' | 'warning' | 'info';
+  message: string;
+  metric?: string;
+}
+
+export interface BedOverview {
+  patient: PatientProfile;
+  riskScore: number;
+  riskTier: RiskTier;
+  topFinding: string;
+  topProbability: number;
+  currentVitals: VitalSignSnapshot;
+  sparklineData: { time: string; value: number }[];
+  primaryVitalLabel: 'Heart Rate' | 'SpO2';
+  alerts: string[];
+}
