@@ -137,7 +137,9 @@ app.add_middleware(
 
 # Register Sub-Routers
 from src.api.routers.twin import router as twin_router
+from src.api.routers.system import router as system_router
 app.include_router(twin_router)
+app.include_router(system_router)
 
 
 @app.get("/api/health", tags=["Health"])

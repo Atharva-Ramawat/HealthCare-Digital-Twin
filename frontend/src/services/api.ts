@@ -9,7 +9,7 @@
  */
 
 import axios from 'axios';
-import type { DigitalTwinResponse, VitalReadingItem, RiskTier } from '../types/digitalTwin';
+import type { DigitalTwinResponse, VitalReadingItem, RiskTier, SystemTelemetryData } from '../types/digitalTwin';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -17,6 +17,23 @@ const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
 });
+
+/**
+ * Fetch real-time hardware telemetry and GPU VRAM stats from the FastAPI backend.
+ */
+export async function fetchSystemTelemetry(): Promise<SystemTelemetryData> {
+  // First attempt via configured API client / proxy
+  try {
+    const res = await apiClient.get<SystemTelemetryData>('/api/system/telemetry');
+    return res.data;
+  } catch {
+    // Direct backend fetch fallback
+    const directRes = await axios.get<SystemTelemetryData>('http://localhost:8000/api/system/telemetry', {
+      timeout: 5000,
+    });
+    return directRes.data;
+  }
+}
 
 /**
  * Fetch complete multimodal digital twin assessment including 24h vitals trajectory.

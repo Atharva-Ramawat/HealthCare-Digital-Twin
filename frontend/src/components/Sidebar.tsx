@@ -7,7 +7,12 @@ import {
   FlaskConical,
   Moon, 
   Sun,
-  ShieldCheck
+  ShieldCheck,
+  SlidersHorizontal,
+  BrainCircuit,
+  PieChart,
+  Server,
+  Archive
 } from 'lucide-react';
 import type { ActiveNavView } from '../types/digitalTwin';
 
@@ -24,7 +29,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isDarkMode,
   toggleDarkMode,
 }) => {
-  const navItems: { id: ActiveNavView; label: string; sublabel: string; icon: React.FC<{ className?: string }> }[] = [
+  const primaryNavItems: { id: ActiveNavView; label: string; sublabel: string; icon: React.FC<{ className?: string }> }[] = [
     { 
       id: 'dashboard', 
       label: 'Dashboard', 
@@ -44,10 +49,40 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: GitCompare 
     },
     { 
+      id: 'what-if', 
+      label: 'What-If Simulator', 
+      sublabel: 'Trajectory Forecast', 
+      icon: SlidersHorizontal 
+    },
+    { 
+      id: 'xai-diagnostics', 
+      label: 'XAI Diagnostics', 
+      sublabel: 'SHAP & Grad-CAM', 
+      icon: BrainCircuit 
+    },
+    { 
+      id: 'cohort-analytics', 
+      label: 'Cohort Analytics', 
+      sublabel: 'Ward Trends', 
+      icon: PieChart 
+    },
+    { 
       id: 'sandbox', 
       label: 'Ad-Hoc Sandbox', 
-      sublabel: 'Isolated Simulation', 
+      sublabel: 'Isolated Intake', 
       icon: FlaskConical 
+    },
+    { 
+      id: 'mlops-telemetry', 
+      label: 'MLOps Telemetry', 
+      sublabel: 'System Health', 
+      icon: Server 
+    },
+    { 
+      id: 'patient-archive', 
+      label: 'Patient Archive', 
+      sublabel: 'Historical Data', 
+      icon: Archive 
     },
   ];
 
@@ -77,28 +112,28 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Primary Views Navigation */}
-        <nav className="p-3 space-y-2">
+        <nav className="p-3 space-y-1.5 overflow-y-auto max-h-[calc(100vh-210px)] pr-1 custom-scrollbar">
           <div className="hidden md:block px-2 pt-1 pb-1 text-[10px] font-mono uppercase tracking-wider text-gray-400">
-            Navigation
+            System Modules
           </div>
-          {navItems.map((item) => {
+          {primaryNavItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeView === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => setActiveView(item.id)}
-                className={`w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-xs font-medium transition-all ${
+                className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
                   isActive
                     ? 'bg-blue-600/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30 shadow-sm'
                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800/60 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
                 title={`${item.label} - ${item.sublabel}`}
               >
-                <Icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-blue-500' : ''}`} />
+                <Icon className={`w-4 h-4 md:w-5 md:h-5 flex-shrink-0 ${isActive ? 'text-blue-500' : ''}`} />
                 <div className="hidden md:flex flex-col text-left">
-                  <span className="font-mono font-bold tracking-tight">{item.label}</span>
-                  <span className="text-[10px] font-mono text-gray-400 dark:text-gray-500">
+                  <span className="font-mono font-bold tracking-tight text-[11.5px]">{item.label}</span>
+                  <span className="text-[9.5px] font-mono text-gray-400 dark:text-gray-500">
                     {item.sublabel}
                   </span>
                 </div>

@@ -4,6 +4,11 @@ import { Header } from './components/Header';
 import { CommandCenter } from './components/CommandCenter';
 import { TreatmentAnalysis } from './components/TreatmentAnalysis';
 import { SandboxView } from './components/SandboxView';
+import { WhatIfSimulator } from './components/WhatIfSimulator';
+import { XAIDiagnostics } from './components/XAIDiagnostics';
+import { CohortAnalytics } from './components/CohortAnalytics';
+import { MLOpsTelemetry } from './components/MLOpsTelemetry';
+import { PatientArchive } from './components/PatientArchive';
 import { VitalsTelemetryGrid } from './components/VitalsTelemetryGrid';
 import { CXRFusionViewer } from './components/CXRFusionViewer';
 import { UnifiedRiskGauge } from './components/UnifiedRiskGauge';
@@ -324,6 +329,31 @@ export function App() {
         {/* VIEW 4: Ad-Hoc Simulation Sandbox (Isolated from MIMIC) */}
         {activeView === 'sandbox' && (
           <SandboxView isDarkMode={isDarkMode} />
+        )}
+
+        {/* VIEW 5: What-If Trajectory Simulator */}
+        {activeView === 'what-if' && (
+          <WhatIfSimulator isDarkMode={isDarkMode} />
+        )}
+
+        {/* VIEW 6: Explainable AI & Saliency Diagnostics */}
+        {activeView === 'xai-diagnostics' && (
+          <XAIDiagnostics isDarkMode={isDarkMode} />
+        )}
+
+        {/* VIEW 7: Cohort Analytics & Epidemiological Trends */}
+        {activeView === 'cohort-analytics' && (
+          <CohortAnalytics isDarkMode={isDarkMode} />
+        )}
+
+        {/* VIEW 8: MLOps Telemetry & System Health */}
+        {activeView === 'mlops-telemetry' && (
+          <MLOpsTelemetry isDarkMode={isDarkMode} />
+        )}
+
+        {/* VIEW 9: Patient Archive & Discharge Registry */}
+        {activeView === 'patient-archive' && (
+          <PatientArchive isDarkMode={isDarkMode} />
         )}
       </div>
     </div>
