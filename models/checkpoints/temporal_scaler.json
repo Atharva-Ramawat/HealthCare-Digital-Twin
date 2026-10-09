@@ -1,0 +1,19 @@
+{
+  "is_fitted": true,
+  "fitted_train_patient_count": 1,
+  "fitted_patient_ids": [
+    1
+  ],
+  "channel_means": {
+    "heart_rate": 90.0,
+    "spo2": 96.333333
+  },
+  "channel_stds": {
+    "heart_rate": 10.0,
+    "spo2": 1.527525
+  },
+  "channel_medians": {
+    "heart_rate": 90.0,
+    "spo2": 96.0
+  }
+}

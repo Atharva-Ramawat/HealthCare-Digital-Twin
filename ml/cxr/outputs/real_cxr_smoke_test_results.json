@@ -1,0 +1,295 @@
+{
+  "timestamp": "2026-08-29 13:36:20",
+  "status": "PASSED",
+  "device": "cuda:0",
+  "forward_time_sec": 0.9237,
+  "input_batch_shape": [
+    8,
+    3,
+    224,
+    224
+  ],
+  "output_logits_shape": [
+    8,
+    8
+  ],
+  "sample_images_audited": [
+    {
+      "index": 0,
+      "subject_id": "10003502",
+      "study_id": "s50084553",
+      "dicom_id": "70d7e600-373c1311-929f5ff9-23ee3621-ff551ff9",
+      "view_position": "AP",
+      "split": "validate",
+      "resolved_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10003502/s50084553/70d7e600-373c1311-929f5ff9-23ee3621-ff551ff9.jpg",
+      "raw_dimensions": [
+        512,
+        512
+      ],
+      "tensor_shape": [
+        3,
+        224,
+        224
+      ],
+      "tensor_dtype": "torch.float32",
+      "labels": [
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_findings": [
+        "Pleural Effusion",
+        "Atelectasis"
+      ]
+    },
+    {
+      "index": 1,
+      "subject_id": "10003502",
+      "study_id": "s51180958",
+      "dicom_id": "1fa79752-9ddaf5b5-2120ae82-9fec50d6-51f48d1f",
+      "view_position": "LATERAL",
+      "split": "validate",
+      "resolved_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10003502/s51180958/1fa79752-9ddaf5b5-2120ae82-9fec50d6-51f48d1f.jpg",
+      "raw_dimensions": [
+        512,
+        512
+      ],
+      "tensor_shape": [
+        3,
+        224,
+        224
+      ],
+      "tensor_dtype": "torch.float32",
+      "labels": [
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "positive_findings": [
+        "Pleural Effusion",
+        "Atelectasis",
+        "Cardiomegaly"
+      ]
+    },
+    {
+      "index": 2,
+      "subject_id": "10003502",
+      "study_id": "s51180958",
+      "dicom_id": "a8319f39-9eef5bb2-5bd95b97-9dd70b0f-02a846e3",
+      "view_position": "LL",
+      "split": "validate",
+      "resolved_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10003502/s51180958/a8319f39-9eef5bb2-5bd95b97-9dd70b0f-02a846e3.jpg",
+      "raw_dimensions": [
+        512,
+        512
+      ],
+      "tensor_shape": [
+        3,
+        224,
+        224
+      ],
+      "tensor_dtype": "torch.float32",
+      "labels": [
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "positive_findings": [
+        "Pleural Effusion",
+        "Atelectasis",
+        "Cardiomegaly"
+      ]
+    },
+    {
+      "index": 3,
+      "subject_id": "10003502",
+      "study_id": "s52139270",
+      "dicom_id": "489faba7-a9dc5f1d-fd7241d6-9638d855-eaa952b1",
+      "view_position": "PA",
+      "split": "validate",
+      "resolved_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10003502/s52139270/489faba7-a9dc5f1d-fd7241d6-9638d855-eaa952b1.jpg",
+      "raw_dimensions": [
+        512,
+        512
+      ],
+      "tensor_shape": [
+        3,
+        224,
+        224
+      ],
+      "tensor_dtype": "torch.float32",
+      "labels": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "positive_findings": [
+        "Pneumonia",
+        "Pleural Effusion",
+        "Atelectasis",
+        "Consolidation",
+        "Edema",
+        "Cardiomegaly"
+      ]
+    },
+    {
+      "index": 4,
+      "subject_id": "10003502",
+      "study_id": "s52139270",
+      "dicom_id": "550e6f3b-f008c1d0-8d2dee2a-649b30f4-101a98cc",
+      "view_position": "PA",
+      "split": "validate",
+      "resolved_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10003502/s52139270/550e6f3b-f008c1d0-8d2dee2a-649b30f4-101a98cc.jpg",
+      "raw_dimensions": [
+        512,
+        512
+      ],
+      "tensor_shape": [
+        3,
+        224,
+        224
+      ],
+      "tensor_dtype": "torch.float32",
+      "labels": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "positive_findings": [
+        "Pneumonia",
+        "Pleural Effusion",
+        "Atelectasis",
+        "Consolidation",
+        "Edema",
+        "Cardiomegaly"
+      ]
+    },
+    {
+      "index": 5,
+      "subject_id": "10003502",
+      "study_id": "s52309364",
+      "dicom_id": "e0275ad1-1e6a7451-c3960f5f-1267a188-547b73a1",
+      "view_position": "PA",
+      "split": "validate",
+      "resolved_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10003502/s52309364/e0275ad1-1e6a7451-c3960f5f-1267a188-547b73a1.jpg",
+      "raw_dimensions": [
+        512,
+        512
+      ],
+      "tensor_shape": [
+        3,
+        224,
+        224
+      ],
+      "tensor_dtype": "torch.float32",
+      "labels": [
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_findings": [
+        "Pleural Effusion",
+        "Edema"
+      ]
+    },
+    {
+      "index": 6,
+      "subject_id": "10003502",
+      "study_id": "s53282957",
+      "dicom_id": "eb2fabb7-4bbc8aab-d7371282-08e5bcb5-de2e430a",
+      "view_position": "PA",
+      "split": "validate",
+      "resolved_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10003502/s53282957/eb2fabb7-4bbc8aab-d7371282-08e5bcb5-de2e430a.jpg",
+      "raw_dimensions": [
+        512,
+        512
+      ],
+      "tensor_shape": [
+        3,
+        224,
+        224
+      ],
+      "tensor_dtype": "torch.float32",
+      "labels": [
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_findings": [
+        "Pleural Effusion",
+        "Atelectasis",
+        "Edema"
+      ]
+    },
+    {
+      "index": 7,
+      "subject_id": "10003502",
+      "study_id": "s53836463",
+      "dicom_id": "371aaea8-195e21b2-ba5a2856-54803ecf-1b72d88b",
+      "view_position": "PA",
+      "split": "validate",
+      "resolved_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10003502/s53836463/371aaea8-195e21b2-ba5a2856-54803ecf-1b72d88b.jpg",
+      "raw_dimensions": [
+        512,
+        512
+      ],
+      "tensor_shape": [
+        3,
+        224,
+        224
+      ],
+      "tensor_dtype": "torch.float32",
+      "labels": [
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_findings": [
+        "Pleural Effusion",
+        "Atelectasis",
+        "Edema"
+      ]
+    }
+  ],
+  "verification_montage_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\ml\\cxr\\outputs\\real_cxr_verification_montage.png"
+}

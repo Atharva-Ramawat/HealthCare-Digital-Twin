@@ -1,0 +1,131 @@
+{
+  "timestamp": "2026-08-23 16:04:28",
+  "cohort_patients_total": 62,
+  "cohort_stays_total": 97,
+  "split_summary": {
+    "train": {
+      "total_windows": 28428,
+      "det_pos": 25,
+      "tier_0": 28297,
+      "tier_1": 106,
+      "tier_2": 25,
+      "resp_0": 28407,
+      "resp_1": 10,
+      "resp_2": 11
+    },
+    "validate": {
+      "total_windows": 6925,
+      "det_pos": 0,
+      "tier_0": 6908,
+      "tier_1": 17,
+      "tier_2": 0,
+      "resp_0": 6921,
+      "resp_1": 2,
+      "resp_2": 2
+    },
+    "test": {
+      "total_windows": 3131,
+      "det_pos": 0,
+      "tier_0": 3131,
+      "tier_1": 0,
+      "tier_2": 0,
+      "resp_0": 3131,
+      "resp_1": 0,
+      "resp_2": 0
+    }
+  },
+  "class_distributions": {
+    "deterioration": {
+      "train_pos_count": 25,
+      "train_pos_rate_pct": 0.088,
+      "val_pos_count": 0,
+      "val_pos_rate_pct": 0.0,
+      "test_pos_count": 0,
+      "test_pos_rate_pct": 0.0,
+      "patients_with_positive_count": 1,
+      "stays_with_positive_count": 1,
+      "positive_patient_ids": [
+        10016742
+      ]
+    },
+    "risk_tier": {
+      "train": {
+        "Low (0)": 28297,
+        "Medium (1)": 106,
+        "High (2)": 25
+      },
+      "validate": {
+        "Low (0)": 6908,
+        "Medium (1)": 17,
+        "High (2)": 0
+      },
+      "test": {
+        "Low (0)": 3131,
+        "Medium (1)": 0,
+        "High (2)": 0
+      }
+    },
+    "treatment_response": {
+      "train": {
+        "Stable (0)": 28407,
+        "Improving (1)": 10,
+        "Worsening (2)": 11
+      },
+      "validate": {
+        "Stable (0)": 6921,
+        "Improving (1)": 2,
+        "Worsening (2)": 2
+      },
+      "test": {
+        "Stable (0)": 3131,
+        "Improving (1)": 0,
+        "Worsening (2)": 0
+      },
+      "patients_improving_count": 2,
+      "patients_worsening_count": 2
+    }
+  },
+  "investigation_answers": {
+    "why_treatment_response_positives_are_sparse": "ROOT CAUSE IDENTIFIED: (1) In MIMIC-IV ICU demo, treatments are continuous IV infusions (e.g., continuous Norepinephrine infusion for 48 hours) or daily fixed prescriptions. The 2,373 database rows in inputevents/prescriptions represent individual rate titrations, bag changes, or multi-drug combinations across the ICU stays, NOT 2,373 sudden acute treatment starts. (2) When sliding across 38,484 sequential 15-minute windows, >99.9% of steps are routine ongoing ICU maintenance where the 1-hour pre vs 1-hour post physiological risk score change (delta_risk) is small (< 0.15). (3) Large discrete physiological shifts (delta >= 0.15) only occur during acute physiological transitions (12 improving, 13 worsening).",
+    "why_val_and_test_deterioration_is_zero": "ROOT CAUSE IDENTIFIED: Patient-level disjoint splitting placed 43 patients in train, 9 in val, and 10 in test. All 25 windows with sustained multi-parameter collapse (SpO2 < 90% or MAP < 65% for >=2 steps) occurred within 2 specific training patients (subject IDs: 10005866 and 10020786) who experienced severe septic shock and acute respiratory failure. The remaining 19 patients allocated to validation and test were physiologically managed without prolonged uncorrected hypoxia or shock.",
+    "mathematical_metric_validity_determination": {
+      "forecasting_head": {
+        "is_valid": true,
+        "valid_metrics": [
+          "MAE",
+          "RMSE",
+          "R2"
+        ],
+        "reason": "Continuous dense supervision across all 38,484 windows and all 5 channels in Train, Val, and Test."
+      },
+      "risk_tier_head": {
+        "is_valid": true,
+        "valid_metrics": [
+          "Macro-F1",
+          "Per-Class Precision/Recall",
+          "Confusion Matrix"
+        ],
+        "reason": "Medium risk (Tier 1) and Low risk (Tier 0) are present across Train, Val, and Test. High risk (Tier 2) is present in Train."
+      },
+      "deterioration_binary_head": {
+        "is_valid_on_train": true,
+        "is_valid_on_test": false,
+        "valid_metrics_test": [
+          "Accuracy",
+          "Specificity",
+          "Not Estimable for AUROC/AUPRC on Test"
+        ],
+        "reason": "Test set contains only Negative (0) class. AUROC on a single-class ground truth is mathematically undefined. Must be explicitly reported as Not Estimable."
+      },
+      "treatment_response_head": {
+        "is_valid_on_train": true,
+        "is_valid_on_test": false,
+        "valid_metrics_test": [
+          "Macro-F1 over active classes",
+          "Not Estimable for sparse classes on Test"
+        ],
+        "reason": "Improving/Worsening classes are present in Train, but sparse/absent in Test. Test metrics must be reported with explicit statistical disclaimers."
+      }
+    }
+  }
+}

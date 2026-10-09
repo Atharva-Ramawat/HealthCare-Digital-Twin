@@ -1,0 +1,127 @@
+{
+  "generated_at": "2026-08-23 15:43:01",
+  "dataset_name": "MIMIC-IV Demo v2.2 (Pulmonary ICU Cohort)",
+  "leakage_audit_passed": true,
+  "feature_count": 45,
+  "feature_names": [
+    "heart_rate",
+    "spo2",
+    "respiratory_rate",
+    "sbp",
+    "dbp",
+    "map",
+    "temperature_c",
+    "wbc",
+    "hemoglobin",
+    "lactate",
+    "creatinine",
+    "glucose",
+    "po2",
+    "pco2",
+    "tx_vasopressor",
+    "tx_diuretic",
+    "tx_antibiotic",
+    "tx_bronchodilator",
+    "tx_steroid",
+    "mask_heart_rate",
+    "mask_spo2",
+    "mask_respiratory_rate",
+    "mask_sbp",
+    "mask_dbp",
+    "mask_map",
+    "mask_temperature_c",
+    "mask_wbc",
+    "mask_hemoglobin",
+    "mask_lactate",
+    "mask_creatinine",
+    "mask_glucose",
+    "mask_po2",
+    "mask_pco2",
+    "delta_heart_rate",
+    "delta_spo2",
+    "delta_respiratory_rate",
+    "delta_map",
+    "ema_heart_rate",
+    "ema_spo2",
+    "ema_respiratory_rate",
+    "ema_map",
+    "roll_std_heart_rate",
+    "roll_std_spo2",
+    "roll_std_map",
+    "shock_index"
+  ],
+  "sequence_length_steps": 24,
+  "sequence_duration_hours": 6.0,
+  "forecast_horizon_steps": 4,
+  "forecast_duration_hours": 1.0,
+  "grid_resolution_minutes": 15,
+  "splits": {
+    "train": {
+      "patients_count": 43,
+      "icustays_count": 66,
+      "windows_count": 28428,
+      "deterioration_positive_rate_pct": 0.09
+    },
+    "validate": {
+      "patients_count": 9,
+      "icustays_count": 20,
+      "windows_count": 6925,
+      "deterioration_positive_rate_pct": 0.0
+    },
+    "test": {
+      "patients_count": 10,
+      "icustays_count": 11,
+      "windows_count": 3131,
+      "deterioration_positive_rate_pct": 0.0
+    }
+  },
+  "tensor_shapes": {
+    "train_X": [
+      28428,
+      24,
+      45
+    ],
+    "train_y_det": [
+      28428
+    ],
+    "train_y_tier": [
+      28428
+    ],
+    "train_y_fore": [
+      28428,
+      4,
+      5
+    ],
+    "train_y_resp": [
+      28428
+    ],
+    "val_X": [
+      6925,
+      24,
+      45
+    ],
+    "test_X": [
+      3131,
+      24,
+      45
+    ]
+  },
+  "target_distributions": {
+    "deterioration_overall": {
+      "total_windows": 38484,
+      "positive_count": 25,
+      "negative_count": 38459,
+      "positive_prevalence_pct": 0.06
+    },
+    "risk_tier_overall": {
+      "Low (0)": 38336,
+      "Medium (1)": 123,
+      "High (2)": 25
+    },
+    "treatment_response_overall": {
+      "Stable (0)": 38459,
+      "Improving (1)": 12,
+      "Worsening (2)": 13
+    }
+  }
+}

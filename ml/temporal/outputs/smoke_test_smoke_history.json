@@ -1,0 +1,26 @@
+[
+  {
+    "epoch": 1,
+    "train_loss": 306.1309,
+    "val_loss": 296.7571,
+    "val_forecast_mae": 69.2723,
+    "val_forecast_rmse": 78.7658,
+    "val_instability_auroc": 0.6361,
+    "val_instability_auprc": 0.4097,
+    "learning_rate": 0.000505,
+    "peak_vram_mb": 40.7,
+    "epoch_duration_sec": 79.35
+  },
+  {
+    "epoch": 2,
+    "train_loss": 292.6804,
+    "val_loss": 283.6913,
+    "val_forecast_mae": 67.8632,
+    "val_forecast_rmse": 77.4776,
+    "val_instability_auroc": 0.6542,
+    "val_instability_auprc": 0.4212,
+    "learning_rate": 1e-05,
+    "peak_vram_mb": 40.7,
+    "epoch_duration_sec": 50.53
+  }
+]

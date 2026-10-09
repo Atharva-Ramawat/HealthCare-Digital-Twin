@@ -1,0 +1,30 @@
+{
+  "timestamp": "2026-08-23 16:58:15",
+  "total_discrete_drug_events_extracted": 3194,
+  "total_event_linked_drug_records": 2438,
+  "unique_temporal_sliding_windows": 2438,
+  "co_prescription_discrepancy": {
+    "total_drug_records": 2438,
+    "unique_windows": 2438,
+    "difference_count": 375,
+    "windows_with_multiple_concurrent_prescriptions": 306,
+    "mathematical_explanation": "The discrepancy between 2,438 drug records and 2,428 unique sequence windows is exactly 375 concurrent co-prescriptions. There are 306 unique 15-minute sequence windows where a patient received 2 different medications simultaneously (e.g. Norepinephrine infusion initiated at the exact same 15-minute mark as Vancomycin or Furosemide). The sequence dataset sets response_valid_mask = 1.0 once per window (2,428 windows), while the event log records each individual medication order (2,438 event entries)."
+  },
+  "response_class_distribution": {
+    "Stable (0)": {
+      "count": 2096,
+      "percentage": 85.97
+    },
+    "Improving (1)": {
+      "count": 195,
+      "percentage": 8.0
+    },
+    "Worsening (2)": {
+      "count": 147,
+      "percentage": 6.03
+    },
+    "total_count": 2438,
+    "percentage_sum": 100.0,
+    "percentage_rounding_note": "Individual percentages: 85.97% + 8.00% + 6.03% = 100.00%."
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "timestamp": "2026-10-02T09:30:13.907513",
+  "elapsed_seconds": 0.07,
+  "parameters": {
+    "train_csv": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_train.csv",
+    "val_csv": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate.csv",
+    "image_root": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate",
+    "fail_fast": false,
+    "audit_only": false
+  },
+  "metrics": {
+    "total_patients_parsed": 20,
+    "total_patients_inserted": 0,
+    "total_valid_studies_verified": 103,
+    "total_studies_inserted": 0,
+    "total_missing_image_violations": 21,
+    "disk_validity_percentage": 83.06
+  },
+  "sample_audit_violations": [
+    {
+      "split": "validate",
+      "subject_id": "10057482",
+      "study_id": "s52168780",
+      "dicom_id": "5799175e-c125dfdb-3bd28e88-4f9ad41b-37bdd2ed",
+      "image_path": "files/p10/p10057482/s52168780/5799175e-c125dfdb-3bd28e88-4f9ad41b-37bdd2ed.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10057482/s52168780/5799175e-c125dfdb-3bd28e88-4f9ad41b-37bdd2ed.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.857265"
+    },
+    {
+      "split": "validate",
+      "subject_id": "10057482",
+      "study_id": "s52168780",
+      "dicom_id": "5eb9cc4f-c43b5757-52310877-3c87b128-465b02db",
+      "image_path": "files/p10/p10057482/s52168780/5eb9cc4f-c43b5757-52310877-3c87b128-465b02db.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10057482/s52168780/5eb9cc4f-c43b5757-52310877-3c87b128-465b02db.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.857265"
+    },
+    {
+      "split": "validate",
+      "subject_id": "10190940",
+      "study_id": "s50438069",
+      "dicom_id": "2aafe5ea-12d26b26-972e16c4-ff3d0f9a-ae75d498",
+      "image_path": "files/p10/p10190940/s50438069/2aafe5ea-12d26b26-972e16c4-ff3d0f9a-ae75d498.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10190940/s50438069/2aafe5ea-12d26b26-972e16c4-ff3d0f9a-ae75d498.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.863915"
+    },
+    {
+      "split": "validate",
+      "subject_id": "10190940",
+      "study_id": "s50438069",
+      "dicom_id": "707c7ae4-04900b82-789fd588-1d86b741-ec38124b",
+      "image_path": "files/p10/p10190940/s50438069/707c7ae4-04900b82-789fd588-1d86b741-ec38124b.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10190940/s50438069/707c7ae4-04900b82-789fd588-1d86b741-ec38124b.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.863915"
+    },
+    {
+      "split": "validate",
+      "subject_id": "10190940",
+      "study_id": "s51351116",
+      "dicom_id": "13490b6f-3eb75751-a191991b-e8f33cad-e423992c",
+      "image_path": "files/p10/p10190940/s51351116/13490b6f-3eb75751-a191991b-e8f33cad-e423992c.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10190940/s51351116/13490b6f-3eb75751-a191991b-e8f33cad-e423992c.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.863915"
+    },
+    {
+      "split": "validate",
+      "subject_id": "10190940",
+      "study_id": "s51351116",
+      "dicom_id": "49f3fbfe-cb406005-e8999546-2f5f2217-cd346108",
+      "image_path": "files/p10/p10190940/s51351116/49f3fbfe-cb406005-e8999546-2f5f2217-cd346108.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10190940/s51351116/49f3fbfe-cb406005-e8999546-2f5f2217-cd346108.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.863915"
+    },
+    {
+      "split": "validate",
+      "subject_id": "10190940",
+      "study_id": "s51351116",
+      "dicom_id": "f48effa0-ca35986f-95efd353-3ba4e8a2-3ec3c9ca",
+      "image_path": "files/p10/p10190940/s51351116/f48effa0-ca35986f-95efd353-3ba4e8a2-3ec3c9ca.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10190940/s51351116/f48effa0-ca35986f-95efd353-3ba4e8a2-3ec3c9ca.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.863915"
+    },
+    {
+      "split": "validate",
+      "subject_id": "10190940",
+      "study_id": "s51877987",
+      "dicom_id": "af7ba882-b5bbbc16-14a972fa-5c3a3ebc-dc83314c",
+      "image_path": "files/p10/p10190940/s51877987/af7ba882-b5bbbc16-14a972fa-5c3a3ebc-dc83314c.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10190940/s51877987/af7ba882-b5bbbc16-14a972fa-5c3a3ebc-dc83314c.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.863915"
+    },
+    {
+      "split": "validate",
+      "subject_id": "10190940",
+      "study_id": "s51877987",
+      "dicom_id": "e1b3bcbc-dc7e3b4d-cf3958a9-8357851c-6ec58b21",
+      "image_path": "files/p10/p10190940/s51877987/e1b3bcbc-dc7e3b4d-cf3958a9-8357851c-6ec58b21.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10190940/s51877987/e1b3bcbc-dc7e3b4d-cf3958a9-8357851c-6ec58b21.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.863915"
+    },
+    {
+      "split": "validate",
+      "subject_id": "10244947",
+      "study_id": "s58927269",
+      "dicom_id": "b313c405-d9c8a648-8b1f3762-edb5671b-8541118c",
+      "image_path": "files/p10/p10244947/s58927269/b313c405-d9c8a648-8b1f3762-edb5671b-8541118c.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10244947/s58927269/b313c405-d9c8a648-8b1f3762-edb5671b-8541118c.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.869924"
+    },
+    {
+      "split": "validate",
+      "subject_id": "10244947",
+      "study_id": "s58927269",
+      "dicom_id": "d98a4431-acba5ef8-f0c5fe0c-b1b0900e-13276d61",
+      "image_path": "files/p10/p10244947/s58927269/d98a4431-acba5ef8-f0c5fe0c-b1b0900e-13276d61.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10244947/s58927269/d98a4431-acba5ef8-f0c5fe0c-b1b0900e-13276d61.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.869924"
+    },
+    {
+      "split": "train",
+      "subject_id": "10000935",
+      "study_id": "s50578979",
+      "dicom_id": "d0b71acc-b5a62046-bbb5f6b8-7b173b85-65cdf738",
+      "image_path": "files/p10/p10000935/s50578979/d0b71acc-b5a62046-bbb5f6b8-7b173b85-65cdf738.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000935/s50578979/d0b71acc-b5a62046-bbb5f6b8-7b173b85-65cdf738.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.880958"
+    },
+    {
+      "split": "train",
+      "subject_id": "10000935",
+      "study_id": "s51178377",
+      "dicom_id": "3be619d1-506a66cf-ff1ab8a1-2efb77bb-fe7d59fc",
+      "image_path": "files/p10/p10000935/s51178377/3be619d1-506a66cf-ff1ab8a1-2efb77bb-fe7d59fc.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000935/s51178377/3be619d1-506a66cf-ff1ab8a1-2efb77bb-fe7d59fc.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.880958"
+    },
+    {
+      "split": "train",
+      "subject_id": "10000935",
+      "study_id": "s51178377",
+      "dicom_id": "9b314ad7-fbcb0422-6db62dfc-732858d0-a5527d8b",
+      "image_path": "files/p10/p10000935/s51178377/9b314ad7-fbcb0422-6db62dfc-732858d0-a5527d8b.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000935/s51178377/9b314ad7-fbcb0422-6db62dfc-732858d0-a5527d8b.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.880958"
+    },
+    {
+      "split": "train",
+      "subject_id": "10000935",
+      "study_id": "s55697293",
+      "dicom_id": "6a5c3985-7764bdd0-ec5a6a74-af78bcaa-4ca33ec3",
+      "image_path": "files/p10/p10000935/s55697293/6a5c3985-7764bdd0-ec5a6a74-af78bcaa-4ca33ec3.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000935/s55697293/6a5c3985-7764bdd0-ec5a6a74-af78bcaa-4ca33ec3.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.880958"
+    },
+    {
+      "split": "train",
+      "subject_id": "10000935",
+      "study_id": "s55697293",
+      "dicom_id": "c50494f1-90e2bff5-e9189550-1a4562fd-6ab5204c",
+      "image_path": "files/p10/p10000935/s55697293/c50494f1-90e2bff5-e9189550-1a4562fd-6ab5204c.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000935/s55697293/c50494f1-90e2bff5-e9189550-1a4562fd-6ab5204c.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.880958"
+    },
+    {
+      "split": "train",
+      "subject_id": "10000935",
+      "study_id": "s56164612",
+      "dicom_id": "8e3f2822-0c1d4b71-2a265bbf-5b96e531-ccf5fa30",
+      "image_path": "files/p10/p10000935/s56164612/8e3f2822-0c1d4b71-2a265bbf-5b96e531-ccf5fa30.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000935/s56164612/8e3f2822-0c1d4b71-2a265bbf-5b96e531-ccf5fa30.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.880958"
+    },
+    {
+      "split": "train",
+      "subject_id": "10000935",
+      "study_id": "s56164612",
+      "dicom_id": "ad13cf84-62c34a01-a01b9e87-2581a359-83bbc046",
+      "image_path": "files/p10/p10000935/s56164612/ad13cf84-62c34a01-a01b9e87-2581a359-83bbc046.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000935/s56164612/ad13cf84-62c34a01-a01b9e87-2581a359-83bbc046.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.881463"
+    },
+    {
+      "split": "train",
+      "subject_id": "10000935",
+      "study_id": "s56522600",
+      "dicom_id": "6fa5997e-b1dfecf8-3c174666-8815c84a-32db59ff",
+      "image_path": "files/p10/p10000935/s56522600/6fa5997e-b1dfecf8-3c174666-8815c84a-32db59ff.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000935/s56522600/6fa5997e-b1dfecf8-3c174666-8815c84a-32db59ff.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.881463"
+    },
+    {
+      "split": "train",
+      "subject_id": "10000935",
+      "study_id": "s56522600",
+      "dicom_id": "f1adcae3-2921c0a8-5d9652f9-4191ecd7-f2a96f35",
+      "image_path": "files/p10/p10000935/s56522600/f1adcae3-2921c0a8-5d9652f9-4191ecd7-f2a96f35.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000935/s56522600/f1adcae3-2921c0a8-5d9652f9-4191ecd7-f2a96f35.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.881463"
+    },
+    {
+      "split": "train",
+      "subject_id": "10000935",
+      "study_id": "s58219844",
+      "dicom_id": "88498b37-c21dc7ba-bc202800-b517a62d-f7ac5bcf",
+      "image_path": "files/p10/p10000935/s58219844/88498b37-c21dc7ba-bc202800-b517a62d-f7ac5bcf.jpg",
+      "attempted_physical_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000935/s58219844/88498b37-c21dc7ba-bc202800-b517a62d-f7ac5bcf.jpg",
+      "reason": "FILE_NOT_FOUND_ON_DISK",
+      "timestamp": "2026-10-02T09:30:13.881463"
+    }
+  ],
+  "status": "COMPLETED"
+}

@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "violations_total": 0,
+  "patient_split_leakage": 0,
+  "temporal_leakage": 0,
+  "scaler_leakage": 0
+}

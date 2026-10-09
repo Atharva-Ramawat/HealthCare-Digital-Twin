@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-08-23 18:43:39",
+  "unique_response_valid_windows_in_tensors": 2428,
+  "total_drug_event_records": 2438,
+  "concurrent_coprescriptions_count": 10,
+  "representation_rule": "In the model training dataset, each sliding window index corresponds to exactly one sequence [24, 45]. When multiple treatments are initiated in the same 15-minute window, response_valid_mask = 1.0 is set once for that window and evaluates the composite post-intervention trajectory shift without duplicating sequence tensors.",
+  "split_breakdown": {
+    "train_valid_response_windows": 1704,
+    "val_valid_response_windows": 567,
+    "test_valid_response_windows": 157
+  }
+}

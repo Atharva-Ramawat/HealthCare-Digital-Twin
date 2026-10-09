@@ -1,0 +1,17 @@
+{
+  "total_raw_treatment_rows": 4102,
+  "category_sum_total": 4102,
+  "category_breakdown": {
+    "tx_vasopressor": 1655,
+    "tx_diuretic": 774,
+    "tx_antibiotic": 1399,
+    "tx_bronchodilator": 203,
+    "tx_steroid": 71
+  },
+  "explanation_of_discrepancy": "The sum of treatment rows across categories exceeds unique initiation episodes because: (1) Patients frequently receive concurrent multimodal treatments (e.g. Norepinephrine infusion titrated concurrently with Vancomycin infusion and Furosemide administration), (2) Continuous IV infusions are logged as multiple successive bag adjustments/rate changes in inputevents, and (3) Prescriptions and inputevents capture both order generation and bedside administration.",
+  "response_class_distribution": {
+    "Stable (0)": 38459,
+    "Improving (1)": 12,
+    "Worsening (2)": 13
+  }
+}

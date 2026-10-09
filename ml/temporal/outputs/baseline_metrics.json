@@ -1,0 +1,141 @@
+{
+  "timestamp": "2026-08-23 16:48:34",
+  "evaluated_split": "Held-Out Test Set (10 patients / 3,147 windows)",
+  "primary_benchmark_task": "4-Step x 5-Channel Short-Term Vital Forecasting",
+  "forecasting_baselines": {
+    "naive_persistence": {
+      "model": "Naive Persistence Baseline",
+      "split": "test",
+      "overall_mae": 1.7886,
+      "overall_rmse": 5.9941,
+      "per_channel_metrics": {
+        "heart_rate": {
+          "valid_points_count": 12436,
+          "mae": 2.4517,
+          "rmse": 6.3103,
+          "r2": 0.8354
+        },
+        "spo2": {
+          "valid_points_count": 12224,
+          "mae": 0.8355,
+          "rmse": 4.3925,
+          "r2": 0.3241
+        },
+        "sbp": {
+          "valid_points_count": 12112,
+          "mae": 4.0255,
+          "rmse": 10.2366,
+          "r2": 0.7319
+        },
+        "respiratory_rate": {
+          "valid_points_count": 12412,
+          "mae": 1.42,
+          "rmse": 3.2578,
+          "r2": 0.644
+        },
+        "temperature_c": {
+          "valid_points_count": 11742,
+          "mae": 0.161,
+          "rmse": 2.2037,
+          "r2": -17.0466
+        }
+      }
+    },
+    "moving_average_trend": {
+      "model": "Moving-Average Trend Baseline",
+      "split": "test",
+      "overall_mae": 1.3707,
+      "overall_rmse": 3.1485,
+      "per_channel_metrics": {
+        "heart_rate": {
+          "valid_points_count": 12436,
+          "mae": 1.9745,
+          "rmse": 3.7979,
+          "r2": 0.9404
+        },
+        "spo2": {
+          "valid_points_count": 12224,
+          "mae": 0.5614,
+          "rmse": 1.2101,
+          "r2": 0.9487
+        },
+        "sbp": {
+          "valid_points_count": 12112,
+          "mae": 3.0936,
+          "rmse": 5.4105,
+          "r2": 0.9251
+        },
+        "respiratory_rate": {
+          "valid_points_count": 12412,
+          "mae": 1.1549,
+          "rmse": 2.0467,
+          "r2": 0.8595
+        },
+        "temperature_c": {
+          "valid_points_count": 11742,
+          "mae": 0.0245,
+          "rmse": 0.0963,
+          "r2": 0.9655
+        }
+      }
+    },
+    "random_forest_regressor": {
+      "model": "Random Forest Regressor Baseline",
+      "split": "test",
+      "overall_mae": 4.5482,
+      "overall_rmse": 8.0337,
+      "per_channel_metrics": {
+        "heart_rate": {
+          "valid_points_count": 12436,
+          "mae": 5.65,
+          "rmse": 9.6511,
+          "r2": 0.615
+        },
+        "spo2": {
+          "valid_points_count": 12224,
+          "mae": 3.3265,
+          "rmse": 6.3432,
+          "r2": -0.4096
+        },
+        "sbp": {
+          "valid_points_count": 12112,
+          "mae": 7.9855,
+          "rmse": 12.3772,
+          "r2": 0.6081
+        },
+        "respiratory_rate": {
+          "valid_points_count": 12412,
+          "mae": 4.5359,
+          "rmse": 5.5147,
+          "r2": -0.02
+        },
+        "temperature_c": {
+          "valid_points_count": 11742,
+          "mae": 1.1205,
+          "rmse": 2.0434,
+          "r2": -14.5153
+        }
+      }
+    }
+  },
+  "deterioration_baselines": {
+    "logistic_regression": {
+      "model": "Logistic Regression Baseline",
+      "auroc": 0.7347,
+      "auprc": 0.5647,
+      "accuracy": 0.711,
+      "precision": 0.5829,
+      "recall": 0.4474,
+      "f1": 0.5063
+    },
+    "random_forest_classifier": {
+      "model": "Random Forest Classifier Baseline",
+      "auroc": 0.8516,
+      "auprc": 0.7383,
+      "accuracy": 0.7796,
+      "precision": 0.7406,
+      "recall": 0.5149,
+      "f1": 0.6075
+    }
+  }
+}

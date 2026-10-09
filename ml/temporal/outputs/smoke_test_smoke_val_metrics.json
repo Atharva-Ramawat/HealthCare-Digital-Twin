@@ -1,0 +1,11 @@
+{
+  "experiment_name": "smoke_test_smoke",
+  "best_epoch": 2,
+  "best_val_loss": 283.6913,
+  "final_val_forecast_mae": 67.8632,
+  "total_training_seconds": 129.95,
+  "checkpoints": {
+    "best": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\models\\checkpoints\\smoke_test_smoke_best.pt",
+    "final": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\models\\checkpoints\\smoke_test_smoke_final.pt"
+  }
+}

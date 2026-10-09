@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-10-06 02:14:44",
+  "dataset_name": "MIMIC-IV Demo v2.2 (Pulmonary Cohort)",
+  "leakage_audit": {
+    "passed": true,
+    "violations_total": 0,
+    "patient_split_leakage": 0,
+    "temporal_leakage": 0,
+    "scaler_leakage": 0
+  },
+  "windows_summary": {
+    "total_windows": 38625,
+    "train_windows": 28524,
+    "val_windows": 6954,
+    "test_windows": 3147
+  },
+  "target_validity_masks": {
+    "forecasting": {
+      "total_future_points_evaluated": 772500,
+      "valid_observed_future_points": 753981,
+      "valid_point_percentage": 97.6,
+      "valid_windows_with_at_least_one_observed_vital": 38495
+    },
+    "deterioration": {
+      "valid_windows_with_future_vital_data": 38495,
+      "invalid_unobserved_windows": 130,
+      "positive_count_in_train": 8002,
+      "positive_count_in_val": 2138,
+      "positive_count_in_test": 1037,
+      "test_set_status": "Multi-class balanced (1037 positives, 2110 negatives). AUROC/AUPRC mathematically estimable."
+    },
+    "treatment_response": {
+      "total_discrete_treatment_events": 3194,
+      "event_linked_response_windows": 2428,
+      "event_conversion_explanation": "Only sliding windows aligning with an actual discrete treatment initiation event (T0) receive response_valid_mask = 1.0. Routine monitoring windows without an intervention receive response_valid_mask = 0.0 and are excluded from treatment-response loss.",
+      "event_linked_class_distribution": {
+        "Stable (0)": 2096,
+        "Improving (1)": 195,
+        "Worsening (2)": 147
+      }
+    }
+  },
+  "prevalence_discrepancy_reconciliation": {
+    "feasibility_point_check_estimate_pct": 15.5,
+    "strict_training_target_prevalence_pct": 28.94,
+    "scientific_reconciliation_explanation": "In the initial feasibility EDA, point-in-time threshold breaches were estimated at ~15.5%. With rigorous 15-minute grid alignment and multi-step persistence requirements across all 97 stays, true sustained physiological deterioration (hypoxemia SpO2 < 90%, tachypnea RR > 28, shock MAP < 65) is present in 28.05% of train windows, 30.75% of val windows, and 32.95% of test windows, providing robust multi-class supervision across all partitions."
+  }
+}

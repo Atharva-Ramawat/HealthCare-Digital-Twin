@@ -1,0 +1,110 @@
+{
+  "timestamp": "2026-08-29 13:34:53",
+  "audit_duration_seconds": 4.23,
+  "environment": {
+    "image_root": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate",
+    "train_metadata": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_train.csv",
+    "val_metadata": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate.csv",
+    "synthetic_fallback_allowed": false
+  },
+  "patient_splits": {
+    "train_patients": 64586,
+    "val_patients": 500,
+    "overlap_count": 0,
+    "is_disjoint": true
+  },
+  "validation_set_metrics": {
+    "total_referenced_images": 2991,
+    "verified_images_on_disk": 2099,
+    "missing_images": 892,
+    "disk_availability_pct": 70.18,
+    "duplicate_references": 0,
+    "example_resolved_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10003502/s50084553/70d7e600-373c1311-929f5ff9-23ee3621-ff551ff9.jpg",
+    "class_distribution": {
+      "Pneumonia": {
+        "positive_count": 256,
+        "prevalence_pct": 12.2
+      },
+      "Pleural Effusion": {
+        "positive_count": 636,
+        "prevalence_pct": 30.3
+      },
+      "Atelectasis": {
+        "positive_count": 584,
+        "prevalence_pct": 27.82
+      },
+      "Consolidation": {
+        "positive_count": 164,
+        "prevalence_pct": 7.81
+      },
+      "Edema": {
+        "positive_count": 370,
+        "prevalence_pct": 17.63
+      },
+      "Pneumothorax": {
+        "positive_count": 176,
+        "prevalence_pct": 8.38
+      },
+      "Cardiomegaly": {
+        "positive_count": 255,
+        "prevalence_pct": 12.15
+      },
+      "No Finding": {
+        "positive_count": 855,
+        "prevalence_pct": 40.73
+      }
+    }
+  },
+  "train_sample_metrics (1000 patients)": {
+    "total_referenced_images": 5557,
+    "verified_images_on_disk": 3729,
+    "missing_images": 1828,
+    "disk_availability_pct": 67.1,
+    "example_resolved_path": "C:\\Users\\athar\\.gemini\\antigravity\\scratch\\healthcare-digital-twin\\data\\raw\\mimic_cxr_aug_validate\\files/p10/p10000032/s50414267/02aa804e-bde0afdd-112c0b34-7bc16630-4e384014.jpg",
+    "class_distribution": {
+      "Pneumonia": {
+        "positive_count": 516,
+        "prevalence_pct": 13.84
+      },
+      "Pleural Effusion": {
+        "positive_count": 888,
+        "prevalence_pct": 23.81
+      },
+      "Atelectasis": {
+        "positive_count": 1019,
+        "prevalence_pct": 27.33
+      },
+      "Consolidation": {
+        "positive_count": 271,
+        "prevalence_pct": 7.27
+      },
+      "Edema": {
+        "positive_count": 543,
+        "prevalence_pct": 14.56
+      },
+      "Pneumothorax": {
+        "positive_count": 298,
+        "prevalence_pct": 7.99
+      },
+      "Cardiomegaly": {
+        "positive_count": 434,
+        "prevalence_pct": 11.64
+      },
+      "No Finding": {
+        "positive_count": 1588,
+        "prevalence_pct": 42.59
+      }
+    }
+  },
+  "target_pathology_schema": [
+    "Pneumonia",
+    "Pleural Effusion",
+    "Atelectasis",
+    "Consolidation",
+    "Edema",
+    "Pneumothorax",
+    "Cardiomegaly",
+    "No Finding"
+  ],
+  "verification_status": "PASSED"
+}

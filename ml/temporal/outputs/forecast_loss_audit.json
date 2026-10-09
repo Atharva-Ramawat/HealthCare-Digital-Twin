@@ -1,0 +1,58 @@
+{
+  "timestamp": "2026-08-23 17:53:14",
+  "channels": [
+    "heart_rate",
+    "spo2",
+    "sbp",
+    "respiratory_rate",
+    "temperature_c"
+  ],
+  "training_set_statistics": {
+    "heart_rate": {
+      "mean": 93.5787,
+      "std": 19.3509,
+      "variance": 374.4585,
+      "valid_observations_count": 112710,
+      "raw_mse_gradient_share_pct": 44.88,
+      "standardized_gradient_share_pct": 20.0
+    },
+    "spo2": {
+      "mean": 96.6631,
+      "std": 2.7147,
+      "variance": 7.3693,
+      "valid_observations_count": 112105,
+      "raw_mse_gradient_share_pct": 0.88,
+      "standardized_gradient_share_pct": 20.0
+    },
+    "sbp": {
+      "mean": 115.808,
+      "std": 20.3832,
+      "variance": 415.4756,
+      "valid_observations_count": 107525,
+      "raw_mse_gradient_share_pct": 49.8,
+      "standardized_gradient_share_pct": 20.0
+    },
+    "respiratory_rate": {
+      "mean": 20.5084,
+      "std": 5.5322,
+      "variance": 30.6047,
+      "valid_observations_count": 113004,
+      "raw_mse_gradient_share_pct": 3.67,
+      "standardized_gradient_share_pct": 20.0
+    },
+    "temperature_c": {
+      "mean": 37.1074,
+      "std": 2.5227,
+      "variance": 6.364,
+      "valid_observations_count": 109654,
+      "raw_mse_gradient_share_pct": 0.76,
+      "standardized_gradient_share_pct": 20.0
+    }
+  },
+  "total_raw_variance_sum": 834.2721,
+  "audit_findings": {
+    "why_raw_forecast_loss_is_large": "In raw clinical units, Systolic Blood Pressure (variance=415.4756) and Heart Rate (variance=374.4585) contribute 94.68% of the unnormalized MSE loss, while Body Temperature (variance=6.364) contributes only 0.76%. Consequently, raw MSE loss is dominated by SBP/HR units (~6,800).",
+    "standardization_solution": "Implemented Train-Only Channel Variance Scaling: each channel's squared error is divided by sigma_{train, c}^2 (computed strictly from the training cohort). This guarantees that all 5 physiological vitals contribute equally (20.0% each) to backpropagation gradients, bringing the standardized forecast loss to an expected baseline of ~1.0, matching the scale of classification heads.",
+    "preservation_of_clinical_units": "All user-facing dashboards, API endpoints, evaluation reports, and test set benchmarks continue to report MAE and RMSE in original clinical units (BPM, %, mmHg, breaths/min, \u00b0C)."
+  }
+}
