@@ -1,21 +1,38 @@
-﻿# Python / Virtual Environment
-.venv/
-__pycache__/
-*.pyc
-.pytest_cache/
-.coverage
-
-# Node / Frontend
-frontend/node_modules/
-frontend/dist/
-
-# Raw Datasets & Local Storage (DO NOT PUSH DATA)
+﻿# Datasets & Unstructured Media (CRITICAL)
 data/
 *.csv
-*.parquet
 *.dcm
+*.jpg
+*.jpeg
+*.png
+!ui_mockups/**
+
+# Model Weights Exemption
+# Allow tracking of PyTorch weights inside or outside directories
+!*.pt
+!*.pth
+
+# Python & Backend Artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
 *.sqlite3
 
-# OS Files
+# Node & Frontend Build Artifacts
+node_modules/
+dist/
+build/
 .DS_Store
-Thumbs.db
+
+# Python & Backend Artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+*.sqlite3
